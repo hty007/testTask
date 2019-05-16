@@ -21,13 +21,14 @@ namespace SitePing
     public partial class MainWindow : Window
     {
         static MainControler controler;
-
+        Thread myThread;
+               
         public MainWindow()
         {
             InitializeComponent();
             controler = new MainControler();
             //controler.Build(stackSite);
-            Thread myThread = new Thread(new ThreadStart(ThreadCheck));            
+            myThread = new Thread(new ThreadStart(ThreadCheck));            
             DataContext = controler;
 
 
