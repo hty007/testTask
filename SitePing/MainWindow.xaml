@@ -44,7 +44,7 @@
             <WrapPanel>
                 <Button x:Name="taskButton" HorizontalContentAlignment="Center" Content="Техническое задание." FontWeight="Bold" Click="TaskButton_Click" MinWidth="150" VerticalAlignment="Bottom"  />
                 <Button x:Name="readMyButton" HorizontalContentAlignment="Center" Content="ReadMy" FontWeight="Bold" MinWidth="100" Click="ReadMyButton_Click" />
-                <Button x:Name="fileButton" HorizontalContentAlignment="Center" Content="File" FontWeight="Bold" MinWidth="100" Click="FileButton_Click" />
+                <Button x:Name="fileButton" HorizontalContentAlignment="Center" Content="File" FontWeight="Bold" MinWidth="100" Command="file" />
             </WrapPanel>
         </StackPanel>
         

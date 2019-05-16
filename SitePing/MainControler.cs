@@ -68,6 +68,11 @@ namespace SitePing
             {
 
             }/**/
+        }
+        internal void Delete(int index)
+        {
+            Data.RemoveAt(index);
+            SaveData();
         }        
 
         #endregion
@@ -92,11 +97,7 @@ namespace SitePing
             }
         }
 
-        internal void Delete(int index)
-        {
-            Data.RemoveAt(index);
-            SaveData();
-        }
+        
 
         public void SaveData()
         {
