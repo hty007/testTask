@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace SitePing
 {
@@ -14,14 +15,26 @@ namespace SitePing
         public ObservableCollection<Pair> Data { get; set; }
         string nameFile = "../../List.txt";
         private int errors;
+        private string addSite;
+        private ICommand addCommand;
+        private ICommand fileCommand;
+        private ICommand readCommand;
+        private ICommand taskCommand;
+
         public int Errors { get => errors; set
             {
                 errors = value;
                 OnPropertyChanged("Errors");
             } }
-        public string ErrorsStr
+
+        public string AddSite
         {
-            get => errors.ToString();
+            get => addSite;
+            set
+            {
+                addSite = value;
+                OnPropertyChanged("AddSite");
+            }
         }
 
         public MainControler()
@@ -35,10 +48,40 @@ namespace SitePing
         #region Функционал
 
 
-        public void Add(string site)
+        public ICommand Add
         {
-            Data.Add(new Pair(site));
-            SaveData();
+            get
+            {
+                if (addCommand == null)
+                    addCommand = new AddCommand(this);
+                return addCommand;
+            }
+        }
+        public ICommand File
+        {            get
+            {
+                if (fileCommand == null)
+                    fileCommand = new FileCommand(this);
+                return fileCommand;
+            }
+        }
+        public ICommand ReadMy
+        {
+            get
+            {
+                if (readCommand == null)
+                    readCommand = new ReadMyCommand(this);
+                return readCommand;
+            }
+        }
+        public ICommand Task
+        {
+            get
+            {
+                if (taskCommand == null)
+                    taskCommand = new TaskCommand(this);
+                return taskCommand;
+            }
         }
 
         public void Check()
@@ -86,7 +129,7 @@ namespace SitePing
 
         public void LoadData()
         {            
-            if (!File.Exists(nameFile))
+            if (! System.IO.File.Exists(nameFile))
                 throw new FileNotFoundException($"Файл отсутвует в файловой системе по указонному адресу.\n{nameFile}");
             using (StreamReader sr = new StreamReader(nameFile, System.Text.Encoding.Default))
             {
@@ -95,9 +138,7 @@ namespace SitePing
                     Data.Add(new Pair(sr.ReadLine()));
                 }
             }
-        }
-
-        
+        }       
 
         public void SaveData()
         {

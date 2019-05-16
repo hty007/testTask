@@ -32,13 +32,7 @@ namespace SitePing
             countError.SetBinding(Label.ContentProperty, binding);/**/
                  
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            controler.Add(textBox.Text);
-            //controler.Build(stackSite);
-            textBox.Clear();
-        }
+               
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -79,33 +73,7 @@ namespace SitePing
                 MessageBoxButton.YesNo);
             if (choice == MessageBoxResult.Yes)
                 controler.Delete(index);
-        }
-
-        private void Label_MouseEnter_1(object sender, MouseEventArgs e)
-        {
-                    }
-
-        private void TaskButton_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show(@"
-Необходимо разработать wpf приложение мониторинга доступности сайтов. Необходимо придерживаться паттерна MVVM
-1. Главная окно отображает список сайтов и индикатор доступности.
-2. Список сайтов для проверки находится в хранилище (бд, файл).
-3. При старте приложения запускается фоновый поток в котором через настраивай промежуток времени проверяются сайты
-4. В окне должна быть возможность добавление/удаление сайтов
-5. Окно приложения не должно блокироваться во время работы
-", "Техническое задание.");
-        }
-
-        private void ReadMyButton_Click(object sender, RoutedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("notepad.exe", "../../ReadMy.txt");
-        }
-
-        private void FileButton_Click(object sender, RoutedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("notepad.exe", "../../List.txt");
-        }
+        } 
     }  
 
 }
