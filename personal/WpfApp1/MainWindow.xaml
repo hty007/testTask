@@ -1,0 +1,25 @@
+﻿<Window x:Class="WpfApp1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="Тестовое задание 1.0" Height="450" Width="800">
+    <Grid>
+        <Menu HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="792">
+            <MenuItem x:Name="MenuFile" Header="Фаил" HorizontalAlignment="Left">
+                <CheckBox x:Name="SortUpCheck" Content="Сортировать по возростанию" IsChecked="{Binding SortUp}" Checked="SortUpCheck_Checked" Unchecked="SortUpCheck_Unchecked"/>
+                <Button x:Name="Exit" Content="Выход" Click="Exit_Click"/>
+            </MenuItem>
+            <MenuItem x:Name="About" Header="О программе" Click="About_Click"/>
+        </Menu>
+        <TextBox x:Name="Filter" HorizontalAlignment="Left" Height="25" Margin="133,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="510" DataContext="{Binding SalaryFilter}" TextChanged="Filter_TextChanged"/>
+        <Label Content="Фильтр по зарплате" HorizontalAlignment="Left" Height="25" Margin="10,30,0,0" VerticalAlignment="Top" Width="123"/>
+        <Button x:Name="FilterGo" Content="Применить фильтр" HorizontalAlignment="Left" Height="25" Margin="648,30,0,0" VerticalAlignment="Top" Width="134" Click="FilterGo_Click"/>
+        <ListBox x:Name="ListPerson" HorizontalAlignment="Left" Height="350" Margin="10,60,0,0" VerticalAlignment="Top" Width="633" ItemsSource="{Binding FilterPersons}" FontFamily="Miriam Fixed">
+        </ListBox>
+        <ComboBox x:Name="PostsList" HorizontalAlignment="Left" Margin="648,93,0,0" VerticalAlignment="Top" Width="134" ItemsSource="{Binding Posts}" SelectedItem="{Binding PostFilter}" SelectionChanged="PostsList_SelectionChanged"/>
+        <Button x:Name="ClearFilter" Content="Очистить фильтры" HorizontalAlignment="Left" Height="24" Margin="648,60,0,0" VerticalAlignment="Top" Width="134" Click="ClearFilter_Click"/>
+    </Grid>
+</Window>
