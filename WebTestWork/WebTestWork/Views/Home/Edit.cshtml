@@ -1,0 +1,77 @@
+﻿@model WebTestWork.Models.Personnel
+
+@{
+    ViewData["Title"] = "View";
+}
+<h4>Редактирование сотрудника</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" name="Id" value="@Model.Id"/>
+            <div class="form-group">
+                <label class="control-label"></label>
+                <input type="text" class="form-control" name="Name" value="@Model.Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Type" class="control-label">Вид сотрудника</label>
+                <select class="form-control" type="text" name="Type" title="Введите вид сотрудника">
+                    <option value="Employee" selected="@(Model.Type==PersonnelType.Employee)"> Employee</option>
+                    <option value="Manager" selected="@(Model.Type==PersonnelType.Manager)">Manager</option>
+                    <option value="Sales" selected="@(Model.Type==PersonnelType.Sales)">Sales</option>
+                </select> <br />
+
+                @*<input asp-for="Type" class="form-control" />
+                <span asp-validation-for="Type" class="text-danger"></span>*@
+            </div>
+            @*<div class="form-group">
+            <label asp-for="Id" class="control-label"></label>
+            <input asp-for="Id" class="form-control" />
+            <span asp-validation-for="Id" class="text-danger"></span>
+        </div>*@
+            <div class="form-group">
+                <label asp-for="Post" class="control-label"></label>
+                <input asp-for="Post" class="form-control" />
+                <span asp-validation-for="Post" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateEmployment" class="control-label"></label>
+                <input asp-for="DateEmployment" class="form-control" />
+                <span asp-validation-for="DateEmployment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BasicRate" class="control-label"></label>
+                <input asp-for="BasicRate" class="form-control" />
+                <span asp-validation-for="BasicRate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Начальник</label>
+                <select type="text" class="form-control" name="IdChief" title="Выберите Начальника">
+                    @foreach (Personnel p in ObjectModel.Company.Personnels)
+                    {
+                        if (p.Type != PersonnelType.Employee)
+                        {
+                            if (Model.Chief != null && p.Id == Model.IdChief)
+                            {<option value="@p.Id" selected> @p.Name (@p.Post) </option>}
+                            else
+                            {<option value="@p.Id"> @p.Name (@p.Post) </option>}
+                        }
+                    }
+                </select>
+                
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

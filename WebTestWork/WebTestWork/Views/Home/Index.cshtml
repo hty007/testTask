@@ -1,0 +1,54 @@
+﻿@{    
+    ViewData["Title"] = "Home Page";
+    WebTestWork.Models.Company company = ViewBag.Company as WebTestWork.Models.Company;
+}
+
+<a href="~/Home/AddPerson">Добавить сотрудника</a>
+
+<p> Сотрудники компании @company.Name </p>
+<table border="1">
+    <thead>
+        <tr>
+            <td>ФИО</td>
+            <td>Дата трудоустройства</td>
+            <td>Должность</td>
+            <td>Type</td>
+            <td>Ставка</td>
+            <td>Текущая Зарплата</td>
+            <td>Начальник</td>
+            <td>1'</td>
+            <td>inf</td>
+            <td></td>
+            @*<td></td>*@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var per in company.Personnels)
+        {
+        <tr>
+            <td><a href="~/Home/Show?id=@per.Id"> @per.Name </a></td>
+            <td>@per.DateEmployment</td>
+            <td>@per.Post </td>
+            <td>@per.Type </td>
+            <td>@per.BasicRate</td>
+            <td>@per.GetPayment(DateTime.Now)</td>
+            <td>@per.Chief?.Name</td>
+            <td>@per.GetCountInferiors(1)</td>
+            <td>@per.GetCountInferiors(-1)</td>
+            <td>
+                <a href="~/Home/Edit?id=@per.Id"> Править </a>
+                <a> Удалить </a>
+                
+
+            </td>
+        </tr>
+        }
+    </tbody>
+
+</table>
+
+
+@*<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>*@
