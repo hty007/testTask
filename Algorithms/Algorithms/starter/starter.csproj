@@ -46,6 +46,7 @@
     <Compile Include="Commands\HExit.cs" />
     <Compile Include="exercises\ex1.cs" />
     <Compile Include="Commands\SubCmd.cs" />
+    <Compile Include="Commands\ICmd.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

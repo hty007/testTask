@@ -44,6 +44,8 @@ namespace starter
                 Console.Write("Введите команду:");
                 str = Console.ReadLine();
                 var a_str = str.Split(new[]{' '}, StringSplitOptions.RemoveEmptyEntries);
+                if (a_str.Length == 0) continue;
+                
                 foreach (var cmd in Commands)
                 {
                     if (cmd.GetName().Contains(a_str[0].ToLower()))
@@ -53,13 +55,6 @@ namespace starter
                 }                
             }
         }
-    }
-
-
-    public interface ICmd
-    {
-        string[] GetName();
-        string GetHelp();
-        void Execute(params string[] pars);
+        
     }
 }
