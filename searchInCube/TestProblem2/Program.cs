@@ -97,6 +97,12 @@ namespace TestProblem2
 			watch.Start();
 		// ============= Ввод ==================
 			string path = Path.Combine (Environment.CurrentDirectory, "input.txt");
+			if (!File.Exists(path)) 
+			{
+				Console.WriteLine("Не найден файл 'input.txt'");
+				Console.Write("Нажми клавишу!");
+				Console.ReadKey();
+			}
 			StreamReader input = new StreamReader (path);
 			Nx = int.Parse (input.ReadLine());
 			Ny = int.Parse (input.ReadLine());
@@ -148,11 +154,11 @@ namespace TestProblem2
 			}
 			output.Close ();
 
-		// ============= Вывод =================
-
-
-		// =====================================
 			watch.Stop();
+			// ============= Вывод =================
+			Console.WriteLine($"Найдено {CountArea} области.") ;
+
+			// =====================================
 			Console.WriteLine ("");
 			Console.WriteLine(
 				"\n Время выполнения программы в миллисекундах : " + watch.ElapsedMilliseconds + "мс.\r\n"+
