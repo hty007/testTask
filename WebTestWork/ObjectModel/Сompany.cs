@@ -190,7 +190,8 @@ namespace WebTestWork.Models
 
                     Personnel old = per.Chief;
                     per.IdChief = idChief;
-                    old.Refrech(this);
+                    if (old!=null)
+                        old.Refrech(this);
                 }
                 if (basicRate > 0) per.BasicRate = basicRate;
                 if (dateEmployment != null) per.DateEmployment = (DateTime)dateEmployment;
