@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace SitePing
 {
-    public class Pair : INotifyPropertyChanged
+    public class Pair : BaseViewModel
     {
         private string site;
         private bool status;
@@ -20,12 +20,7 @@ namespace SitePing
         public bool Status { get => status; set { status = value; OnPropertyChanged("Status"); OnPropertyChanged("Brush"); } }
         public System.Windows.Media.SolidColorBrush Brush { get => (status) ? System.Windows.Media.Brushes.Green : System.Windows.Media.Brushes.Red; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName]string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
-        }
+        
 
         public override string ToString()
         {
@@ -33,7 +28,7 @@ namespace SitePing
         }
     }
 
-    public class Model : IEnumerable
+    public class Model : BaseViewModel, IEnumerable
     {
         List<Pair> data;
 

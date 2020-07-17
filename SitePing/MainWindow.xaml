@@ -6,23 +6,30 @@
         xmlns:local="clr-namespace:SitePing"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="500" ResizeMode="NoResize" Topmost="True">
+        Title="Тестовое задание" Height="450" Width="500" Topmost="True">
     <Window.Resources>
         <local:ColorConverter x:Key="ColorConverter"/>
+        <local:IntToText x:Key="IntToText"/>
         
     </Window.Resources>
     <Grid>
-        <StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
         
-            <WrapPanel Orientation="Horizontal">                
-                <Label HorizontalContentAlignment="Center" Content="Сайты" FontWeight="Bold" Width="300" HorizontalAlignment="Center" MouseEnter="Label_MouseEnter" />
+        
+            <WrapPanel Orientation="Horizontal" Grid.Row="0">                
+                <Label HorizontalContentAlignment="Center" Content="Сайты" FontWeight="Bold" Width="300" HorizontalAlignment="Center"  />
                 <Label HorizontalContentAlignment="Center" Content="Доступность" FontWeight="Bold" HorizontalAlignment="Center" />
             </WrapPanel>
-            <ListBox x:Name="dataList" Height="300" ItemsSource="{Binding Data}">
+            <ListBox Grid.Row="1" x:Name="dataList"  ItemsSource="{Binding Data}" SelectedItem="{Binding SelectedPair, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <WrapPanel Orientation="Horizontal">
-                            <Label HorizontalContentAlignment="Center" Content="{Binding Path=Site}"  Width="300" HorizontalAlignment="Center" MouseDoubleClick="Label_MouseDoubleClick" />
+                            <Label HorizontalContentAlignment="Center" Content="{Binding Path=Site}"  Width="300" HorizontalAlignment="Center" />
                             <Label HorizontalContentAlignment="Center" 
                                Content="{Binding Path=Status}"  
                                HorizontalAlignment="Center" 
@@ -33,20 +40,24 @@
                 </ListBox.ItemTemplate>
 
             </ListBox>
-            <WrapPanel Orientation="Horizontal">
-                <TextBox x:Name="textBox" HorizontalAlignment="Left" Text="{Binding AddSite}" TextWrapping="Wrap"  Width="250" TextChanged="TextBox_TextChanged"/>
+            <WrapPanel Grid.Row="2" Orientation="Horizontal">
+                <TextBox x:Name="textBox" HorizontalAlignment="Left" Text="{Binding AddSite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                         TextWrapping="Wrap"  Width="250"/>
             
-                <Button x:Name="addButton" HorizontalContentAlignment="Center" Content="Добавить" FontWeight="Bold" HorizontalAlignment="Center" Command="{Binding Add}" IsEnabled="False" />
+                <Button HorizontalContentAlignment="Center" Content="Добавить" FontWeight="Bold" HorizontalAlignment="Center" Command="{Binding Add}" IsEnabled="{Binding TryAddSite}" />
+                <Button HorizontalContentAlignment="Center" Content="Удалить" FontWeight="Bold" MinWidth="100" Command="{Binding Delete}" />
                 <!--<Button x:Name="random" HorizontalContentAlignment="Center" Content="Random" FontWeight="Bold" HorizontalAlignment="Center" Click="Random_Click" />-->
                 <Label Content="Количество ошибок:" />
                 <Label Name="countError" Content="{Binding Errors}" />
+                <Label Content="Интервал, мс:" />
+                <TextBox HorizontalAlignment="Left" Text="{Binding Interval, Converter={StaticResource IntToText}}" TextWrapping="Wrap"  Width="50"/>
             </WrapPanel>
-            <WrapPanel>
-                <Button x:Name="taskButton" HorizontalContentAlignment="Center" Content="Техническое задание." FontWeight="Bold" Command="{Binding Task}" MinWidth="150" VerticalAlignment="Bottom"  />
+            <WrapPanel Grid.Row="3">
+                <Button x:Name="taskButton" HorizontalContentAlignment="Center" Content="Техническое задание." FontWeight="Bold" Command="{Binding TestTask}" MinWidth="150" VerticalAlignment="Bottom"  />
                 <Button x:Name="readMyButton" HorizontalContentAlignment="Center" Content="ReadMy" FontWeight="Bold" MinWidth="100" Command="{Binding ReadMy}" />
                 <Button x:Name="fileButton" HorizontalContentAlignment="Center" Content="File" FontWeight="Bold" MinWidth="100" Command="{Binding File}" />
             </WrapPanel>
-        </StackPanel>
+        
         
 
     </Grid>
