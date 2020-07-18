@@ -5,12 +5,77 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Collections;
 using System.Text;
+using System.Diagnostics;
 
 namespace nums
 {
     class Program
     {
-        static double[] data = new double[] {1,4,66,7.6, 500, 8.55,3,4 };
+        static double[] data = new double[] {100, 1,4,66, 30 , 7.6, 500, 8.55,3,4 };       
+
+
+        static void Main(string[] args)
+        {
+            BinaryNumber bn = new BinaryNumber();
+            LoadData();
+            var l_data = new List<double>(data);
+            AlgoritmA algoritm = new AlgoritmA(l_data);
+            //double target = 500.2;
+            //double target = 4674.32;
+            double target = 10360.42;
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            double[] items = algoritm.Run(target);
+            watch.Stop();
+            if (items == null)
+            {
+                Console.WriteLine("Нет подходящей комбинации");
+            }
+            else
+            {
+                Console.WriteLine("Вывожу ответ:");
+                foreach (var item in items)
+                {
+                    int index = l_data.IndexOf(item);
+                    Console.Write($"{index}({item})  ");
+                }
+            }
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.Write(target.ToString("000.00"));
+            Console.Write(":\t");
+            Console.Write(Sum(items));
+
+            Console.WriteLine();
+            Console.WriteLine($"Время выполнения алгоритма: {watch.ElapsedMilliseconds} мс");
+            Console.WriteLine($"Время выполнения алгоритма: {watch.ElapsedTicks} тиках");
+            Console.ReadLine();
+        }
+
+        private static double Sum(double[] items)
+        {
+            double sum = 0;
+            for (int i = 0; i < items.Length; i++)
+            {                
+                sum += items[i];
+            }
+            return sum;
+        }
+
+        static void LoadData()
+        {
+            using (StreamReader sr = new StreamReader("nums.txt"))
+            {
+                var d =new  List<double>();
+                while (!sr.EndOfStream)
+                {
+                    var b = sr.ReadLine();
+                    d.Add(double.Parse(b, System.Globalization.CultureInfo.InvariantCulture));
+                }
+                data = d.ToArray();
+            }
+        }
         static double Summ( IEnumerable<int> nums)
         {
             double sum = 0;
@@ -42,70 +107,6 @@ namespace nums
                     res.Append(i.ToString());
                 }
             return res.ToString();
-        }
-        static void LoadData()
-        {
-            using (StreamReader sr = new StreamReader("nums.txt"))
-            {
-                var d =new  List<double>();
-                while (!sr.EndOfStream)
-                {
-                    var b = sr.ReadLine();
-                    d.Add(double.Parse(b, System.Globalization.CultureInfo.InvariantCulture));
-                }
-                data = d.ToArray();
-            }
-        }
-        
-
-
-        static void Main(string[] args)
-        {            
-            BinaryNumber bn = new BinaryNumber();
-            LoadData();
-            /*
-            for (int i = 250; i < 260; i++)
-            {
-                bn.Number = i;
-                Console.WriteLine("{0}-{1}",
-                    bn.ToString(),i);
-            }/**/
-
-            ///*
-            /*
-            Console.Write("Введите имкомую сумму:");
-            double target = double.Parse(Console.ReadLine());/**/
-            double target = 998.66;
-
-
-            bn.Number = 0;
-            double sum = 0;
-            int max = (int)Math.Pow(2, data.Length)-1;
-            while (sum != target&&bn.Number<max)
-            {
-                bn.Number++;
-                sum = Summ(bn.GetList(data.Length).ToArray());
-                Console.Write("Расмотрено {0}\r", bn.Number);
-            }/**/
-
-
-            if (bn.Number == max)
-                Console.WriteLine("Подходящих вариантов не обнаружено!");
-            else
-            {
-                Console.WriteLine("сумма {0} найдена!", target);
-                Console.WriteLine("{0}", Answer(bn));
-
-                var l = bn.GetList();
-                for (int i = 0; i < l.Count; i++)
-                    if (l[i])
-                    {
-                        Console.Write(data[i] + " ");
-                    }
-            }
-
-            Console.WriteLine();
-            Console.ReadLine();
         }
     }
 }
