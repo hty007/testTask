@@ -24,9 +24,13 @@ namespace nums
             //double target = 4674.32;
             double target = 10360.42;
             Stopwatch watch = new Stopwatch();
+
+            // Выполнение алгоритма
             watch.Start();
             double[] items = algoritm.Run(target);
             watch.Stop();
+            
+            
             if (items == null)
             {
                 Console.WriteLine("Нет подходящей комбинации");
