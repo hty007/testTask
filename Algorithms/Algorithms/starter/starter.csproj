@@ -47,11 +47,24 @@
     <Compile Include="exercises\ex1.cs" />
     <Compile Include="Commands\SubCmd.cs" />
     <Compile Include="Commands\ICmd.cs" />
+    <Compile Include="Guide\Patterns\Behavior\ChainOfResponsibility.cs" />
+    <Compile Include="Guide\Patterns\Behavior\Command.cs" />
+    <Compile Include="Guide\Patterns\Behavior\Iterator.cs" />
+    <Compile Include="Guide\Patterns\Behavior\Observer.cs" />
+    <Compile Include="Guide\Patterns\Behavior\State.cs" />
+    <Compile Include="Guide\Patterns\Behavior\Strategy.cs" />
+    <Compile Include="Guide\Patterns\Behavior\TemplateMethod.cs" />
+    <Compile Include="Guide\Patterns\Generating\AbstractFactory.cs" />
+    <Compile Include="Guide\Patterns\Generating\Builder.cs" />
+    <Compile Include="Guide\Patterns\Generating\FactoryMethod.cs" />
+    <Compile Include="Guide\Patterns\Generating\Prototype.cs" />
+    <Compile Include="Guide\Patterns\Generating\Singleton.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
