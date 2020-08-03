@@ -5,11 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GPSTask"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="GPS" Height="450" Width="800">
     <Grid>
         <TabControl TabStripPlacement="Left" >
             <TabItem Header="Траектория" ToolTip="Чтение из файла и построение" Selector.IsSelected="{Binding PathTab}">
-                <local:PathControl DataContext="{Binding PathModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></local:PathControl>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <TextBlock Text="Файл"/>
+                        <Separator Margin="5"/>
+                        <TextBlock Text="{Binding PathModel.FileName ,UpdateSourceTrigger=PropertyChanged}"  Width="200"/>
+                        <Button Content="Выбрать" Command="{Binding PathModel.SelectFileCommand}"/>
+                        <Separator Margin="5"/>
+                        <Button Content="Выполнить"/>
+                    </StackPanel>
+                    
+                    <local:PathControl Grid.Row="1" x:Name="pathControl" DataContext="{Binding PathModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></local:PathControl>
+                </Grid>
             </TabItem>
             <TabItem Header="Эмулятор" ToolTip="Создание входного файла" Selector.IsSelected="{Binding EmulTab}">
                 

@@ -100,14 +100,16 @@ namespace GPSTask
                         && d_parameter is T par_t2)
                         _method.Invoke(par_t2);
                     else
-                        Kernel.Log($"не удалось привести параметр {parameter} к типу { (typeof(T)).FullName }");
+                    {
+                        MessageBox.Show($"не удалось привести параметр {parameter} к типу { (typeof(T)).FullName }");
+                    }
                 }
 
 
             }
             catch (Exception ex)
             {
-                Kernel.Fail(ex, $"Ошибка метода '{_method.Method.Name}', модуля '{_method.Target.GetType().Name}'");
+                MessageBox.Show($"Ошибка метода '{_method.Method.Name}', класса '{_method.Target.GetType().Name}'\nСообщение: {ex.Message}");
             }
         }
     }

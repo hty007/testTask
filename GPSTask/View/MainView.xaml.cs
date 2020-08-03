@@ -22,8 +22,10 @@ namespace GPSTask
     {
         public MainView()
         {
+            MainVeiwModel  model = new MainVeiwModel();
+            model.SetView(this);
             InitializeComponent();
-            DataContext= new MainVeiwModel();
+            DataContext = model;
         }
     }
 }
