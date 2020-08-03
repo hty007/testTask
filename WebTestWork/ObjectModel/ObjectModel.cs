@@ -20,8 +20,13 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace WebTestWork.Models
+namespace WebTestWork.Models        
 {
+    public class DataService
+    { 
+        
+    }
+
     /// <summary>
     /// Объектная модель, все данные хранятся здесь
     /// </summary>

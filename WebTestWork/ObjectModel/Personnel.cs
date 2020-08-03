@@ -31,6 +31,11 @@ namespace WebTestWork.Models
     [Serializable]
     public class Personnel
     {
+        public static PersonnelBuilder CreateBuilder()
+        {
+            return new PersonnelBuilder();
+        }
+        
         #region Serialised
         private int id;
         private string name;
@@ -190,6 +195,21 @@ namespace WebTestWork.Models
             }
 
         }
+    }
+
+    public class PersonnelBuilder
+    {
+        private Personnel personnel;
+        public PersonnelBuilder() => personnel = new Personnel();
+        public PersonnelBuilder SetName(string name) { personnel.Name = name; return this; }
+        public PersonnelBuilder SetId(int id) { personnel.Id = id; return this; }
+        public PersonnelBuilder SetIdChief(int value) { personnel.IdChief = value; return this; }
+        public PersonnelBuilder SetPost(string value) { personnel.Post = value; return this; }
+        public PersonnelBuilder SetType(PersonnelType value) { personnel.Type = value; return this; }
+        public PersonnelBuilder SetBasicRate(double value) { personnel.BasicRate = value; return this; }
+        public PersonnelBuilder SetDateEmployment(double value) { personnel.DateEmployment = value; return this; }
+        public PersonnelBuilder AddInferior(Personnel value) { personnel.Inferiors.Add(value); return this; }
+        public PersonnelBuilder SetBasicRate(Personnel value) { personnel.Chief=value; return this; }
     }
 }
 

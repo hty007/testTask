@@ -1,0 +1,20 @@
+﻿<Window x:Class="GPSTask.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GPSTask"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <TabControl TabStripPlacement="Left" >
+            <TabItem Header="Траектория" ToolTip="Чтение из файла и построение" Selector.IsSelected="{Binding PathTab}">
+                <local:PathControl DataContext="{Binding PathModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></local:PathControl>
+            </TabItem>
+            <TabItem Header="Эмулятор" ToolTip="Создание входного файла" Selector.IsSelected="{Binding EmulTab}">
+                
+            </TabItem>
+        </TabControl>
+        
+    </Grid>
+</Window>
