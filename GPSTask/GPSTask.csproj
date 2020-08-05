@@ -70,8 +70,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DataService\DataReader.cs" />
+    <Compile Include="DataService\HCircle.cs" />
     <Compile Include="DataService\HPoint.cs" />
     <Compile Include="DataService\HTime.cs" />
+    <Compile Include="DataService\DataProcessing.cs" />
+    <Compile Include="DataService\HVector.cs" />
     <Compile Include="ViewModel\EmulatorViewModel.cs" />
     <Compile Include="ViewModel\PathViewModel.cs" />
     <Compile Include="View\EmulatorControl.xaml.cs">

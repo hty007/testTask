@@ -9,6 +9,9 @@ namespace GPSTask
         private List<HPoint> Sourses = new List<HPoint>();
         private List<HTime> Times = new List<HTime>();
 
+        public List<HPoint> GetSourses() => Sourses;
+        public List<HTime> GetTimes() => Times;
+
         public string Message { get; private set; }
 
         internal bool Open(string fileName)

@@ -11,6 +11,7 @@ namespace GPSTask
         
         string fileName;
         private DataReader DataReader;
+        private DataProcessing DataProcessing;
 
         public string FileName { get => fileName; set => fileName = value; }
 
@@ -25,7 +26,7 @@ namespace GPSTask
             {
                 DataReader = new DataReader();
                 DataReader.Open(fileDialog.FileName);
-
+                DataProcessing = new DataProcessing(DataReader);
 
 
                 MessageBox.Show("Файл открыт!");

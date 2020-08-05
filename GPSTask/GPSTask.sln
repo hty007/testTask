@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPSTask", "GPSTask.csproj", "{A3159783-B38D-4BBD-AA1C-7DEF0F6FD12A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPSTaskTest", "GPSTaskTest\GPSTaskTest.csproj", "{2CE5991D-690C-414D-875E-482D9CD368C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{A3159783-B38D-4BBD-AA1C-7DEF0F6FD12A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3159783-B38D-4BBD-AA1C-7DEF0F6FD12A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3159783-B38D-4BBD-AA1C-7DEF0F6FD12A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CE5991D-690C-414D-875E-482D9CD368C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CE5991D-690C-414D-875E-482D9CD368C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CE5991D-690C-414D-875E-482D9CD368C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CE5991D-690C-414D-875E-482D9CD368C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
