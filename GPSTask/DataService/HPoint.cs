@@ -39,5 +39,15 @@ namespace GPSTask
             }
             return false;
         }
+
+        public bool Equals(object obj, double delta)
+        {// Добавил для тестов
+            if (obj is HPoint point)
+            {
+                if (Math.Abs(point.X - X)<delta && Math.Abs(point.Y - Y) < delta)
+                    return true;
+            }
+            return false;
+        }
     }
 }

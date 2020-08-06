@@ -7,12 +7,24 @@ namespace GPSTaskTest
     [TestClass]
     public class VectorTest
     {
-        
+        [TestMethod]
+        public void TestMethod_Rotation_0()
+        {
+            HVector v1 = new HVector(5, 0);
+            double angle = 0;
+
+            v1.Rotation(angle);
+            //v1.Rotation(-angle);
+
+            Assert.AreEqual(0, v1.Y, 0.001, $"({v1.X},{v1.Y})");
+            Assert.AreEqual(5, v1.X, 0.001, $"({v1.X},{v1.Y})");
+        }
+
         [TestMethod]
         public void TestMethod_Rotation_1()
         {
             HVector v1 = new HVector(0, 5);
-            int gradus = -90;
+            int gradus = 90;
             double angle = Math.PI * gradus / 180;
             v1.Rotation(angle);//60
 
@@ -24,7 +36,7 @@ namespace GPSTaskTest
         public void TestMethod_Rotation_2()
         {
             HVector v1 = new HVector(0, 5);
-            int gradus = -45;
+            int gradus = 45;
             double angle = Math.PI * gradus / 180;
             v1.Rotation(angle);
             Assert.IsTrue(v1.X == v1.Y, "Числа не ровны!");
@@ -37,7 +49,7 @@ namespace GPSTaskTest
         public void TestMethod_Rotation_3()
         {
             HVector v1 = new HVector(0, 5);
-            double angle = -Math.Acos(4.0/5.0);            
+            double angle = Math.Acos(4.0/5.0);            
             
             v1.Rotation(angle);
 
@@ -49,7 +61,7 @@ namespace GPSTaskTest
         public void TestMethod_Rotation_4()
         {
             HVector v1 = new HVector(0, 5);
-            double angle = -Math.Acos(3.0 / 5.0);
+            double angle = Math.Acos(3.0 / 5.0);
 
             v1.Rotation(angle);
 
@@ -61,7 +73,7 @@ namespace GPSTaskTest
         public void TestMethod_Rotation_5()
         {
             HVector v1 = new HVector(0, 5);
-            double angle = -Math.Acos(3.0 / 5.0);
+            double angle = Math.Acos(3.0 / 5.0);
 
             v1.Rotation(-angle);
 
@@ -82,11 +94,40 @@ namespace GPSTaskTest
             Assert.AreEqual(5, v1.Y, 0.001, $"Y={v1.Y}");
         }
 
+        [TestMethod]
+        public void TestMethod_Rotation_7()
+        {
+            HVector v1 = new HVector(5, 0);
+            double angle = Math.Acos(0.8); 
 
+            v1.Rotation(angle);
+            //v1.Rotation(-angle);
+
+            Assert.AreEqual(4, v1.X, 0.001, $"X={v1.X}");
+            Assert.AreEqual(-3, v1.Y, 0.001, $"Y={v1.Y}");
+        }
+
+       
+
+        [TestMethod]
+        public void TestMethod_Rotation_8()
+        {
+            HVector v1 = new HVector(5, 0);
+            double angle = - Math.Acos(0.8);
+
+            v1.Rotation(angle);
+            //v1.Rotation(-angle);
+
+            Assert.AreEqual(4, v1.X, 0.001, $"({v1.X},{v1.Y})");
+            Assert.AreEqual(3, v1.Y, 0.001, $"({v1.X},{v1.Y})");
+        }
+
+
+        #region Multiplication
         [TestMethod]
         public void TestMethod_Multiplication_1()
         {
-            HVector v1 = new HVector(0, 5);            
+            HVector v1 = new HVector(0, 5);
 
             v1.Multiplication(2);
 
@@ -114,6 +155,7 @@ namespace GPSTaskTest
 
             Assert.AreEqual(5, v1.X, 0.001, $"X={v1.X}");
             Assert.AreEqual(5, v1.Y, 0.001, $"Y={v1.Y}");
-        }
+        } 
+        #endregion
     }
 }

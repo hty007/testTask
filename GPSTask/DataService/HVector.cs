@@ -21,18 +21,18 @@ namespace GPSTask
         /// <param name="angle"></param>
         public void Rotation(double angle)
         {
-            if (angle < 0)
-            {
+            //if (angle >= 0)
+            //{
                 double newX = X * Math.Cos(angle) + Y * Math.Sin(angle);
                 double newY = X * (-Math.Sin(angle)) + Y * Math.Cos(angle);
                 Point = new HPoint(newX, newY);
-            }
-            else
-            {
-                double newX = X * Math.Cos(angle) - Y * Math.Sin(angle);
-                double newY = X * ( Math.Sin(angle)) + Y * Math.Cos(angle);
-                Point = new HPoint(newX, newY);
-            }
+            //}
+            //else
+            //{
+            //    double newX = X * Math.Cos(angle) - Y * Math.Sin(angle);
+            //    double newY = X * ( Math.Sin(angle)) + Y * Math.Cos(angle);
+            //    Point = new HPoint(newX, newY);
+            //}
 
 
         }
@@ -43,6 +43,11 @@ namespace GPSTask
             double newY = quotient * Y;
 
             Point = new HPoint(newX, newY);
+        }
+
+        public override string ToString()
+        {
+            return $"{X:f3},{Y:f3}";
         }
     }
 }

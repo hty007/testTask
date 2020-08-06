@@ -30,12 +30,12 @@ namespace GPSTask
         public IEnumerable<HPoint> IntersectingPoint(HCircle circle)
         {
             List<HPoint> result = new List<HPoint>();
-            result.AddRange(IntersectingPoint(this.Center, Radius1, circle.Center, Radius1));
-            result.AddRange(IntersectingPoint(this.Center, Radius1, circle.Center, Radius2));
-            result.AddRange(IntersectingPoint(this.Center, Radius2, circle.Center, Radius1));
-            result.AddRange(IntersectingPoint(this.Center, Radius2, circle.Center, Radius2));
+            result.AddRange(IntersectingPoint(this.Center, Radius1, circle.Center, circle.Radius1));
+            result.AddRange(IntersectingPoint(this.Center, Radius1, circle.Center, circle.Radius2));
+            result.AddRange(IntersectingPoint(this.Center, Radius2, circle.Center, circle.Radius1));
+            result.AddRange(IntersectingPoint(this.Center, Radius2, circle.Center, circle.Radius2));
 
-            throw new NotImplementedException();
+            return result;
         }
 
 
@@ -60,16 +60,22 @@ namespace GPSTask
                 return new[] { new HPoint(newX, newY) };
             }
             double cosA = (radius2 * radius2 - d * d - radius1 * radius1) / (2 * d * radius1);// Выведено из теоремы косинусаов
-            double angle = Math.Acos(cosA) ;
+            
+            double angle = (cosA<0)? 
+                (-Math.Acos(Math.Abs(cosA))) 
+                : Math.Acos(cosA);
+            //double angle =  Math.Acos(cosA);
+            
+            
             //angle = angle + Math.PI;
             //angle = angle % Math.PI;
 
             HVector vector = new HVector(center2.X - center1.X, center2.Y - center1.Y);
             vector.Multiplication(radius1/d);
             vector.Rotation(angle);
-            HPoint p1 = new HPoint(center1.X + vector.X, center1.Y - vector.Y);
+            HPoint p1 = new HPoint(center1.X + vector.X, center1.Y + vector.Y);
             vector.Rotation(- 2*angle);
-            HPoint p2 = new HPoint(center1.X + vector.X, center1.Y - vector.Y);
+            HPoint p2 = new HPoint(center1.X + vector.X, center1.Y + vector.Y);
 
             //double newX = (radius1/d) * (center1.X + lambda * center2.X) / (1 + lambda);
             //double newY = (center1.Y + lambda * center2.Y) / (1 + lambda);
