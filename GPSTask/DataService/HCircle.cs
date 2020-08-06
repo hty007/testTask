@@ -51,11 +51,11 @@ namespace GPSTask
         {
             List<HPoint> result = new List<HPoint>();
             result.AddRange(IntersectingPoint(this.Center, Radius1, circle.Center, circle.Radius1));
-            result.AddRange(IntersectingPoint(this.Center, Radius1, circle.Center, circle.Radius2));
-            if (Radius2 == Radius1)
+            if (circle.Radius2 != circle.Radius1) result.AddRange(IntersectingPoint(this.Center, Radius1, circle.Center, circle.Radius2));
+            if (Radius2 != Radius1)
             {
                 result.AddRange(IntersectingPoint(this.Center, Radius2, circle.Center, circle.Radius1));
-                result.AddRange(IntersectingPoint(this.Center, Radius2, circle.Center, circle.Radius2));
+                if (circle.Radius2 != circle.Radius1) result.AddRange(IntersectingPoint(this.Center, Radius2, circle.Center, circle.Radius2));
             }
 
             return result.ToArray();

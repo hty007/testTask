@@ -78,16 +78,16 @@ namespace GPSTask
             for (int i = 0; i < time.Count; i++)
             {
                 HCircle c_i = circles[i];
-                c_i.SetRadius(SIGNAL_SPEED * time.GetTime(i));
+                c_i.SetRadius(SIGNAL_SPEED * time.GetTime(i), inaccuracy);
 
                 for (int j = i + 1; j < time.Count; j++)
                 {
                     HCircle c_j = circles[j];
                     // Устанавливаем радиусы в метрах (скорость на время)
-                    if (USE_INACCURACY)
+                    //if (USE_INACCURACY)
                         c_j.SetRadius(SIGNAL_SPEED * time.GetTime(j), inaccuracy);
-                    else
-                        c_j.SetRadius(SIGNAL_SPEED * time.GetTime(j), 0);
+                    //else
+                    //    c_j.SetRadius(SIGNAL_SPEED * time.GetTime(j), 0);
                     region.AddRange(c_i.IntersectingPoint(c_j));
                 }
             }
