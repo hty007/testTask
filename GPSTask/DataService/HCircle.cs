@@ -27,7 +27,7 @@ namespace GPSTask
         /// </summary>
         /// <param name="circle">вторая окрежность</param>
         /// <returns></returns>
-        public IEnumerable<HPoint> IntersectingPoint(HCircle circle)
+        public HPoint[] IntersectingPoint(HCircle circle)
         {
             List<HPoint> result = new List<HPoint>();
             result.AddRange(IntersectingPoint(this.Center, Radius1, circle.Center, circle.Radius1));
@@ -35,7 +35,7 @@ namespace GPSTask
             result.AddRange(IntersectingPoint(this.Center, Radius2, circle.Center, circle.Radius1));
             result.AddRange(IntersectingPoint(this.Center, Radius2, circle.Center, circle.Radius2));
 
-            return result;
+            return result.ToArray();
         }
 
 
