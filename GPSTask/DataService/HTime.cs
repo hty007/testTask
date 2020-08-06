@@ -2,7 +2,7 @@
 
 namespace GPSTask
 {
-    internal class HTime
+    public class HTime
     {
         List<double> times = new List<double>();
 

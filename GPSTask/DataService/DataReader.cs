@@ -4,7 +4,7 @@ using System.IO;
 
 namespace GPSTask
 {
-    internal class DataReader
+    public class DataReader
     {
         private List<HPoint> Sourses = new List<HPoint>();
         private List<HTime> Times = new List<HTime>();

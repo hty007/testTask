@@ -3,6 +3,20 @@ using System.Collections.Generic;
 
 namespace GPSTask
 {
+    public class CenterOfMass
+    {
+        public static HPoint Averaging(List<HPoint> region)
+        {
+            double newX = 0, newY = 0;
+            foreach (HPoint point in region)
+            {
+                newX += point.X;
+                newY += point.Y;
+            }
+            return new HPoint(newX/region.Count, newY / region.Count);
+        }
+    }
+
     public class HCircle
     {
         public HPoint Center { get; internal set; }
@@ -36,6 +50,16 @@ namespace GPSTask
             result.AddRange(IntersectingPoint(this.Center, Radius2, circle.Center, circle.Radius2));
 
             return result.ToArray();
+        }
+
+        internal bool Contains(HPoint point)
+        {
+            double d = Center.GetDistance(point);
+            if (Math.Max(Radius1, Radius2) >= d
+                && Math.Min(Radius1, Radius2) <= d)
+                return true;
+
+            return false;
         }
 
 
