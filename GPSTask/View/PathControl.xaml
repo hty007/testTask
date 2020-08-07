@@ -6,7 +6,12 @@
              xmlns:local="clr-namespace:GPSTask"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="550">
-    <Grid x:Name="mainGrid">
-        <Path x:Name="Axes"></Path>
+    <Grid >
+        <Viewbox Stretch="Uniform" >
+            <Grid  x:Name="mainGrid" >
+                
+                
+            </Grid>
+        </Viewbox>
     </Grid>
 </UserControl>

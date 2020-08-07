@@ -35,16 +35,16 @@ namespace GPSTask
         #endregion
 
 
-        public MainVeiwModel()
+        public MainVeiwModel(MainView mainView)
         {
             PathModel = new PathViewModel();
-
+            
         }
-        internal void SetView(MainView mainView)
+        internal void SetView(MainView view)
         {
+            View = view;
             // Это выбивается из паттерна MVVM, но это необходимо для отрисовки пути.
-            View = mainView;
-            PathModel.View = View.pathControl;
+            PathControl.SetView(View.pathControl)
         }
     }
 }

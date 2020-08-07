@@ -20,12 +20,18 @@ namespace GPSTask
     /// </summary>
     public partial class MainView : Window
     {
+        MainVeiwModel Model;
         public MainView()
         {
-            MainVeiwModel  model = new MainVeiwModel();
-            model.SetView(this);
+            Model = new MainVeiwModel(this);            
             InitializeComponent();
-            DataContext = model;
+            DataContext = Model;
+            Loaded += MainView_Loaded;
+        }
+
+        private void MainView_Loaded(object sender, RoutedEventArgs e)
+        {
+            Model.SetView(this);
         }
     }
 }

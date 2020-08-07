@@ -75,6 +75,7 @@
     <Compile Include="DataService\HTime.cs" />
     <Compile Include="DataService\DataProcessing.cs" />
     <Compile Include="DataService\HVector.cs" />
+    <Compile Include="DataService\DataPainter.cs" />
     <Compile Include="ViewModel\EmulatorViewModel.cs" />
     <Compile Include="ViewModel\PathViewModel.cs" />
     <Compile Include="View\EmulatorControl.xaml.cs">

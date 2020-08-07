@@ -12,12 +12,14 @@ namespace GPSTask
         string fileName;
         private DataReader DataReader;
         private DataProcessing DataProcessing;
+        private DataPainter DataPainter;
 
         public string FileName { get => fileName; set => fileName = value; }
 
         public HCommand SelectFileCommand { get; private set; }
         private void SelectFileMethod(object obj)
         {
+
             OpenFileDialog fileDialog = new OpenFileDialog();
             fileDialog.CheckPathExists = true;
             fileDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -27,14 +29,18 @@ namespace GPSTask
                 DataReader = new DataReader();
                 DataReader.Open(fileDialog.FileName);
                 DataProcessing = new DataProcessing(DataReader);
+                //DataProcessing.
 
 
                 MessageBox.Show("Файл открыт!");
             }
         }
 
-        public PathViewModel()
+        public PathViewModel(PathControl view)
         {
+            View = view;
+            //View.mainGrid.SizeChanged += DataPainter.SizeChanged;
+            DataPainter = new DataPainter(View.mainGrid);
             SelectFileCommand = new HCommand(SelectFileMethod);
         }
 

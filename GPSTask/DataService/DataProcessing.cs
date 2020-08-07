@@ -15,7 +15,10 @@ namespace GPSTask
         public void SetSourses(List<HPoint> points) => Sourses = points;
 
         public const double SIGNAL_SPEED = 1000000;/* м/с */
-        public const bool USE_INACCURACY = true; /* м/с */
+        //public const bool USE_INACCURACY = true; /* м/с */
+
+        public List<HPoint> GetTrajectory() => Trajectory;
+        public List<HPoint> GetSourses() => Sourses;
 
         public DataProcessing(DataReader dataReader)
         {
@@ -33,9 +36,14 @@ namespace GPSTask
             }
             foreach (HTime time in Times)
             {
-                #region Подсчет одной точки                
-                List<HPoint> region = GetRegionPoint(time, Circles);
-                Checking(region, Circles);
+                #region Подсчет одной точки   
+                List<HPoint> region = GetRegionPoint(time, Circles, 0);
+                Checking(region, Circles, 2.5);
+                if (region.Count == 0 || region.Count == 1)
+                {
+                    region = GetRegionPoint(time, Circles, 4);
+                    Checking(region, Circles, 5);
+                }                
                 HPoint newPoint = CenterOfMass.Averaging(region);
                 Trajectory.Add(newPoint);
                 #endregion

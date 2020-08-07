@@ -61,8 +61,9 @@ namespace GPSTaskTest
             time.AddTime(time2);
             time.AddTime(time3);
 
-            double delta = Math.Max(Math.Max(time1,time2),time3) * DataProcessing.SIGNAL_SPEED * 5 / 100;
-            //double delta = 1; // 1 метр
+            // Относительно чего считать погрешность?
+            //double delta = Math.Max(Math.Max(time1,time2),time3) * DataProcessing.SIGNAL_SPEED * 5 / 100;
+            double delta = 1; // 1 метр
 
             HPoint expected = new HPoint(x, y);
 
