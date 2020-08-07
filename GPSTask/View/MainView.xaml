@@ -20,7 +20,7 @@
                         <TextBlock Text="{Binding PathModel.FileName ,UpdateSourceTrigger=PropertyChanged}"  Width="200"/>
                         <Button Content="Выбрать" Command="{Binding PathModel.SelectFileCommand}"/>
                         <Separator Margin="5"/>
-                        <Button Content="Выполнить"/>
+                        <Button Content="Debag" Command="{Binding PathModel.DebagCommand}"/>
                     </StackPanel>
                     
                     <local:PathControl Grid.Row="1" x:Name="pathControl" DataContext="{Binding PathModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></local:PathControl>

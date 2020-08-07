@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 
 namespace GPSTask
 {
@@ -40,6 +41,11 @@ namespace GPSTask
             return false;
         }
 
+        internal Point ToPoint()
+        {
+            return new Point(X, Y);
+        }
+
         public bool Equals(object obj, double delta)
         {// Добавил для тестов
             if (obj is HPoint point)
@@ -49,5 +55,13 @@ namespace GPSTask
             }
             return false;
         }
+
+        public HPoint Clone(double dx, double dy)
+        {
+            HPoint point = new HPoint(X + dx, Y + dy);
+            return point;
+        }
+
+         
     }
 }

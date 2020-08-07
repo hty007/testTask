@@ -7,11 +7,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="550">
     <Grid >
-        <Viewbox Stretch="Uniform" >
-            <Grid  x:Name="mainGrid" >
+        <Viewbox Stretch="Uniform" Margin="10">
+            <Canvas  x:Name="pathCanvas" >
                 
                 
-            </Grid>
+            </Canvas>
         </Viewbox>
+        <TextBlock Text="{Binding Position}" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
     </Grid>
 </UserControl>

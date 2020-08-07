@@ -13,10 +13,14 @@ namespace GPSTask
         private DataReader DataReader;
         private DataProcessing DataProcessing;
         private DataPainter DataPainter;
+        private string position;
 
         public string FileName { get => fileName; set => fileName = value; }
 
         public HCommand SelectFileCommand { get; private set; }
+        public HCommand DebagCommand { get; private set; }
+        public string Position { get=>position;  set { position = value; OnPropertyChanged("Position"); } }
+
         private void SelectFileMethod(object obj)
         {
 
@@ -29,20 +33,40 @@ namespace GPSTask
                 DataReader = new DataReader();
                 DataReader.Open(fileDialog.FileName);
                 DataProcessing = new DataProcessing(DataReader);
-                //DataProcessing.
+                DataPainter.SetPath(DataProcessing.GetTrajectory());
+                DataPainter.SetSourses(DataProcessing.GetSourses());
 
 
                 MessageBox.Show("Файл открыт!");
             }
         }
 
-        public PathViewModel(PathControl view)
-        {
-            View = view;
-            //View.mainGrid.SizeChanged += DataPainter.SizeChanged;
-            DataPainter = new DataPainter(View.mainGrid);
+        public PathViewModel()
+        {            
             SelectFileCommand = new HCommand(SelectFileMethod);
+            DebagCommand = new HCommand(DebagMethod);
         }
 
+        private void DebagMethod(object obj)
+        {
+            DataPainter.Line(10, 10, 20, 10);
+        }
+
+        internal void SetView(PathControl view)
+        {
+            View = view;
+            View.pathCanvas.Background = new SolidColorBrush(Colors.White);
+            DataPainter = new DataPainter(View.pathCanvas);
+            View.pathCanvas.MouseMove += PathCanvas_MouseMove;
+            //View.mainGrid.SizeChanged += DataPainter.SizeChanged;
+        }
+
+        private void PathCanvas_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            var p = e.GetPosition(View.pathCanvas);
+            HPoint point = CoordinateHelper.BackConvert(p);
+            Position = $"{point.X:f1},{point.Y:f1}";
+
+        }
     }
 }

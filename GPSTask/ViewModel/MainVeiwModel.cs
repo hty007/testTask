@@ -38,13 +38,14 @@ namespace GPSTask
         public MainVeiwModel(MainView mainView)
         {
             PathModel = new PathViewModel();
+            PathTab = true;
             
         }
         internal void SetView(MainView view)
         {
             View = view;
             // Это выбивается из паттерна MVVM, но это необходимо для отрисовки пути.
-            PathControl.SetView(View.pathControl)
+            PathModel.SetView(View.pathControl);
         }
     }
 }
