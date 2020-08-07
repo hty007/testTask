@@ -17,19 +17,34 @@
                     <StackPanel Grid.Row="0" Orientation="Horizontal">
                         <TextBlock Text="Файл"/>
                         <Separator Margin="5"/>
-                        <TextBlock Text="{Binding PathModel.FileName ,UpdateSourceTrigger=PropertyChanged}"  Width="200"/>
+                        <TextBlock Text="{Binding PathModel.FileName ,UpdateSourceTrigger=PropertyChanged}"  Width="250"/>
                         <Button Content="Выбрать" Command="{Binding PathModel.SelectFileCommand}"/>
                         <Separator Margin="5"/>
-                        <Button Content="Debag" Command="{Binding PathModel.DebagCommand}"/>
+                        <Button Content="Debag" Command="{Binding PathModel.DebagCommand}" Visibility="Collapsed"/>
                     </StackPanel>
-                    
+
                     <local:PathControl Grid.Row="1" x:Name="pathControl" DataContext="{Binding PathModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></local:PathControl>
                 </Grid>
             </TabItem>
             <TabItem Header="Эмулятор" ToolTip="Создание входного файла" Selector.IsSelected="{Binding EmulTab}">
-                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <!--<TextBlock Text="Файл"/>
+                        <Separator Margin="5"/>
+                        <TextBlock Text="{Binding PathModel.FileName ,UpdateSourceTrigger=PropertyChanged}"  Width="250"/>-->
+                        <Button Content="Сохранить в файл" Command="{Binding EmulModel.SaveFileCommand}"/>
+                        <Separator Margin="5"/>
+                        <Button Content="Debag" Command="{Binding EmulModel.DebagCommand}" Visibility="Collapsed"/>
+                    </StackPanel>
+
+                    <local:PathControl Grid.Row="1" x:Name="emulControl" DataContext="{Binding EmulModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
             </TabItem>
         </TabControl>
-        
+
     </Grid>
 </Window>

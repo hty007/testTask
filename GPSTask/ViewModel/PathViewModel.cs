@@ -15,7 +15,7 @@ namespace GPSTask
         private DataPainter DataPainter;
         private string position;
 
-        public string FileName { get => fileName; set => fileName = value; }
+        public string FileName { get => fileName; set { fileName = value; OnPropertyChanged("FileName"); } }
 
         public HCommand SelectFileCommand { get; private set; }
         public HCommand DebagCommand { get; private set; }
@@ -33,11 +33,15 @@ namespace GPSTask
                 DataReader = new DataReader();
                 DataReader.Open(fileDialog.FileName);
                 DataProcessing = new DataProcessing(DataReader);
+
+                DataProcessing.Processing();
+
                 DataPainter.SetPath(DataProcessing.GetTrajectory());
                 DataPainter.SetSourses(DataProcessing.GetSourses());
 
-
-                MessageBox.Show("Файл открыт!");
+                //FileName = fileDialog.SafeFileName;
+                FileName = fileDialog.FileName;
+                MessageBox.Show("Файл успешно открыт!");
             }
         }
 
@@ -49,7 +53,7 @@ namespace GPSTask
 
         private void DebagMethod(object obj)
         {
-            DataPainter.Line(10, 10, 20, 10);
+            //DataPainter.Line(10, 10, 20, 10);
         }
 
         internal void SetView(PathControl view)

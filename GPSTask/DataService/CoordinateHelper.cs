@@ -11,6 +11,10 @@ namespace GPSTask
         {
             return Zero.Clone(x * Scale, -y * Scale).ToPoint();
         }
+        internal static Point Convert(HPoint point)
+        {
+            return Zero.Clone(point.X * Scale, -point.Y * Scale).ToPoint();
+        }
 
         internal static HPoint BackConvert(Point p)
         {

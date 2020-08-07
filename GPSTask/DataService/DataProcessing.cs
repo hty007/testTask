@@ -28,12 +28,15 @@ namespace GPSTask
 
         public void Processing()
         {
+            Circles = new List<HCircle>();
             // Создаем единичные окружности 
             foreach (HPoint point in Sourses)
             {
                 HCircle circle = new HCircle(point, 1);
                 Circles.Add(circle);
             }
+
+            Trajectory = new List<HPoint>();
             foreach (HTime time in Times)
             {
                 #region Подсчет одной точки   
