@@ -35,7 +35,7 @@ namespace GPSTask
                 dataFileHelper.SetSourses(dataProcessing.GetSourses());
                 dataFileHelper.SetTimes(dataProcessing.GetTimes());
 
-                if (dataFileHelper.FileOutputWrite(fileDialog.FileName))                
+                if (dataFileHelper.FileInputWrite(fileDialog.FileName))                
                     MessageBox.Show("Файл успешно сохранен!\n"+ fileDialog.FileName);
                 else
                     MessageBox.Show("Ошибка во времемя записи файла!\n" + dataFileHelper.Message);

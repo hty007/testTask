@@ -28,7 +28,7 @@ namespace GPSTask
 
         public override string ToString()
         {
-            return $"({X:f3}, {Y:f3})";
+            return string.Format("{0}, {1}", X.ToString("0.##########").Replace(',', '.'), Y.ToString("0.##########").Replace(',', '.'));
         }
 
         public override bool Equals(object obj)

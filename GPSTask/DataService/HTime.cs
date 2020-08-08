@@ -14,5 +14,24 @@ namespace GPSTask
         {
             times.Add(time);
         }
+
+        public override string ToString()
+        {
+            string result = "";
+            bool first = true;
+            foreach (double t in times)
+            {
+                if (first)
+                {
+                    result += t.ToString("0.##########").Replace(',','.');
+                    first = false;
+                }
+                else
+                {
+                    result +=", " + t.ToString("0.##########").Replace(',', '.');
+                }
+            }
+            return result;
+        }
     }
 }

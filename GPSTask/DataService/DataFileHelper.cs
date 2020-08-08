@@ -52,6 +52,41 @@ namespace GPSTask
             Times = times;
         }
 
+        internal bool FileInputWrite(string fileName)
+        {
+            try
+            {
+                if (Times == null) { Message = "Траектория пуста, программист прими меры!"; return false; }
+
+                StreamWriter sw = new StreamWriter(fileName);
+                bool firstSourse = true;
+                foreach (HPoint sourse in Sourses)
+                {
+                    if (firstSourse)
+                    {
+                        sw.Write(sourse.ToString());
+                        firstSourse = false;
+                    }
+                    else
+                    {
+                        sw.Write(", " + sourse.ToString());
+                    }
+                }
+                sw.WriteLine();
+                foreach (HTime time in Times)
+                {                    
+                    sw.WriteLine(time.ToString());
+                }
+                sw.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Message = "Во время записи файла, возникло исключение! \n" + ex.Message;
+                return false;
+            }
+        }
+
         internal void SetSourses(List<HPoint> sourses)
         {
             Sourses = sourses;
@@ -100,10 +135,12 @@ namespace GPSTask
         {
             try
             {
+                if (Trajectory == null) { Message = "Траектория пуста, программист прими меры!"; return false; }
+
                 StreamWriter sw = new StreamWriter(fileName);
                 
-
-                foreach (var point in Trajectory)
+                sw.WriteLine();
+                foreach (HPoint point in Trajectory)
                 {
                     sw.WriteLine(point.ToString());    
                 }
