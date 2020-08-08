@@ -20,7 +20,7 @@ namespace GPSTask
         public List<HPoint> GetTrajectory() => Trajectory;
         public List<HPoint> GetSourses() => Sourses;
 
-        public DataProcessing(DataReader dataReader)
+        public DataProcessing(DataFileHelper dataReader)
         {
             Sourses = dataReader.GetSourses();
             Times = dataReader.GetTimes();

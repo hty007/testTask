@@ -16,6 +16,10 @@ namespace GPSTask
         private PathFigure PathFigure;
         private PolyLineSegment PathTrajectory;
         private Point? _movePoint;
+        private List<HPoint> Trajectory;
+        public Ellipse ObjectDot;
+
+        public bool CanMove { get; set; }
 
         public DataPainter(Canvas pathCanvas)
         {
@@ -32,6 +36,8 @@ namespace GPSTask
             InitializingSourses();
             InitializingPath();
         }
+
+        
 
         #region Приемники сигнала
         private void InitializingSourses()// Обязательно переименовать на чтонибудь осмысленноле
@@ -63,7 +69,7 @@ namespace GPSTask
 
         private void Ellipse_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender is Ellipse control && MainVeiwModel.CanMove)
+            if (sender is Ellipse control && CanMove)
             {
                 _movePoint = e.GetPosition(control);
                 control.CaptureMouse();
@@ -72,7 +78,7 @@ namespace GPSTask
 
         private void Ellipse_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (sender is Ellipse control && MainVeiwModel.CanMove)
+            if (sender is Ellipse control && CanMove)
             {
                 _movePoint = null;
                 control.ReleaseMouseCapture();
@@ -81,7 +87,7 @@ namespace GPSTask
 
         private void Ellipse_MouseMove(object sender, MouseEventArgs e)
         {
-            if (sender is Ellipse control && MainVeiwModel.CanMove)
+            if (sender is Ellipse control && CanMove)
             {
                 if (_movePoint == null) return;
                 Point p = e.GetPosition(_canvas) - (Vector)_movePoint.Value/**/;
@@ -180,28 +186,86 @@ namespace GPSTask
             p.StrokeThickness = 1;
 
             PathGeometry pathGeom = new PathGeometry();
-            PathFigure = new PathFigure();
+            PathFigure = new PathFigure();           
 
-            PathFigure.StartPoint = CoordinateHelper.Convert(10.0, 10.0);
+            var trajectory = new List<HPoint>();
+            trajectory.Add(new HPoint(5, 20));
+            trajectory.Add(new HPoint(10, 10));
+            trajectory.Add(new HPoint(15, 5));
+            trajectory.Add(new HPoint(20.0, 25));
+            trajectory.Add(new HPoint(25.0, 28));
+            trajectory.Add(new HPoint(30.0, -20));
 
             PathTrajectory = new PolyLineSegment();
             PathTrajectory.Points = new PointCollection();
-            PathTrajectory.Points.Add(CoordinateHelper.Convert(20.0, 20));
-            PathTrajectory.Points.Add(CoordinateHelper.Convert(30.0, 5));
-            PathTrajectory.Points.Add(CoordinateHelper.Convert(33.0, 50));
-            PathTrajectory.Points.Add(CoordinateHelper.Convert(40.0, 60));
-            PathTrajectory.Points.Add(CoordinateHelper.Convert(70.0, 70));
-
-
             PathFigure.Segments.Add(PathTrajectory);
             pathGeom.Figures.Add(PathFigure);
             p.Data = pathGeom;
             _canvas.Children.Add(p);
+            SetPath(trajectory);
+        }
+
+        public void InitializingObject()
+        {
+            
+            var p = CoordinateHelper.Convert(0,0);
+            ObjectDot = Dot(p.X, p.Y, "Объект");
+            ObjectDot.Fill = new SolidColorBrush(Colors.Green);
+
+            ObjectDot.MouseDown += Object_MouseDown;
+            ObjectDot.MouseUp += Object_MouseUp;
+            ObjectDot.MouseMove += Object_MouseMove;
+            if (Trajectory.Count != 0)
+            {
+                Point lastPoint = CoordinateHelper.Convert(Trajectory[Trajectory.Count - 1]);
+                Canvas.SetLeft(ObjectDot, lastPoint.X);     // выстовляем x
+                Canvas.SetTop(ObjectDot, lastPoint.Y);      // выстовляем y
+            }
+        }
+        internal void Clear()
+        {
+            Trajectory.Clear();
+            PathTrajectory.Points.Clear();
+            Point startPoint = new Point(Canvas.GetLeft(ObjectDot), Canvas.GetTop(ObjectDot));
+            PathFigure.StartPoint = startPoint;
+            Trajectory.Add(CoordinateHelper.BackConvert(startPoint));
+        }
+
+        private void Object_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (sender is Ellipse control && CanMove)
+            {
+                if (_movePoint == null) return;
+                Point p = e.GetPosition(_canvas) - (Vector)_movePoint.Value/**/;
+                Canvas.SetLeft(control, p.X);
+                Canvas.SetTop(control, p.Y);
+                Trajectory.Add(CoordinateHelper.BackConvert(p));
+                PathTrajectory.Points.Add(p);
+            } 
+        }
+
+        private void Object_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is Ellipse control && CanMove)
+            {
+                _movePoint = null;
+                control.ReleaseMouseCapture();
+            }
+        }
+
+        private void Object_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is Ellipse control && CanMove)
+            {
+                _movePoint = e.GetPosition(control);
+                control.CaptureMouse();
+            }
         }
 
         internal void SetPath(List<HPoint> trajectory)
         {
             if (trajectory == null) return;
+            Trajectory = trajectory;
             PathTrajectory.Points.Clear();
             bool isStart = true;
 
@@ -216,6 +280,12 @@ namespace GPSTask
                 {
                     PathTrajectory.Points.Add(CoordinateHelper.Convert(p));
                 }
+            }            
+            if (ObjectDot != null)
+            {
+                Point lastPoint = CoordinateHelper.Convert(Trajectory[Trajectory.Count - 1]);
+                Canvas.SetLeft(ObjectDot, lastPoint.X);     // выстовляем x
+                Canvas.SetTop(ObjectDot, lastPoint.Y);      // выстовляем y
             }
         } 
         #endregion

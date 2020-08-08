@@ -70,7 +70,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DataService\CoordinateHelper.cs" />
-    <Compile Include="DataService\DataReader.cs" />
+    <Compile Include="DataService\DataFileHelper.cs" />
     <Compile Include="DataService\HCircle.cs" />
     <Compile Include="DataService\HPoint.cs" />
     <Compile Include="DataService\HTime.cs" />

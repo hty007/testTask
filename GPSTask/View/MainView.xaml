@@ -20,6 +20,8 @@
                         <TextBlock Text="{Binding PathModel.FileName ,UpdateSourceTrigger=PropertyChanged}"  Width="250"/>
                         <Button Content="Выбрать" Command="{Binding PathModel.SelectFileCommand}"/>
                         <Separator Margin="5"/>
+                        <Button Content="Сохранить результат" Command="{Binding PathModel.SaveFileOutCommand}"/>
+                        <Separator Margin="5"/>
                         <Button Content="Debag" Command="{Binding PathModel.DebagCommand}" Visibility="Collapsed"/>
                     </StackPanel>
 
@@ -38,6 +40,7 @@
                         <TextBlock Text="{Binding PathModel.FileName ,UpdateSourceTrigger=PropertyChanged}"  Width="250"/>-->
                         <Button Content="Сохранить в файл" Command="{Binding EmulModel.SaveFileCommand}"/>
                         <Separator Margin="5"/>
+                        <Button Content="Очистить траекторию" Command="{Binding EmulModel.ClearCommand}"/>
                         <Button Content="Debag" Command="{Binding EmulModel.DebagCommand}" Visibility="Collapsed"/>
                     </StackPanel>
 

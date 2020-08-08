@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 
@@ -10,7 +11,7 @@ namespace GPSTask
         internal PathControl View;
         
         string fileName;
-        private DataReader DataReader;
+        private DataFileHelper DataFileHelper;
         private DataProcessing DataProcessing;
         private DataPainter DataPainter;
         private string position;
@@ -18,6 +19,7 @@ namespace GPSTask
         public string FileName { get => fileName; set { fileName = value; OnPropertyChanged("FileName"); } }
 
         public HCommand SelectFileCommand { get; private set; }
+        public HCommand SaveFileOutCommand { get; private set; }
         public HCommand DebagCommand { get; private set; }
         public string Position { get=>position;  set { position = value; OnPropertyChanged("Position"); } }
 
@@ -30,9 +32,12 @@ namespace GPSTask
             fileDialog.Title = "Открыть файл входных данных";
             if (fileDialog.ShowDialog() == true)
             {
-                DataReader = new DataReader();
-                DataReader.Open(fileDialog.FileName);
-                DataProcessing = new DataProcessing(DataReader);
+                DataFileHelper = new DataFileHelper();
+                if (!DataFileHelper.ReadInputFile(fileDialog.FileName))
+                {
+                    MessageBox.Show(DataFileHelper.Message);
+                }
+                DataProcessing = new DataProcessing(DataFileHelper);
 
                 DataProcessing.Processing();
 
@@ -48,7 +53,28 @@ namespace GPSTask
         public PathViewModel()
         {            
             SelectFileCommand = new HCommand(SelectFileMethod);
+            SaveFileOutCommand = new HCommand(SaveFileOutMethod);
             DebagCommand = new HCommand(DebagMethod);
+        }
+
+        private void SaveFileOutMethod(object obj)
+        {
+            if (DataProcessing == null) return;
+            SaveFileDialog fileDialog = new SaveFileDialog();
+            fileDialog.CheckPathExists = true;
+            fileDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            fileDialog.Filter = "Текстовые файлы|*.txt";
+            fileDialog.Title = "Сохранить данные";
+            if (fileDialog.ShowDialog() == true)
+            {                
+                DataFileHelper = new DataFileHelper();
+                DataFileHelper.SetTrajectory(DataProcessing.GetTrajectory());
+                if (!DataFileHelper.FileOutputWrite(fileDialog.FileName))
+                {
+                    MessageBox.Show(DataFileHelper.Message);
+                }
+                MessageBox.Show("Файл успешно сохранен!\n" + fileDialog.FileName);
+            }
         }
 
         private void DebagMethod(object obj)
@@ -61,6 +87,7 @@ namespace GPSTask
             View = view;
             View.pathCanvas.Background = new SolidColorBrush(Colors.White);
             DataPainter = new DataPainter(View.pathCanvas);
+            DataPainter.CanMove = false;
             View.pathCanvas.MouseMove += PathCanvas_MouseMove;
             //View.mainGrid.SizeChanged += DataPainter.SizeChanged;
         }

@@ -28,7 +28,7 @@ namespace GPSTask
 
         public override string ToString()
         {
-            return $"({X:f}, {Y:f})";
+            return $"({X:f3}, {Y:f3})";
         }
 
         public override bool Equals(object obj)

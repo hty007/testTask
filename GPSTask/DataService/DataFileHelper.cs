@@ -4,17 +4,18 @@ using System.IO;
 
 namespace GPSTask
 {
-    public class DataReader
+    public class DataFileHelper
     {
         private List<HPoint> Sourses = new List<HPoint>();
         private List<HTime> Times = new List<HTime>();
+        private List<HPoint> Trajectory;
 
         public List<HPoint> GetSourses() => Sourses;
         public List<HTime> GetTimes() => Times;
 
         public string Message { get; private set; }
 
-        internal bool Open(string fileName)
+        internal bool ReadInputFile(string fileName)
         {
             try
             {
@@ -83,6 +84,32 @@ namespace GPSTask
             }
 
             return true;            
+        }
+
+        internal bool FileOutputWrite(string fileName)
+        {
+            try
+            {
+                StreamWriter sw = new StreamWriter(fileName);
+                
+
+                foreach (var point in Trajectory)
+                {
+                    sw.WriteLine(point.ToString());    
+                }
+                sw.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Message = "Во время записи файла, возникло исключение! \n" + ex.Message;
+                return false;
+            }
+        }
+
+        internal void SetTrajectory(List<HPoint> trajectory)
+        {
+            Trajectory = trajectory;
         }
     }
 }

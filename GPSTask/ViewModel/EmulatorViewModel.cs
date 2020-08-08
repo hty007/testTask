@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -13,23 +14,41 @@ namespace GPSTask
 
         public string Position { get => position; set { position = value; OnPropertyChanged("Position"); } }
         public HCommand SaveFileCommand { get; private set; }
+        public HCommand ClearCommand { get; private set; }
 
         private void SaveFileMethod(object obj)
         {
-            MessageBox.Show("Сохранение в файл ещё не реализовано!");
+            SaveFileDialog fileDialog = new SaveFileDialog();
+            fileDialog.CheckPathExists = true;
+            fileDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            fileDialog.Filter= "Текстовые файлы|*.txt";
+            fileDialog.Title = "Сохранить данные";
+            if (fileDialog.ShowDialog() == true)
+            {
+                MessageBox.Show("Сохранение в файл ещё не реализовано!\n"+ fileDialog.FileName);
+
+
+
+            }
         }
         public EmulatorViewModel()
         {
             SaveFileCommand = new HCommand(SaveFileMethod);
+            ClearCommand = new HCommand(ClearMethod);
         }
 
-
+        private void ClearMethod(object obj)
+        {
+            DataPainter.Clear();
+        }
 
         internal void SetView(PathControl view)
         {
             View = view;
             View.pathCanvas.Background = new SolidColorBrush(Colors.White);
             DataPainter = new DataPainter(View.pathCanvas);
+            DataPainter.InitializingObject();
+            DataPainter.CanMove = true;
             View.pathCanvas.MouseMove += PathCanvas_MouseMove;
         }
 
