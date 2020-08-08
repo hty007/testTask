@@ -37,7 +37,23 @@ namespace GPSTask
             InitializingPath();
         }
 
-        
+        internal List<HPoint> GetSourses()
+        {
+            List<HPoint> sourses = new List<HPoint>();
+
+            foreach (var item in Sourses)
+            {
+                sourses.Add(CoordinateHelper.BackConvert(Canvas.GetLeft(item), Canvas.GetTop(item)));
+            }
+            return sourses;
+        }
+
+        internal List<HPoint> GetTrajectory()
+        {// Посчитать и вернуть список времен
+            return Trajectory;
+        }
+
+
 
         #region Приемники сигнала
         private void InitializingSourses()// Обязательно переименовать на чтонибудь осмысленноле

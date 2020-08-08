@@ -47,6 +47,16 @@ namespace GPSTask
             }            
         }
 
+        internal void SetTimes(List<HTime> times)
+        {
+            Times = times;
+        }
+
+        internal void SetSourses(List<HPoint> sourses)
+        {
+            Sourses = sourses;
+        }
+
         private bool TryParseTime(string line)
         {// Строчка со времением, название переименовать!
             string[] timeLine = line.Split(new[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);

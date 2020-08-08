@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 /*
 https://e-maxx.ru/algo/circles_intersection
 https://e-maxx.ru/algo/circle_line_intersection
@@ -13,6 +14,7 @@ namespace GPSTask
         private List<HPoint> Trajectory;
 
         public void SetSourses(List<HPoint> points) => Sourses = points;
+        public void SetTrajectory(List<HPoint> trajectory) => Trajectory = trajectory;
 
         public const double SIGNAL_SPEED = 1000000;/* м/с */
         //public const bool USE_INACCURACY = true; /* м/с */
@@ -24,6 +26,10 @@ namespace GPSTask
         {
             Sourses = dataReader.GetSourses();
             Times = dataReader.GetTimes();
+        }
+
+        public DataProcessing()
+        {
         }
 
         public void Processing()
@@ -50,6 +56,27 @@ namespace GPSTask
                 HPoint newPoint = CenterOfMass.Averaging(region);
                 Trajectory.Add(newPoint);
                 #endregion
+            }
+        }
+
+        internal List<HTime> GetTimes()
+        {
+            return Times;
+        }
+
+        internal void CalculateTimes()
+        {
+            Times = new List<HTime>();
+            foreach (HPoint point in Trajectory)
+            {
+                HTime timePoint = new HTime();
+                foreach (var sourse in Sourses)
+                {
+                    double d = point.GetDistance(sourse);// Дистанция
+                    double time = d / SIGNAL_SPEED; // Время путь на время (с)/Секунды/
+                    timePoint.AddTime(time);
+                }
+                Times.Add(timePoint);
             }
         }
 

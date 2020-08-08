@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace GPSTask
 {
@@ -19,6 +20,12 @@ namespace GPSTask
         internal static HPoint BackConvert(Point p)
         {
             HPoint point = new HPoint((p.X-Zero.X)/Scale, (Zero.Y-p.Y)/Scale);
+            return point;
+        }
+
+        internal static HPoint BackConvert(double x, double y)
+        {
+            HPoint point = new HPoint((x - Zero.X) / Scale, (Zero.Y - y) / Scale);
             return point;
         }
     }

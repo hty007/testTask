@@ -21,7 +21,7 @@ namespace GPSTask
     public partial class MainView : Window
     {
         MainVeiwModel Model;
-        public MainView()
+        -public MainView()
         {
             Model = new MainVeiwModel(this);            
             InitializeComponent();

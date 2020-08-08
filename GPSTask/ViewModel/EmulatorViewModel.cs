@@ -25,10 +25,22 @@ namespace GPSTask
             fileDialog.Title = "Сохранить данные";
             if (fileDialog.ShowDialog() == true)
             {
-                MessageBox.Show("Сохранение в файл ещё не реализовано!\n"+ fileDialog.FileName);
+                DataProcessing dataProcessing = new DataProcessing();
+                dataProcessing.SetSourses(DataPainter.GetSourses());
+                dataProcessing.SetTrajectory(DataPainter.GetTrajectory());
 
+                dataProcessing.CalculateTimes();
 
+                DataFileHelper dataFileHelper = new DataFileHelper();
+                dataFileHelper.SetSourses(dataProcessing.GetSourses());
+                dataFileHelper.SetTimes(dataProcessing.GetTimes());
 
+                if (dataFileHelper.FileOutputWrite(fileDialog.FileName))                
+                    MessageBox.Show("Файл успешно сохранен!\n"+ fileDialog.FileName);
+                else
+                    MessageBox.Show("Ошибка во времемя записи файла!\n" + dataFileHelper.Message);
+
+                //MessageBox.Show("Сохранение в файл ещё не реализовано!\n"+ fileDialog.FileName);
             }
         }
         public EmulatorViewModel()
