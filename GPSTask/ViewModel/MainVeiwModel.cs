@@ -36,6 +36,11 @@ namespace GPSTask
 
         public PathViewModel PathModel { get => pathModel; set { pathModel = value; OnPropertyChanged("PathModel"); } }
         public EmulatorViewModel EmulModel { get => emulModel; set { emulModel = value; OnPropertyChanged("EmulModel"); } }
+
+        internal void AutorClick()
+        {
+            System.Diagnostics.Process.Start("https://kazan.hh.ru/resume/4985a6efff05ad09bb0039ed1f323157313378");
+        }
         #endregion
 
 

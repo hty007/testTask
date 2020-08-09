@@ -7,28 +7,53 @@
         mc:Ignorable="d"
         Title="GPS" Height="450" Width="800">
     <Grid>
-        <TabControl TabStripPlacement="Left" >
-            <TabItem Header="Траектория" ToolTip="Чтение из файла и построение" Selector.IsSelected="{Binding PathTab}">
+        <TabControl TabStripPlacement="Left" SelectedIndex="0">
+            <TabItem Header="О программе">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1">
+                        <TextBlock FontSize="9" Margin="0,0,0,20">Тестовое задание на вакансию «Разработчик C#»</TextBlock>
+                        
+                        <TextBlock FontSize="18" HorizontalAlignment="Center">Двумерный GPS</TextBlock>                        
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="1" >
+                        <TextBlock HorizontalAlignment="Right"> Задание выполнил:</TextBlock>
+                        <TextBlock HorizontalAlignment="Right" Foreground="Blue" TextDecorations="Underline" MouseDown="TextBlock_MouseDown"> Мирошников Ренат</TextBlock>
+                    </StackPanel>
+                    
+                </Grid>
+            </TabItem>
+            <TabItem Header="Траектория" ToolTip="Чтение из файла и построение" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0" Orientation="Horizontal">
-                        <TextBlock Text="Файл"/>
+                    <WrapPanel Grid.Row="0" Orientation="Horizontal">
+                        <TextBlock Text="Файл" Background="Aqua" Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding PathModel.FileName ,UpdateSourceTrigger=PropertyChanged}" Background="Aqua"  Width="250"/>
+                        <Button Content="Загрузить файл" Command="{Binding PathModel.SelectFileCommand}"/>
                         <Separator Margin="5"/>
-                        <TextBlock Text="{Binding PathModel.FileName ,UpdateSourceTrigger=PropertyChanged}"  Width="250"/>
-                        <Button Content="Выбрать" Command="{Binding PathModel.SelectFileCommand}"/>
-                        <Separator Margin="5"/>
-                        <Button Content="Сохранить результат" Command="{Binding PathModel.SaveFileOutCommand}"/>
+                        <Button Content="Сохранить траекторию в файл" Command="{Binding PathModel.SaveFileOutCommand}"/>
                         <Separator Margin="5"/>
                         <Button Content="Debag" Command="{Binding PathModel.DebagCommand}" Visibility="Collapsed"/>
-                    </StackPanel>
+                    </WrapPanel>
 
                     <local:PathControl Grid.Row="1" x:Name="pathControl" DataContext="{Binding PathModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></local:PathControl>
                 </Grid>
             </TabItem>
-            <TabItem Header="Эмулятор" ToolTip="Создание входного файла" Selector.IsSelected="{Binding EmulTab}">
+            <TabItem Header="Эмулятор" ToolTip="Создание входного файла" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -46,6 +71,164 @@
 
                     <local:PathControl Grid.Row="1" x:Name="emulControl" DataContext="{Binding EmulModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
+            </TabItem>
+            <TabItem Header="Текст задания">
+                <FlowDocumentScrollViewer IsToolBarVisible="True">
+                    <FlowDocument>
+                        <Paragraph TextAlignment="Center" FontSize="15" FontWeight="Bold">
+                            Тестовое задание на вакансию «Разработчик C#»
+                        </Paragraph>
+                        <Paragraph>
+                            Имеется система, в которой радиопередатчик перемещается по случайной траектории в декартовой системе координат (2 оси). Через равные промежутки времени (1 секунда) радиопередатчик отправляет сигнал, движущийся в пространстве со скоростью 1000 км/с, к 3 статичным радиоприемникам с заданными координатами, которые измеряют время прохождения этого сигнала от источника до приемника с погрешностью в 5%.
+                        </Paragraph>
+                        <Paragraph>Практическое задание состоит из двух частей:</Paragraph>
+                        <List MarkerStyle="Decimal">
+                            <ListItem>
+                                <Paragraph>
+                                    Необходимо восстановить траекторию движения источника в пространстве, используя эту информацию, и вывести ее в файл. Помимо этого, также необходимовизуализировать полученную траекторию в графическом интерфейсе пользователя (например, WinForms).
+                                </Paragraph>
+                            </ListItem>
+                            <ListItem>
+                                <Paragraph>
+                                    Необходимо создать эмулятор данной системы со следующими возможностями:
+                                </Paragraph>
+                                <List MarkerStyle="Box">
+                                    <ListItem>
+                                        <Paragraph>Расположение радиоприемников задает пользователь</Paragraph>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Paragraph>Пользователь может перемещать радиопередатчик</Paragraph>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Paragraph>Система рисует траекторию за радиопередатчиком в реальном времени</Paragraph>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Paragraph>
+                                            Пользователь может сохранить полученные результаты в файл. Формат файла идентичен формату входных данных, и может быть использован вместо входного файла
+                                        </Paragraph>
+                                    </ListItem>
+                                </List>
+                            </ListItem>
+                        </List>
+
+                        <Paragraph><Bold>Формат входных данных</Bold> - текстовый</Paragraph>
+                        <Table>
+                            <Table.Columns>
+                                <TableColumn/>
+                                <TableColumn/>
+                            </Table.Columns>
+                            <TableRowGroup>
+                                <TableRow>
+                                    <TableCell>
+                                        <Paragraph>
+                                            x1,y1,x2,y2,x3,y3
+                                        </Paragraph>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Paragraph>                                            
+                                        координаты статичных приемников
+                                        </Paragraph>
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>
+                                        <Paragraph>
+                                            dt1,dt2,dt3
+                                        </Paragraph>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Paragraph>
+                                            время прохождения сигнала до трех точек, 1 измерение
+                                        </Paragraph>
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>
+                                        <Paragraph>
+                                            ...
+                                        </Paragraph>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Paragraph>
+                                            ...
+                                        </Paragraph>
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>
+                                        <Paragraph>
+                                            d1,d2,d3
+                                        </Paragraph>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Paragraph>
+                                            время прохождения сигнала до трех точек, n измерение
+                                        </Paragraph>
+                                    </TableCell>
+                                </TableRow>
+                            </TableRowGroup>                            
+                        </Table>
+                        <Paragraph>
+                            <Bold>Формат выходных данных</Bold> - текстовый
+                        </Paragraph>
+                        <Table>
+                            <Table.Columns>
+                                <TableColumn/>
+                                <TableColumn/>
+                            </Table.Columns>
+                            <TableRowGroup>
+                                <TableRow>
+                                    <TableCell>
+                                        <Paragraph>
+                                            x,y
+                                        </Paragraph>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Paragraph>
+                                            точка начала движения
+                                        </Paragraph>
+                                    </TableCell>
+                                </TableRow>                                
+                                <TableRow>
+                                    <TableCell>
+                                        <Paragraph>
+                                            ...
+                                        </Paragraph>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Paragraph>
+                                            ...
+                                        </Paragraph>
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>
+                                        <Paragraph>
+                                            x,y
+                                        </Paragraph>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Paragraph>
+                                            точка окончания движения
+                                        </Paragraph>
+                                    </TableCell>
+                                </TableRow>
+                            </TableRowGroup>
+                        </Table>
+
+                        <Paragraph>
+                            Программа должна быть написана на C#, использование сторонних библиотек не воспрещено. Строгих ограничений по визуализации также не имеется. Главное, чтобы происходящее в ней было понятно человеку, прочитавшему этот документ.
+                        </Paragraph>
+
+                        <Paragraph>
+                            Следует учитывать, что на выходе ожидается лишь приблизительная траектория, в которой допускается погрешность, ввиду шумных входных данных.
+                        </Paragraph>
+
+                        <Paragraph>
+                            Подход к структуре кода приложения будет учитываться в оценке.
+                        </Paragraph>
+                    </FlowDocument>
+                </FlowDocumentScrollViewer>
             </TabItem>
         </TabControl>
 

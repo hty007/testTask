@@ -33,5 +33,10 @@ namespace GPSTask
         {
             Model.SetView(this);
         }
+
+        private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Model.AutorClick();
+        }
     }
 }
