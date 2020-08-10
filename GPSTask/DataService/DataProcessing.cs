@@ -8,30 +8,23 @@ namespace GPSTask
 {
     public class DataProcessing
     {
+        // Я всегда думал что скорость распространения радио сигнала 3*10^8(м/c), может эта задачи из паралельной вселенной? 
+        public const double SIGNAL_SPEED = 1000000;/* м/с */
+        //public const bool USE_INACCURACY = true; /* м/с */
+
+        #region Поля и свойства
         private List<HPoint> Sourses;
         private List<HTime> Times;
         private List<HCircle> Circles;
         private List<HPoint> Trajectory;
 
-        public void SetSourses(List<HPoint> points) => Sourses = points;
-        public void SetTrajectory(List<HPoint> trajectory) => Trajectory = trajectory;
-
-        public const double SIGNAL_SPEED = 1000000;/* м/с */
-        //public const bool USE_INACCURACY = true; /* м/с */
-
         public List<HPoint> GetTrajectory() => Trajectory;
         public List<HPoint> GetSourses() => Sourses;
-
-        public DataProcessing(DataFileHelper dataReader)
-        {
-            Sourses = dataReader.GetSourses();
-            Times = dataReader.GetTimes();
-        }
-
-        public DataProcessing()
-        {
-        }
-
+        public void SetSourses(List<HPoint> points) => Sourses = points;
+        public void SetTrajectory(List<HPoint> trajectory) => Trajectory = trajectory;
+        internal List<HTime> GetTimes() => Times;
+        #endregion
+        #region Публичные методы для работы
         public void Processing()
         {
             Circles = new List<HCircle>();
@@ -50,21 +43,15 @@ namespace GPSTask
                 Checking(region, Circles, 2.5);
                 if (region.Count == 0 || region.Count == 1)
                 {
-                    region = GetRegionPoint(time, Circles, 4);
-                    Checking(region, Circles, 5);
-                }                
-                HPoint newPoint = CenterOfMass.Averaging(region);
+                    region = GetRegionPoint(time, Circles, 4);// Увеличиваем Погрешность до 4%
+                    Checking(region, Circles, 5); // Увеличиваем погрешность до 5%
+                }
+                HPoint newPoint = CenterOfMass.Averaging(region);// Просто находим центр масс (среднее короче)
                 Trajectory.Add(newPoint);
                 #endregion
             }
         }
-
-        internal List<HTime> GetTimes()
-        {
-            return Times;
-        }
-
-        internal void CalculateTimes()
+        public void CalculateTimes()
         {
             Times = new List<HTime>();
             foreach (HPoint point in Trajectory)
@@ -78,8 +65,9 @@ namespace GPSTask
                 }
                 Times.Add(timePoint);
             }
-        }
-
+        } 
+        #endregion
+        #region Внутренние методы, с модификатором public из-за участия в тестах
         public static void Checking(List<HPoint> region, List<HCircle> circles, double inaccuracy = 0)
         {
             // Проверка и отсев 
@@ -123,7 +111,7 @@ namespace GPSTask
                     HCircle c_j = circles[j];
                     // Устанавливаем радиусы в метрах (скорость на время)
                     //if (USE_INACCURACY)
-                        c_j.SetRadius(SIGNAL_SPEED * time.GetTime(j), inaccuracy);
+                    c_j.SetRadius(SIGNAL_SPEED * time.GetTime(j), inaccuracy);
                     //else
                     //    c_j.SetRadius(SIGNAL_SPEED * time.GetTime(j), 0);
                     region.AddRange(c_i.IntersectingPoint(c_j));
@@ -131,6 +119,17 @@ namespace GPSTask
             }
 
             return region;
+        } 
+        #endregion
+
+        public DataProcessing(DataFileHelper dataReader)
+        {
+            Sourses = dataReader.GetSourses();
+            Times = dataReader.GetTimes();
+        }
+
+        public DataProcessing()
+        {
         }
     }
 }

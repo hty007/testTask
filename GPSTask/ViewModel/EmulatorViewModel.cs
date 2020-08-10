@@ -8,11 +8,14 @@ namespace GPSTask
 {
     public class EmulatorViewModel : BaseViewModel
     {
+        #region Поля и свойства
         private PathControl View;
         private DataPainter DataPainter;
-        private string position;
 
-        public string Position { get => position; set { position = value; OnPropertyChanged("Position"); } }
+        private string position;
+        public string Position { get => position; set { position = value; OnPropertyChanged("Position"); } } 
+        #endregion
+        #region Команды
         public HCommand SaveFileCommand { get; private set; }
         public HCommand ClearCommand { get; private set; }
 
@@ -21,7 +24,7 @@ namespace GPSTask
             SaveFileDialog fileDialog = new SaveFileDialog();
             fileDialog.CheckPathExists = true;
             fileDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            fileDialog.Filter= "Текстовые файлы|*.txt";
+            fileDialog.Filter = "Текстовые файлы|*.txt";
             fileDialog.Title = "Сохранить данные";
             if (fileDialog.ShowDialog() == true)
             {
@@ -35,25 +38,24 @@ namespace GPSTask
                 dataFileHelper.SetSourses(dataProcessing.GetSourses());
                 dataFileHelper.SetTimes(dataProcessing.GetTimes());
 
-                if (dataFileHelper.FileInputWrite(fileDialog.FileName))                
-                    MessageBox.Show("Файл успешно сохранен!\n"+ fileDialog.FileName);
+                if (dataFileHelper.FileInputWrite(fileDialog.FileName))
+                    MessageBox.Show("Файл успешно сохранен!\n" + fileDialog.FileName);
                 else
                     MessageBox.Show("Ошибка во времемя записи файла!\n" + dataFileHelper.Message);
 
                 //MessageBox.Show("Сохранение в файл ещё не реализовано!\n"+ fileDialog.FileName);
             }
         }
+        private void ClearMethod(object obj)
+        {
+            DataPainter.Clear();
+        } 
+        #endregion
         public EmulatorViewModel()
         {
             SaveFileCommand = new HCommand(SaveFileMethod);
             ClearCommand = new HCommand(ClearMethod);
         }
-
-        private void ClearMethod(object obj)
-        {
-            DataPainter.Clear();
-        }
-
         internal void SetView(PathControl view)
         {
             View = view;
@@ -63,7 +65,6 @@ namespace GPSTask
             DataPainter.CanMove = true;
             View.pathCanvas.MouseMove += PathCanvas_MouseMove;
         }
-
         private void PathCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             var p = e.GetPosition(View.pathCanvas);

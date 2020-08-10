@@ -15,26 +15,7 @@ namespace GPSTask
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
-    }
-
-    public class BoolToVisuble : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is bool bvalue)
-            {
-                if (bvalue)
-                    return Visibility.Visible;
-            }
-            return Visibility.Collapsed;
-
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
+    }   
 
     public class HCommand : ICommand
     {

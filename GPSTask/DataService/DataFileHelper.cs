@@ -6,15 +6,18 @@ namespace GPSTask
 {
     public class DataFileHelper
     {
+        #region Поля и свойства
         private List<HPoint> Sourses = new List<HPoint>();
         private List<HTime> Times = new List<HTime>();
         private List<HPoint> Trajectory;
-
-        public List<HPoint> GetSourses() => Sourses;
-        public List<HTime> GetTimes() => Times;
-
         public string Message { get; private set; }
-
+        public List<HPoint> GetSourses() => Sourses;
+        public void SetSourses(List<HPoint> sourses) => Sourses = sourses;
+        public List<HTime> GetTimes() => Times;
+        public void SetTimes(List<HTime> times) => Times = times;
+        public void SetTrajectory(List<HPoint> trajectory) => Trajectory = trajectory;
+        #endregion
+        #region Запись и чтение файлов
         internal bool ReadInputFile(string fileName)
         {
             try
@@ -23,11 +26,11 @@ namespace GPSTask
                 string line = sr.ReadLine();
                 if (!TryParseSources(line))
                 {
-                    Message = "Формат координат приемников не распознан!\n"+Message;
+                    Message = "Формат координат приемников не распознан!\n" + Message;
                     return false;
                 }
 
-                while (! sr.EndOfStream)
+                while (!sr.EndOfStream)
                 {
                     line = sr.ReadLine();
                     if (!TryParseTime(line))
@@ -42,16 +45,10 @@ namespace GPSTask
             }
             catch (Exception ex)
             {
-                Message = "Во время выполнения чтения из файла, возникла исключение! \n"+ex.Message;
-                return false;               
-            }            
+                Message = "Во время выполнения чтения из файла, возникла исключение! \n" + ex.Message;
+                return false;
+            }
         }
-
-        internal void SetTimes(List<HTime> times)
-        {
-            Times = times;
-        }
-
         internal bool FileInputWrite(string fileName)
         {
             try
@@ -74,7 +71,7 @@ namespace GPSTask
                 }
                 sw.WriteLine();
                 foreach (HTime time in Times)
-                {                    
+                {
                     sw.WriteLine(time.ToString());
                 }
                 sw.Close();
@@ -86,12 +83,30 @@ namespace GPSTask
                 return false;
             }
         }
-
-        internal void SetSourses(List<HPoint> sourses)
+        internal bool FileOutputWrite(string fileName)
         {
-            Sourses = sourses;
-        }
+            try
+            {
+                if (Trajectory == null) { Message = "Траектория пуста, программист прими меры!"; return false; }
 
+                StreamWriter sw = new StreamWriter(fileName);
+
+                sw.WriteLine();
+                foreach (HPoint point in Trajectory)
+                {
+                    sw.WriteLine(point.ToString());
+                }
+                sw.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Message = "Во время записи файла, возникло исключение! \n" + ex.Message;
+                return false;
+            }
+        }
+        #endregion
+        #region Внутренние методы
         private bool TryParseTime(string line)
         {// Строчка со времением, название переименовать!
             string[] timeLine = line.Split(new[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -117,7 +132,7 @@ namespace GPSTask
 
             if (Sourses == null) Sourses = new List<HPoint>();
 
-            for (int i = 0; i < coordinatesLine.Length; i+=2)
+            for (int i = 0; i < coordinatesLine.Length; i += 2)
             {
                 if (double.TryParse(coordinatesLine[i].Replace('.', ','), out double x) && double.TryParse(coordinatesLine[i + 1].Replace('.', ','), out double y))
                     Sourses.Add(new HPoint(x, y));
@@ -128,35 +143,8 @@ namespace GPSTask
                 }
             }
 
-            return true;            
-        }
-
-        internal bool FileOutputWrite(string fileName)
-        {
-            try
-            {
-                if (Trajectory == null) { Message = "Траектория пуста, программист прими меры!"; return false; }
-
-                StreamWriter sw = new StreamWriter(fileName);
-                
-                sw.WriteLine();
-                foreach (HPoint point in Trajectory)
-                {
-                    sw.WriteLine(point.ToString());    
-                }
-                sw.Close();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Message = "Во время записи файла, возникло исключение! \n" + ex.Message;
-                return false;
-            }
-        }
-
-        internal void SetTrajectory(List<HPoint> trajectory)
-        {
-            Trajectory = trajectory;
-        }
+            return true;
+        } 
+        #endregion
     }
 }

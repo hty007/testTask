@@ -5,7 +5,13 @@ namespace GPSTask
 {
     public class CoordinateHelper
     {
+        /// <summary>
+        /// Начало координат
+        /// </summary>
         public static HPoint Zero { get; set; }
+        /// <summary>
+        /// Цена деления (Масштаб)
+        /// </summary>
         public static double Scale { get; internal set; }
 
         internal static Point Convert(double x, double y)

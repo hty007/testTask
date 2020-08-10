@@ -10,6 +10,7 @@ namespace GPSTask
 {
     internal class DataPainter
     {
+        #region Поля и свойства
         private Canvas _canvas;
         private HPoint Zero;
         private List<Ellipse> Sourses;
@@ -21,21 +22,6 @@ namespace GPSTask
 
         public bool CanMove { get; set; }
 
-        public DataPainter(Canvas pathCanvas)
-        {
-            _canvas = pathCanvas;                
-
-            double width = _canvas.Width = 500;
-            double heigth = _canvas.Height = 400;
-            Zero = new HPoint(width / 2, heigth / 2);
-
-            CoordinateHelper.Zero = Zero;
-            CoordinateHelper.Scale = 5;
-
-            CoordinateSystem(width, heigth);
-            InitializingSourses();
-            InitializingPath();
-        }
 
         internal List<HPoint> GetSourses()
         {
@@ -51,10 +37,8 @@ namespace GPSTask
         internal List<HPoint> GetTrajectory()
         {// Посчитать и вернуть список времен
             return Trajectory;
-        }
-
-
-
+        } 
+        #endregion
         #region Приемники сигнала
         private void InitializingSourses()// Обязательно переименовать на чтонибудь осмысленноле
         {
@@ -305,6 +289,22 @@ namespace GPSTask
             }
         } 
         #endregion
+        public DataPainter(Canvas pathCanvas)
+        {
+            _canvas = pathCanvas;                
+
+            // По идее размер полотна надо вынести из класса дабы была возможность его менять.
+            double width = _canvas.Width = 500;
+            double heigth = _canvas.Height = 400;
+            Zero = new HPoint(width / 2, heigth / 2);
+
+            CoordinateHelper.Zero = Zero;
+            CoordinateHelper.Scale = 5;
+
+            CoordinateSystem(width, heigth);
+            InitializingSourses();
+            InitializingPath();
+        }
 
     }
 }
