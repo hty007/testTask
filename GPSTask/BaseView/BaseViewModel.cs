@@ -4,18 +4,19 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Runtime.CompilerServices;
 
 namespace GPSTask
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(string prop)
+        public void OnPropertyChanged([CallerMemberName] string prop = null)
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
-    }   
+    }
 
     public class HCommand : ICommand
     {
