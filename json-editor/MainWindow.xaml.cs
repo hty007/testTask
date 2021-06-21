@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace json_editor
+namespace Teko.Test.Editor
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
@@ -21,6 +21,7 @@ namespace json_editor
     {
         public MainWindow()
         {
+            DataContext = new MainWindowModel();
             InitializeComponent();
         }
     }

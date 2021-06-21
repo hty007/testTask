@@ -1,12 +1,59 @@
-﻿<Window x:Class="json_editor.MainWindow"
+﻿<Window x:Class="Teko.Test.Editor.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:json_editor"
+        xmlns:local="clr-namespace:Teko.Test.Editor"
+        xmlns:contr="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="JSON Editor" Height="450" Width="800">
+    <Window.Resources>
+        <contr:BooleanToVisibilityConverter x:Key="BoolToVisible" />
+    </Window.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Создать" Command="{Binding CreateFileCommand}"/>
+                <MenuItem Header="Открыть" Command="{Binding OpenFileCommand}"/>
+                <MenuItem Header="Сохранить" Command="{Binding SaveFileCommand}"/>
+                <MenuItem Header="Закрыть" Command="{Binding CloseFileCommand}"/>
+                <Separator  Height="2" Background="Gray" />
+                <MenuItem Header="Открыть(по умолчанию)" Command="{Binding OpenDefailtCommand}"/>
+                <MenuItem Header="Сохранить(по умолчанию)" Command="{Binding SaveDefailtCommand}"/>
+                <Separator  Height="2" Background="Gray" />
+                <MenuItem Header="Выход" Command="{Binding ExitCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Редактор">
+                <MenuItem Header="Добавить запись" Command="{Binding CreateRecordCommand}"/>
+                <MenuItem Header="Изменить запись" Command="{Binding EditRecordCommand}"/>
+                <MenuItem Header="Удалить запись" Command="{Binding RemoveRecordCommand}"/>
+                <MenuItem Header="Переместить вверх" Command="{Binding MoveUpRecordCommand}"/>
+                <MenuItem Header="Переместить вниз" Command="{Binding MoveDownRecordCommand}"/>
+            </MenuItem>
+        </Menu>
+
+        <TreeView Grid.Row="1" ItemsSource="{Binding File.Children}">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Name}" />
+                        <TextBlock Text=" = " 
+                            Visibility="{Binding IsLeaf, Converter={StaticResource BoolToVisible}}" />
+                        <TextBlock Text="{Binding Value}" 
+                            Visibility="{Binding IsLeaf, Converter={StaticResource BoolToVisible}}" />                        
+                        <!--<TextBlock Text="{Binding IsLeaf}" />-->
+                        
+                    </StackPanel> 
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+        
         
     </Grid>
 </Window>

@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-namespace json_editor
+namespace Teko.Test.Editor
 {
     /// <summary>
     /// Логика взаимодействия для App.xaml

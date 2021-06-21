@@ -1,16 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using WPFStorage.Base;
 
@@ -34,13 +24,13 @@ namespace WPFStorage.Dialogs
     public class SelectorViewModel: ObservableObject
     {
         private string title = "Окно ввода";
-        public string Title { get => title; set { title = value; OnPropertyChanged(); } }
+        public string Title { get => title; set {SetProperty(ref title , value); } }
 
         private string question = "Вопрос";
-        public string Question { get => question; set { question = value; OnPropertyChanged(); } }
+        public string Question { get => question; set { SetProperty(ref question, value); } }
 
         List<string> items;
-        public List<string> Items { get => items; set { items = value; OnPropertyChanged(); } }
+        public List<string> Items { get => items; set { SetProperty(ref items, value); } }
 
         public RelayCommand<string> SelectItem { get; }
         public string Select { get; private set; }
