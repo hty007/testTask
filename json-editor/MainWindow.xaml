@@ -42,12 +42,18 @@
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Name}" />
+                        <TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Visibility="{Binding IsProperty, Converter={StaticResource BoolToVisible}}"/>
+                        <TextBlock Text="(" />
+                        <TextBlock Text="{Binding Type}" />
+                        <TextBlock Text=")" />
                         <TextBlock Text=" = " 
                             Visibility="{Binding IsLeaf, Converter={StaticResource BoolToVisible}}" />
-                        <TextBlock Text="{Binding Value}" 
-                            Visibility="{Binding IsLeaf, Converter={StaticResource BoolToVisible}}" />                        
-                        <!--<TextBlock Text="{Binding IsLeaf}" />-->
+                        <TextBlock Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" 
+                            Visibility="{Binding IsLeaf, Converter={StaticResource BoolToVisible}}" />
+                        <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Visibility="{Binding IsLeaf, Converter={StaticResource BoolToVisible}}"/>
                         
                     </StackPanel> 
                 </HierarchicalDataTemplate>

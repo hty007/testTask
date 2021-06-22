@@ -91,6 +91,8 @@
   <ItemGroup>
     <Compile Include="MainWindowModel.cs" />
     <Compile Include="Models\FileModel.cs" />
+    <Compile Include="Models\NewtonsoftExtensions.cs" />
+    <Compile Include="Models\Record.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

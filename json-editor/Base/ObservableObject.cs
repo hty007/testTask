@@ -36,8 +36,17 @@ namespace WPFStorage.Base
             return true;
         }
 
-        protected virtual void RaisePropertyChanged(string propertyName)
+        protected virtual void RaisePropertyChanged(/*[CallerMemberName]*/ string propertyName = null)
         {
+            // Из-за ограничения .net 4.0 задании атрибут [CallerMemberName] не функционирует,
+            // по этому пришлось испльзовать конструкцию представленную ниже
+            if (propertyName == null)
+            { // TODO: устранить копирование кода
+                StackTrace stackTrace = new StackTrace();
+                StackFrame frame = stackTrace.GetFrame(1);
+                MethodBase method = frame.GetMethod();
+                propertyName = method.Name.Replace("set_", "");
+            }
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
