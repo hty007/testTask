@@ -59,43 +59,6 @@ namespace Teko.Test.Editor.Models
             }
         }
 
-        public string Type
-        {
-            get
-            {
-                if (token != null)
-                    return token.Type.ToString();
-                return "null";
-            }
-        }
-
-        public int Count
-        {
-            get
-            {
-                if (token != null)
-                {
-                    if (token is JContainer container)
-                        return container.Count;
-                }
-                return Children.Count;
-            }
-        }
-
-        public bool IsLeaf
-        {
-            get
-            {
-                if (token != null)
-                {
-                    return token.First is JValue;
-                }
-                return false;
-            }
-        }
-
-        public bool IsProperty => token is JProperty;
-
         public string Value
         {
             get
@@ -132,6 +95,48 @@ namespace Teko.Test.Editor.Models
             }
         }
 
+        public string Type
+        {
+            get
+            {
+                if (token != null)
+                    return token.Type.ToString();
+                return "null";
+            }
+        }
+
+        public int Count
+        {
+            get
+            {
+                if (token != null)
+                {
+                    if (token is JContainer container)
+                        return container.Count;
+                }
+                return Children.Count;
+            }
+        }
+
+        public bool IsLeaf
+        {
+            get
+            {
+                if (token != null)
+                {
+                    return token.First is JValue;
+                }
+                return false;
+            }
+        }
+
+        public bool IsProperty => token is JProperty;
+        public bool IsContainer => token is JContainer;
+        public bool IsArray => token is JArray;
+        public bool IsObject => token is JObject;
+        public bool IsPropertyArray => token is JProperty property && property.Value is JArray;
+        public bool IsPropertyObject => token is JProperty property && property.Value is JObject;
+
         public ObservableCollection<Record> Children { get; } = new ObservableCollection<Record>();
 
         public bool EditMode
@@ -143,7 +148,6 @@ namespace Teko.Test.Editor.Models
                 RaisePropertyChanged(nameof(CanEditValue));
             } 
         }
-
         public bool CanEditName => EditMode && IsProperty;
         public bool CanEditValue => EditMode && IsLeaf;
 

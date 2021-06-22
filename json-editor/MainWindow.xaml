@@ -75,6 +75,28 @@
                                 Visibility="{Binding IsProperty, Converter={StaticResource BoolToVisible}}">
                             <Separator Margin="5"/>
                             <CheckBox IsChecked="{Binding EditMode}" Content="Edit"/>
+                            <!--<CheckBox IsChecked="{Binding EditMode}" Content="Edit"/>-->
+                        </StackPanel>
+
+                        <CheckBox  x:Name="debug" Content="Debug" />
+                        <StackPanel Orientation="Horizontal" Margin="5,0,0,0"
+                                Visibility="{Binding ElementName=debug, Path=IsChecked, Converter={StaticResource BoolToVisible}}">
+                            <TextBlock Text="Type=" />
+                            <TextBlock Text="{Binding Type, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock Text=", Count=" />
+                            <TextBlock Text="{Binding Count, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock Text=" IsLeaf," Visibility="{Binding IsLeaf, Converter={StaticResource BoolToVisible}}"/>
+                            <TextBlock Text=" IsProperty," Visibility="{Binding IsProperty, Converter={StaticResource BoolToVisible}}"/>
+                            <TextBlock Text=" IsContainer," Visibility="{Binding IsContainer, Converter={StaticResource BoolToVisible}}"/>
+                            <TextBlock Text=" IsArray," Visibility="{Binding IsArray, Converter={StaticResource BoolToVisible}}"/>
+                            <TextBlock Text=" IsObject," Visibility="{Binding IsObject, Converter={StaticResource BoolToVisible}}"/>
+                            <TextBlock Text=" IsPropertyArray," Visibility="{Binding IsPropertyArray, Converter={StaticResource BoolToVisible}}"/>
+                            <TextBlock Text=" IsPropertyObject," Visibility="{Binding IsPropertyObject, Converter={StaticResource BoolToVisible}}"/>
+                            <TextBlock Text=" EditMode," Visibility="{Binding EditMode, Converter={StaticResource BoolToVisible}}"/>
+                            <TextBlock Text=" CanEditName," Visibility="{Binding CanEditName, Converter={StaticResource BoolToVisible}}"/>
+                            <TextBlock Text=" CanEditValue," Visibility="{Binding CanEditValue, Converter={StaticResource BoolToVisible}}"/>
+                            <TextBlock Text="Value="/>
+                            <TextBlock Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
                         </StackPanel>
 
                     </StackPanel> 
