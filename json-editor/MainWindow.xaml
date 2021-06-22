@@ -22,6 +22,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
@@ -44,12 +45,36 @@
                 <MenuItem Header="Удалить запись" Command="{Binding RemoveRecordCommand}"/>
                 <MenuItem Header="Переместить вверх" Command="{Binding MoveUpRecordCommand}"/>
                 <MenuItem Header="Переместить вниз" Command="{Binding MoveDownRecordCommand}"/>
+                <Separator  Height="2" Background="Gray" />
+                <MenuItem x:Name="DebugMode" IsCheckable="True" IsChecked="False"  
+                          Header="Режим отладки"/>
             </MenuItem>
             <MenuItem Header="Задание" Command="{Binding ShowTaskTextCommand}" />
 
         </Menu>
+        <WrapPanel Grid.Row="1">
+            <Button ToolTip="Открыть файл по умолчанию" Command="{Binding OpenDefailtCommand}">
+                <Image Source="Resources\open.ico" Width="40"/>
+            </Button>
+            <Button ToolTip="Сохранить в файл по умолчанию" Command="{Binding SaveDefailtCommand}">
+                <Image Source="Resources\save.ico" Width="40"/>
+            </Button>
+            <Separator  Width="2" Background="Gray" />
+            <Button ToolTip="Создать новую запись (внутри выделеной)" Command="{Binding CreateRecordCommand}">
+                <Image Source="Resources\add.ico" Width="40"></Image> 
+            </Button>
+            <Button ToolTip="Добавить новую запись (за выделеной)" Command="{Binding AddRecordCommand}">
+                <Image Source="Resources\add.ico" Width="40"></Image>
+            </Button>
+            <Button ToolTip="Редактировать выделенную запись" Command="{Binding EditRecordCommand}">
+                <Image Source="Resources\edit.ico" Width="40"></Image>
+            </Button>
+            <Button ToolTip="Удалить выделенную запись" Command="{Binding RemoveRecordCommand}">
+                <Image Source="Resources\delete.ico" Width="40"></Image>
+            </Button>
+        </WrapPanel>
 
-        <TreeView Grid.Row="1" ItemsSource="{Binding File.Children}">
+        <TreeView x:Name="tree" Grid.Row="2" ItemsSource="{Binding File.Children}" SelectedValuePath="{Binding SelectedPath}">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
                     <StackPanel Orientation="Horizontal">
@@ -70,17 +95,18 @@
                                      Visibility="{Binding CanEditValue, Converter={StaticResource BoolToVisible}}"/>
                         </StackPanel>
 
-                        <!-- Блок редактирование возможно только если запись является свойством -->
+                        <!-- Блок редактирование возможно только если запись является свойством --><!--
                         <StackPanel Orientation="Horizontal"
                                 Visibility="{Binding IsProperty, Converter={StaticResource BoolToVisible}}">
                             <Separator Margin="5"/>
-                            <CheckBox IsChecked="{Binding EditMode}" Content="Edit"/>
-                            <!--<CheckBox IsChecked="{Binding EditMode}" Content="Edit"/>-->
-                        </StackPanel>
+                            --><!--<CheckBox IsChecked="{Binding EditMode}" Content="Edit"/>--><!--
+                        </StackPanel>-->
 
-                        <CheckBox  x:Name="debug" Content="Debug" />
+                        <CheckBox  x:Name="debug" Content="Debug" 
+                                   Visibility="{Binding ElementName=DebugMode, Path=IsChecked, Converter={StaticResource BoolToVisible}}" />
                         <StackPanel Orientation="Horizontal" Margin="5,0,0,0"
                                 Visibility="{Binding ElementName=debug, Path=IsChecked, Converter={StaticResource BoolToVisible}}">
+                            <CheckBox IsChecked="{Binding EditMode}" Content="Edit"/>
                             <TextBlock Text="Type=" />
                             <TextBlock Text="{Binding Type, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock Text=", Count=" />
