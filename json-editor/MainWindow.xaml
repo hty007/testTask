@@ -5,10 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Teko.Test.Editor"
         xmlns:contr="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+        xmlns:conv="clr-namespace:Teko.Test.Editor.Converters"
         mc:Ignorable="d"
         Title="JSON Editor" Height="450" Width="800">
     <Window.Resources>
-        <contr:BooleanToVisibilityConverter x:Key="BoolToVisible" />
+        <!--<contr:BooleanToVisibilityConverter x:Key="BoolToVisible" />-->
+        <conv:BooleanToVisibilityConverter 
+            x:Key="BoolToVisible" 
+            True="Visible" 
+            False="Collapsed" />
+        <conv:BooleanToVisibilityConverter 
+            x:Key="BoolToVisibleInvert" 
+            True="Collapsed" 
+            False="Visible" />
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -36,25 +45,38 @@
                 <MenuItem Header="Переместить вверх" Command="{Binding MoveUpRecordCommand}"/>
                 <MenuItem Header="Переместить вниз" Command="{Binding MoveDownRecordCommand}"/>
             </MenuItem>
+            <MenuItem Header="Задание" Command="{Binding ShowTaskTextCommand}" />
+
         </Menu>
 
         <TreeView Grid.Row="1" ItemsSource="{Binding File.Children}">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
+                                   Visibility="{Binding CanEditName, Converter={StaticResource BoolToVisibleInvert}}"/>
                         <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Visibility="{Binding IsProperty, Converter={StaticResource BoolToVisible}}"/>
-                        <TextBlock Text="(" />
-                        <TextBlock Text="{Binding Type}" />
-                        <TextBlock Text=")" />
-                        <TextBlock Text=" = " 
-                            Visibility="{Binding IsLeaf, Converter={StaticResource BoolToVisible}}" />
-                        <TextBlock Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" 
-                            Visibility="{Binding IsLeaf, Converter={StaticResource BoolToVisible}}" />
-                        <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Visibility="{Binding IsLeaf, Converter={StaticResource BoolToVisible}}"/>
+                                 Visibility="{Binding CanEditName, Converter={StaticResource BoolToVisible}}"/>
                         
+                        <!-- Блок значение виден если листок дерева -->
+                        <StackPanel Orientation="Horizontal"
+                                Visibility="{Binding IsLeaf, Converter={StaticResource BoolToVisible}}">                            
+                            <TextBlock Text=" = "/>
+                            
+                            <TextBlock Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" 
+                                Visibility="{Binding CanEditValue, Converter={StaticResource BoolToVisibleInvert}}" />
+                            
+                            <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Visibility="{Binding CanEditValue, Converter={StaticResource BoolToVisible}}"/>
+                        </StackPanel>
+
+                        <!-- Блок редактирование возможно только если запись является свойством -->
+                        <StackPanel Orientation="Horizontal"
+                                Visibility="{Binding IsProperty, Converter={StaticResource BoolToVisible}}">
+                            <Separator Margin="5"/>
+                            <CheckBox IsChecked="{Binding EditMode}" Content="Edit"/>
+                        </StackPanel>
+
                     </StackPanel> 
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>

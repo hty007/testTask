@@ -30,6 +30,8 @@ namespace Teko.Test.Editor
             RemoveRecordCommand = new RelayCommand(RemoveRecord);
             MoveUpRecordCommand = new RelayCommand(MoveUpRecord);
             MoveDownRecordCommand = new RelayCommand(MoveDownRecord);
+
+            ShowTaskTextCommand = new RelayCommand(ShowTaskText);
         }
 
 
@@ -45,6 +47,7 @@ namespace Teko.Test.Editor
         public RelayCommand RemoveRecordCommand { get; }
         public RelayCommand MoveUpRecordCommand { get; }
         public RelayCommand MoveDownRecordCommand { get; }
+        public RelayCommand ShowTaskTextCommand { get; }
         public RelayCommand OpenDefailtCommand { get; }
         public RelayCommand SaveDefailtCommand { get; }
 
@@ -78,6 +81,30 @@ namespace Teko.Test.Editor
         private void Close()
         {
             WinBox.ShowMessage("Это программисты ещё не предусмотрели!");
+        }
+
+
+        private void ShowTaskText()
+        {
+            WinBox.ShowMessage(
+                title: "Задание", 
+                message: @"WPF приложение редактор данных на JSON
+
+Есть 2 файла, 1 на вход, другой на выход.
+Файлы имеют пакеты в формате JSON. (эмуляция работы по сети).
+Необходимо написать простую программу, которая позволит отображать данные из входного 
+файла (парсить JSON), управлять этими данными (добавление, редактирование, удаление), а в 
+конце сохранять данные в выходной файл.
+
+Требования:
+  1. Приложение должно быть написано с использованием .NET 4.0.
+  2. Для визуализации можно использовать только стандартные WPF компоненты.
+  3. Для парсинга JSON необходимо использовать библиотеку Newtonsoft.Json.
+  4. Код должен быть читабельным, и если будет необходимо с комментариями.
+  5. После сохранения данных в выходной файл, программа также должна без ошибок загружать 
+     этот файл, то есть он должен иметь точно такой же формат описания данных",
+        okText:"Закрыть"       
+    );
         }
 
         private void Save()

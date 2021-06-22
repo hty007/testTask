@@ -7,18 +7,15 @@ namespace Teko.Test.Editor.Models
 {
     public class Record : ObservableObject
     {
-        //private JObject jsonObj;
-        //private JProperty jsonProperty;
+        #region members
         private JToken token;
-
+        private bool editMode;
+        #endregion
+        #region ctor
         public Record(JObject jsonObj)
         {
             this.token = jsonObj;
-            foreach (var tok in jsonObj.Children())
-            {
-                Record record = new Record(tok);
-                Children.Add(record);
-            }
+            AddChildren(jsonObj);
         }
 
         public Record(JToken item)
@@ -33,8 +30,8 @@ namespace Teko.Test.Editor.Models
                 AddChildren(token);
             }
         }
-
-
+        #endregion
+        #region binding
         public string Name
         {
             get
@@ -61,7 +58,6 @@ namespace Teko.Test.Editor.Models
                 }
             }
         }
-
 
         public string Type
         {
@@ -137,7 +133,22 @@ namespace Teko.Test.Editor.Models
         }
 
         public ObservableCollection<Record> Children { get; } = new ObservableCollection<Record>();
-        
+
+        public bool EditMode
+        { 
+            get => editMode; 
+            set {
+                SetProperty(ref editMode, value);
+                RaisePropertyChanged(nameof(CanEditName));
+                RaisePropertyChanged(nameof(CanEditValue));
+            } 
+        }
+
+        public bool CanEditName => EditMode && IsProperty;
+        public bool CanEditValue => EditMode && IsLeaf;
+
+        #endregion
+        #region methods
         public string GetJson()
         {
             return token.ToString();
@@ -151,7 +162,7 @@ namespace Teko.Test.Editor.Models
                     Children.Add(new Record(child));
                 }
             }
-        }
-
+        } 
+        #endregion
     }
 }

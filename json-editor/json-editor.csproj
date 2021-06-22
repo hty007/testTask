@@ -75,6 +75,8 @@
     <Compile Include="Base\ObservableObject.cs" />
     <Compile Include="Base\RelayCommand.cs" />
     <Compile Include="Base\RelayCommand{T}.cs" />
+    <Compile Include="Converters\BooleanConverter.cs" />
+    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Dialogs\InputBoxModel.cs" />
     <Compile Include="Dialogs\SelectorWindow.xaml.cs">
       <DependentUpon>SelectorWindow.xaml</DependentUpon>

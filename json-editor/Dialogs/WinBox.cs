@@ -23,25 +23,6 @@ namespace WPFStorage.Dialogs
             return model.Select;
         }
 
-        private static void SelectorBoxModel(SelectorViewModel model)
-        {            
-            SelectorWindow window = new SelectorWindow(model);
-            bool? res = window.ShowDialog();
-            if (res == true)
-            {
-                model.IsResult = true;
-            }
-        }
-        private static void ShowDialogModel(InputBoxModel model)
-        {
-            WindowBox window = new WindowBox(model);
-            bool? res = window.ShowDialog();
-            if (res == true)
-            {
-                model.PressOk = true;
-            }
-        }
-
         /// <summary>
         /// Окно сообщения пользователю, может закрытся через <c>timeout</c> миллисекунд 
         /// </summary>
@@ -59,6 +40,24 @@ namespace WPFStorage.Dialogs
             model.SetVisibility(true, false, false);
             ShowDialogModel(model);
             //return model.Input;
+        }
+
+        /// <summary>
+        /// Окно сообщения пользователю, может закрытся через <c>timeout</c> миллисекунд 
+        /// </summary>
+        /// <param name="message">Текст мообщение</param>
+        /// <param name="title">Текст заголовка окна</param>
+        /// <param name="timeout">Таймаут закрытия в миллисекундах</param>
+        public static void ShowMessage(string message, string title , string okText, long timeout = 0)
+        {
+            InputBoxModel model = new InputBoxModel();
+            model.Question = message;
+            model.Timeout = timeout;
+            model.OkText = okText;
+            model.ButtonsAlignment = HorizontalAlignment.Center;
+            if (!string.IsNullOrWhiteSpace(title)) model.Title = title;
+            model.SetVisibility(true, false, false);
+            ShowDialogModel(model);
         }
 
         /// <summary>
@@ -108,6 +107,25 @@ namespace WPFStorage.Dialogs
             ShowDialogModel(model);
 
             return model.PressOk;
+        }
+
+        private static void SelectorBoxModel(SelectorViewModel model)
+        {            
+            SelectorWindow window = new SelectorWindow(model);
+            bool? res = window.ShowDialog();
+            if (res == true)
+            {
+                model.IsResult = true;
+            }
+        }
+        private static void ShowDialogModel(InputBoxModel model)
+        {
+            WindowBox window = new WindowBox(model);
+            bool? res = window.ShowDialog();
+            if (res == true)
+            {
+                model.PressOk = true;
+            }
         }
     }
 }
