@@ -7,17 +7,19 @@ using WPFStorage.Dialogs;
 
 namespace Teko.Test.Editor
 {
-    internal class MainWindowModel: ObservableObject
+    internal class MainWindowModel : ObservableObject
     {
         private static readonly string DEFAULT_SAVE_FILE_NAME = "output";
         private static readonly string DEFAULT_OPEN_FILE_NAME = "input";
         private FileModel file;
+        private string message;
+        private Record currentRecord;
 
         public MainWindowModel()
         {
             File = new FileModel();
 
-            OpenDefailtCommand = new RelayCommand(()=> File.Open(DEFAULT_OPEN_FILE_NAME));
+            OpenDefailtCommand = new RelayCommand(() => File.Open(DEFAULT_OPEN_FILE_NAME));
             SaveDefailtCommand = new RelayCommand(() => File.Save(DEFAULT_SAVE_FILE_NAME));
             OpenFileCommand = new RelayCommand(Open);
             CreateFileCommand = new RelayCommand(Create);
@@ -26,6 +28,7 @@ namespace Teko.Test.Editor
             ExitCommand = new RelayCommand(Exit);
 
             CreateRecordCommand = new RelayCommand(CreateRecord);
+            AddRecordCommand = new RelayCommand(AddRecord);
             EditRecordCommand = new RelayCommand(EditRecord);
             RemoveRecordCommand = new RelayCommand(RemoveRecord);
             MoveUpRecordCommand = new RelayCommand(MoveUpRecord);
@@ -35,6 +38,7 @@ namespace Teko.Test.Editor
         }
 
 
+        public string Message { get => message; set => SetProperty(ref message, value); }
         public FileModel File { get => file; set => SetProperty(ref file, value); }
 
         public RelayCommand OpenFileCommand { get; }
@@ -43,6 +47,7 @@ namespace Teko.Test.Editor
         public RelayCommand CloseFileCommand { get; }
         public RelayCommand ExitCommand { get; }
         public RelayCommand CreateRecordCommand { get; }
+        public RelayCommand AddRecordCommand { get; }
         public RelayCommand EditRecordCommand { get; }
         public RelayCommand RemoveRecordCommand { get; }
         public RelayCommand MoveUpRecordCommand { get; }
@@ -52,6 +57,28 @@ namespace Teko.Test.Editor
         public RelayCommand SaveDefailtCommand { get; }
 
         private void Exit() => Application.Current.Shutdown();
+
+        private void AddRecord()
+        {
+            if (CheckCurrentRecordValidate())
+            {
+                Record record = currentRecord.AddPropertyAfter("rec", "value");
+
+                if (record == null)
+                {
+                    WinBox.ShowMessage("Не удалось завершить операцию.", "Ошибка");
+                }
+
+            }
+        }
+
+        internal void RecordChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (e.NewValue is Record newRec)
+                currentRecord = newRec;
+            if (e.OldValue is Record oldRec)
+                oldRec.EditMode = false;
+        }
 
         private void MoveDownRecord()
         {
@@ -65,17 +92,46 @@ namespace Teko.Test.Editor
 
         private void RemoveRecord()
         {
-            WinBox.ShowMessage("Это программисты ещё не предусмотрели!");
+            if (CheckCurrentRecordValidate())
+            {
+                if (currentRecord.IsRoot)
+                {
+                    File.Children.Remove(currentRecord);
+                    return;
+                }
+
+                currentRecord.Detete();
+            }
+        }
+
+        private bool CheckCurrentRecordValidate()
+        {
+            if (currentRecord == null)
+            {
+                WinBox.ShowMessage("Предел чем выполнять операцию необходимо выбрать запись.", "Нет выбранной записи!");
+                return false;
+            }
+            return true;
         }
 
         private void EditRecord()
         {
-            WinBox.ShowMessage("Это программисты ещё не предусмотрели!");
+            currentRecord.EditMode = true;
         }
 
         private void CreateRecord()
         {
-            WinBox.ShowMessage("Это программисты ещё не предусмотрели!");
+            if (CheckCurrentRecordValidate())
+            {
+                Record record = currentRecord.CreateProperty("rec", "value");
+                
+                if (record == null)
+                {
+                    WinBox.ShowMessage("Не удалось завершить операцию.", "Ошибка");
+                }
+
+            }
+
         }
 
         private void Close()
@@ -87,7 +143,7 @@ namespace Teko.Test.Editor
         private void ShowTaskText()
         {
             WinBox.ShowMessage(
-                title: "Задание", 
+                title: "Задание",
                 message: @"WPF приложение редактор данных на JSON
 
 Есть 2 файла, 1 на вход, другой на выход.
@@ -103,7 +159,7 @@ namespace Teko.Test.Editor
   4. Код должен быть читабельным, и если будет необходимо с комментариями.
   5. После сохранения данных в выходной файл, программа также должна без ошибок загружать 
      этот файл, то есть он должен иметь точно такой же формат описания данных",
-        okText:"Закрыть"       
+        okText: "Закрыть"
     );
         }
 
@@ -111,7 +167,7 @@ namespace Teko.Test.Editor
         {
             if (!File.IsOpen)
             {
-                WinBox.ShowMessage("Нет открытого файла." ,"Сохранение не возможно!");
+                WinBox.ShowMessage("Нет открытого файла.", "Сохранение не возможно!");
                 return;
             }
 

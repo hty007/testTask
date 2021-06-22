@@ -21,8 +21,10 @@ namespace Teko.Test.Editor
     {
         public MainWindow()
         {
-            DataContext = new MainWindowModel();
+            var model = new MainWindowModel();
+            DataContext = model;
             InitializeComponent();
+            tree.SelectedItemChanged += model.RecordChanged;
         }
     }
 }

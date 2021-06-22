@@ -123,5 +123,20 @@
     <None Include="Теко\output" />
     <None Include="Теко\описание.pdf" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\add.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\edit.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\delete.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\open.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\save.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
