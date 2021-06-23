@@ -9,11 +9,11 @@
         mc:Ignorable="d"
         Title="JSON Editor" Height="450" Width="800">
     <Window.Resources>
-        <!--<contr:BooleanToVisibilityConverter x:Key="BoolToVisible" />-->
         <conv:BooleanToVisibilityConverter 
             x:Key="BoolToVisible" 
             True="Visible" 
             False="Collapsed" />
+        <!-- Хитрый конвертр   -->
         <conv:BooleanToVisibilityConverter 
             x:Key="BoolToVisibleInvert" 
             True="Collapsed" 
@@ -24,7 +24,6 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition />
-            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <Menu Grid.Row="0">
@@ -51,6 +50,7 @@
             <MenuItem Header="Задание" Command="{Binding ShowTaskTextCommand}" />
 
         </Menu>
+        
         <WrapPanel Grid.Row="1">
             <Button ToolTip="Открыть файл по умолчанию" Command="{Binding OpenDefailtCommand}">
                 <Image Source="Resources\open.ico" Width="40"/>
@@ -77,6 +77,7 @@
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
                     <StackPanel Orientation="Horizontal">
+                        <!-- Блок значение виден всегда кроме массив-значение -->
                         <StackPanel Visibility="{Binding IsValue, Converter={StaticResource BoolToVisibleInvert}}">
                             <TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
                                        Visibility="{Binding CanEditName, Converter={StaticResource BoolToVisibleInvert}}"/>
@@ -85,7 +86,7 @@
                                      MinWidth="50"/>
                         </StackPanel>
                         
-                        <!-- Блок значение виден если листок дерева -->
+                        <!-- Блок значение виден если запись листок дерева -->
                         <StackPanel Orientation="Horizontal"
                                 Visibility="{Binding IsLeaf, Converter={StaticResource BoolToVisible}}">
                             <TextBlock Text=" = " Visibility="{Binding IsValue, Converter={StaticResource BoolToVisibleInvert}}" />
@@ -98,13 +99,7 @@
                                      MinWidth="50"/>
                         </StackPanel>
 
-                        <!-- Блок редактирование возможно только если запись является свойством --><!--
-                        <StackPanel Orientation="Horizontal"
-                                Visibility="{Binding IsProperty, Converter={StaticResource BoolToVisible}}">
-                            <Separator Margin="5"/>
-                            --><!--<CheckBox IsChecked="{Binding EditMode}" Content="Edit"/>--><!--
-                        </StackPanel>-->
-
+                        <!-- Блок виден только в режиме отладки -->
                         <CheckBox  x:Name="debug" Content="Debug" 
                                    Visibility="{Binding ElementName=DebugMode, Path=IsChecked, Converter={StaticResource BoolToVisible}}" />
                         <StackPanel Orientation="Horizontal" Margin="5,0,0,0"

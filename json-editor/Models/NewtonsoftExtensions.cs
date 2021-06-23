@@ -5,6 +5,8 @@ namespace Teko.Test.Editor.Models
 {
     public static class NewtonsoftExtensions
     {
+        // Поддсмотрено на форуме 
+        // https://stackoverflow.com/questions/47267542/rename-jproperty-in-json-net
         public static JProperty Rename(this JProperty property, string newName)
         {
             if (property == null)
@@ -20,15 +22,6 @@ namespace Teko.Test.Editor.Models
             return newProperty;
         }
 
-        //public static void ReplaceValue(this JValue value, string newValue)
-        //{
-        //    if (value == null)
-        //        throw new ArgumentNullException("value", "Cannot rename a null token");
-
-        //    if (value.Parent == null)
-        //        throw new InvalidOperationException("Cannot rename a value with no parent");
-
-        //    value.Value
-        //}
+       
     }
 }

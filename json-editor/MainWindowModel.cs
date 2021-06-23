@@ -9,14 +9,15 @@ namespace Teko.Test.Editor
 {
     internal class MainWindowModel : ObservableObject
     {
+        /*  По хорошему это надо вынести в настройки */
         private static readonly string DEFAULT_SAVE_FILE_NAME = "output";
         private static readonly string DEFAULT_OPEN_FILE_NAME = "input";
+        /**/
         private const string OPTION_PROPERTY = "property";
         private const string OPTION_OBJECT = "object";
         private const string OPTION_ARRAY = "array";
         private static readonly string [] COLLECTION_OPTIONS = new string[] { OPTION_PROPERTY, OPTION_OBJECT, OPTION_ARRAY };
         private FileModel file;
-        private string message;
         private Record currentRecord;
 
         public MainWindowModel()
@@ -39,8 +40,6 @@ namespace Teko.Test.Editor
             ShowTaskTextCommand = new RelayCommand(ShowTaskText);
         }
 
-
-        public string Message { get => message; set => SetProperty(ref message, value); }
         public FileModel File { get => file; set => SetProperty(ref file, value); }
 
         public RelayCommand OpenFileCommand { get; }
@@ -90,22 +89,13 @@ namespace Teko.Test.Editor
             }
         }
 
+        // Это слегка выбивается из паттерна MVVM, и можно было сделать по другому, но так быстрее
         internal void RecordChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (e.NewValue is Record newRec)
                 currentRecord = newRec;
             if (e.OldValue is Record oldRec)
                 oldRec.EditMode = false;
-        }
-
-        private void MoveDownRecord()
-        {
-            WinBox.ShowMessage("Это программисты ещё не предусмотрели!");
-        }
-
-        private void MoveUpRecord()
-        {
-            WinBox.ShowMessage("Это программисты ещё не предусмотрели!");
         }
 
         private void RemoveRecord()

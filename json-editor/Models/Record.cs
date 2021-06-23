@@ -5,6 +5,9 @@ using WPFStorage.Base;
 
 namespace Teko.Test.Editor.Models
 {
+    /// <summary>
+    /// Асоциирует с JToken и его потомками
+    /// </summary>
     public class Record : ObservableObject
     {
         #region members
@@ -13,12 +16,21 @@ namespace Teko.Test.Editor.Models
         private bool editMode;
         #endregion
         #region ctor
+        /// <summary>
+        /// Создает root-object
+        /// </summary>
+        /// <param name="jsonObj"></param>
         public Record(JObject jsonObj)
         {
             this.token = jsonObj;
             AddChildren(jsonObj);
         }
 
+        /// <summary>
+        /// Создает запись имешую родителя 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="parent"></param>
         public Record(JToken item, Record parent)
         {
             this.token = item;
@@ -34,6 +46,9 @@ namespace Teko.Test.Editor.Models
         }
         #endregion
         #region binding
+        /// <summary>
+        /// Получает имя запись и если это возможно изменяет
+        /// </summary>
         public string Name
         {
             get
@@ -60,7 +75,9 @@ namespace Teko.Test.Editor.Models
                 }
             }
         }
-
+        /// <summary>
+        /// Получает значение записи (если оно не комплексное) и если это возможно изменяет
+        /// </summary>
         public string Value
         {
             get
@@ -98,6 +115,9 @@ namespace Teko.Test.Editor.Models
         }
 
 
+        /// <summary>
+        /// Тип записи
+        /// </summary>
         public string Type
         {
             get
@@ -108,6 +128,9 @@ namespace Teko.Test.Editor.Models
             }
         }
 
+        /// <summary>
+        /// Если запись контейнер, количество дочерних элементов 
+        /// </summary>
         public int Count
         {
             get
@@ -121,7 +144,9 @@ namespace Teko.Test.Editor.Models
             }
         }
 
-
+        /// <summary>
+        /// Запись не является комплексной
+        /// </summary>
         public bool IsLeaf
         {
             get
@@ -135,17 +160,47 @@ namespace Teko.Test.Editor.Models
             }
         }
 
+        /// <summary>
+        /// Запись является свойством
+        /// </summary>
         public bool IsProperty => token is JProperty;
-        public bool IsContainer => token is JContainer;
-        public bool IsArray => token is JArray;
-        public bool IsValue => token is JValue;
-        public bool IsObject => token is JObject;
-        public bool IsRoot => parent == null;
-        public bool IsPropertyArray => token is JProperty property && property.Value is JArray;
-        public bool IsPropertyObject => token is JProperty property && property.Value is JObject;
 
+        /// <summary>
+        /// Запись является контейнером
+        /// </summary>
+        public bool IsContainer => token is JContainer;
+        /// <summary>
+        /// Запись является массивом
+        /// </summary>
+        public bool IsArray => token is JArray;
+        /// <summary>
+        /// Запись является значением
+        /// </summary>
+        public bool IsValue => token is JValue;
+        /// <summary>
+        /// Запись является объектом ()
+        /// </summary>
+        public bool IsObject => token is JObject;
+        /// <summary>
+        /// Запись является root-object
+        /// </summary>
+        public bool IsRoot => parent == null;
+        /// <summary>
+        /// Запись является свойством мо значением Array
+        /// </summary>
+        public bool IsPropertyArray => token is JProperty property && property.Value is JArray;
+        /// <summary>
+        /// Запись является свойством мо значением Object
+        /// </summary>
+        public bool IsPropertyObject => token is JProperty property && property.Value is JObject;
+        /// <summary>
+        /// колекция дочерних объетов записи
+        /// </summary>
         public ObservableCollection<Record> Children { get; } = new ObservableCollection<Record>();
 
+        /// <summary>
+        /// Режим редактирования
+        /// </summary>
         public bool EditMode
         {
             get => editMode;
@@ -157,13 +212,29 @@ namespace Teko.Test.Editor.Models
             }
         }
 
-        internal Record AddPropertyAfter(string key, string value)
+        /// <summary>
+        /// Возможность редактировать название <see cref="Name"/>
+        /// </summary>
+        public bool CanEditName => EditMode && IsProperty;
+        /// <summary>
+        /// Возможность редактировать значение <see cref="Value"/>
+        /// </summary>
+        public bool CanEditValue => EditMode && IsLeaf;
+
+        #endregion
+        #region methods
+        public void Detete()
         {
-            var property = new JProperty(key, value);
-            token.AddAfterSelf(property);
-            var rec = new Record(property, parent);
-            parent.Children.Add(rec);
-            return rec;
+            if (!IsRoot)
+            {
+                parent.Children.Remove(this);
+                token.Remove();
+            }
+        }
+
+        public string GetJson()
+        {
+            return token.ToString();
         }
 
         public Record AddObjectInside()
@@ -171,7 +242,6 @@ namespace Teko.Test.Editor.Models
             var newToken = new JObject();
             return AddNewTokenInside("object", newToken);
         }
-
 
         public Record AddArrayInside(string key)
         {
@@ -191,6 +261,15 @@ namespace Teko.Test.Editor.Models
         {
             var newToken = new JValue(value);
             return AddNewTokenInside(key, newToken);
+        }
+
+        internal Record AddPropertyAfter(string key, string value)
+        {
+            var property = new JProperty(key, value);
+            token.AddAfterSelf(property);
+            var rec = new Record(property, parent);
+            parent.Children.Add(rec);
+            return rec;
         }
 
         private Record AddNewTokenInside(string key, JToken value)
@@ -225,24 +304,6 @@ namespace Teko.Test.Editor.Models
             }
         }
 
-        public bool CanEditName => EditMode && IsProperty;
-        public bool CanEditValue => EditMode && IsLeaf;
-
-        #endregion
-        #region methods
-        public void Detete()
-        {
-            if (!IsRoot)
-            {
-                parent.Children.Remove(this);
-                token.Remove();
-            }
-        }
-
-        public string GetJson()
-        {
-            return token.ToString();
-        }
         private void AddChildren(JToken parent)
         {
             if (parent.HasValues)

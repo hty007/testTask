@@ -24,6 +24,7 @@ namespace Teko.Test.Editor
             var model = new MainWindowModel();
             DataContext = model;
             InitializeComponent();
+            // Это слегка выбивается из паттерна MVVM, и можно было сделать по другому, но так быстрее
             tree.SelectedItemChanged += model.RecordChanged;
         }
     }
