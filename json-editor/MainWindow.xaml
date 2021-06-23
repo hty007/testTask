@@ -40,11 +40,10 @@
                 <MenuItem Header="Выход" Command="{Binding ExitCommand}"/>
             </MenuItem>
             <MenuItem Header="Редактор">
-                <MenuItem Header="Добавить запись" Command="{Binding CreateRecordCommand}"/>
+                <MenuItem Header="Добавить запись (внутри выделеной)" Command="{Binding AddRecordInsideCommand}"/>
+                <MenuItem Header="Добавить запись (за выделеной)" Command="{Binding AddRecordAfterCommand}"/>
                 <MenuItem Header="Изменить запись" Command="{Binding EditRecordCommand}"/>
                 <MenuItem Header="Удалить запись" Command="{Binding RemoveRecordCommand}"/>
-                <MenuItem Header="Переместить вверх" Command="{Binding MoveUpRecordCommand}"/>
-                <MenuItem Header="Переместить вниз" Command="{Binding MoveDownRecordCommand}"/>
                 <Separator  Height="2" Background="Gray" />
                 <MenuItem x:Name="DebugMode" IsCheckable="True" IsChecked="False"  
                           Header="Режим отладки"/>
@@ -60,10 +59,10 @@
                 <Image Source="Resources\save.ico" Width="40"/>
             </Button>
             <Separator  Width="2" Background="Gray" />
-            <Button ToolTip="Создать новую запись (внутри выделеной)" Command="{Binding CreateRecordCommand}">
+            <Button ToolTip="Создать новую запись (внутри выделеной)" Command="{Binding AddRecordInsideCommand}">
                 <Image Source="Resources\add.ico" Width="40"></Image> 
             </Button>
-            <Button ToolTip="Добавить новую запись (за выделеной)" Command="{Binding AddRecordCommand}">
+            <Button ToolTip="Добавить новую запись (за выделеной)" Command="{Binding AddRecordAfterCommand}">
                 <Image Source="Resources\add.ico" Width="40"></Image>
             </Button>
             <Button ToolTip="Редактировать выделенную запись" Command="{Binding EditRecordCommand}">
@@ -78,21 +77,25 @@
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
-                                   Visibility="{Binding CanEditName, Converter={StaticResource BoolToVisibleInvert}}"/>
-                        <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Visibility="{Binding CanEditName, Converter={StaticResource BoolToVisible}}"/>
+                        <StackPanel Visibility="{Binding IsValue, Converter={StaticResource BoolToVisibleInvert}}">
+                            <TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
+                                       Visibility="{Binding CanEditName, Converter={StaticResource BoolToVisibleInvert}}"/>
+                            <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Visibility="{Binding CanEditName, Converter={StaticResource BoolToVisible}}"
+                                     MinWidth="50"/>
+                        </StackPanel>
                         
                         <!-- Блок значение виден если листок дерева -->
                         <StackPanel Orientation="Horizontal"
-                                Visibility="{Binding IsLeaf, Converter={StaticResource BoolToVisible}}">                            
-                            <TextBlock Text=" = "/>
+                                Visibility="{Binding IsLeaf, Converter={StaticResource BoolToVisible}}">
+                            <TextBlock Text=" = " Visibility="{Binding IsValue, Converter={StaticResource BoolToVisibleInvert}}" />
                             
                             <TextBlock Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" 
                                 Visibility="{Binding CanEditValue, Converter={StaticResource BoolToVisibleInvert}}" />
                             
                             <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     Visibility="{Binding CanEditValue, Converter={StaticResource BoolToVisible}}"/>
+                                     Visibility="{Binding CanEditValue, Converter={StaticResource BoolToVisible}}"
+                                     MinWidth="50"/>
                         </StackPanel>
 
                         <!-- Блок редактирование возможно только если запись является свойством --><!--

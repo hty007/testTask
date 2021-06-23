@@ -11,6 +11,10 @@ namespace Teko.Test.Editor
     {
         private static readonly string DEFAULT_SAVE_FILE_NAME = "output";
         private static readonly string DEFAULT_OPEN_FILE_NAME = "input";
+        private const string OPTION_PROPERTY = "property";
+        private const string OPTION_OBJECT = "object";
+        private const string OPTION_ARRAY = "array";
+        private static readonly string [] COLLECTION_OPTIONS = new string[] { OPTION_PROPERTY, OPTION_OBJECT, OPTION_ARRAY };
         private FileModel file;
         private string message;
         private Record currentRecord;
@@ -27,12 +31,10 @@ namespace Teko.Test.Editor
             CloseFileCommand = new RelayCommand(Close);
             ExitCommand = new RelayCommand(Exit);
 
-            CreateRecordCommand = new RelayCommand(CreateRecord);
-            AddRecordCommand = new RelayCommand(AddRecord);
+            AddRecordAfterCommand = new RelayCommand(AddRecordAfter);
+            AddRecordInsideCommand = new RelayCommand(AddRecordInside);
             EditRecordCommand = new RelayCommand(EditRecord);
             RemoveRecordCommand = new RelayCommand(RemoveRecord);
-            MoveUpRecordCommand = new RelayCommand(MoveUpRecord);
-            MoveDownRecordCommand = new RelayCommand(MoveDownRecord);
 
             ShowTaskTextCommand = new RelayCommand(ShowTaskText);
         }
@@ -46,23 +48,39 @@ namespace Teko.Test.Editor
         public RelayCommand SaveFileCommand { get; }
         public RelayCommand CloseFileCommand { get; }
         public RelayCommand ExitCommand { get; }
-        public RelayCommand CreateRecordCommand { get; }
-        public RelayCommand AddRecordCommand { get; }
+        public RelayCommand AddRecordAfterCommand { get; }
+        public RelayCommand AddRecordInsideCommand { get; }
         public RelayCommand EditRecordCommand { get; }
         public RelayCommand RemoveRecordCommand { get; }
-        public RelayCommand MoveUpRecordCommand { get; }
-        public RelayCommand MoveDownRecordCommand { get; }
         public RelayCommand ShowTaskTextCommand { get; }
         public RelayCommand OpenDefailtCommand { get; }
         public RelayCommand SaveDefailtCommand { get; }
 
         private void Exit() => Application.Current.Shutdown();
 
-        private void AddRecord()
+        private void AddRecordInside()
         {
             if (CheckCurrentRecordValidate())
             {
-                Record record = currentRecord.AddPropertyAfter("rec", "value");
+                var query = WinBox.SelectorBox(
+                    collect: COLLECTION_OPTIONS,
+                    question: "Выберите тип новой записи:");
+                Record record = null;
+                switch (query)
+                {
+                    case OPTION_PROPERTY: 
+                        record = currentRecord.AddPropertyInside("property", "value");
+                        break;
+                    case OPTION_OBJECT:
+                        record = currentRecord.AddObjectInside("obj");
+                        break;
+                    case OPTION_ARRAY:
+                        record = currentRecord.AddArrayInside("array");
+                        break;
+                    default:
+                        break;
+                }
+
 
                 if (record == null)
                 {
@@ -119,11 +137,11 @@ namespace Teko.Test.Editor
             currentRecord.EditMode = true;
         }
 
-        private void CreateRecord()
+        private void AddRecordAfter()
         {
             if (CheckCurrentRecordValidate())
             {
-                Record record = currentRecord.CreateProperty("rec", "value");
+                Record record = currentRecord.AddPropertyAfter("rec", "value");
                 
                 if (record == null)
                 {
@@ -136,7 +154,13 @@ namespace Teko.Test.Editor
 
         private void Close()
         {
-            WinBox.ShowMessage("Это программисты ещё не предусмотрели!");
+            if (!File.IsOpen) 
+                return;
+            if (WinBox.ShowQuestion("Сохранить файл перед закрытием?"))
+            {
+                Save();
+            }
+            File.Close();
         }
 
 
@@ -184,7 +208,12 @@ namespace Teko.Test.Editor
 
         private void Create()
         {
-            WinBox.ShowMessage("Это программисты ещё не предусмотрели!");
+            if (File.IsOpen)
+            {
+                Close();
+            }
+            File.Create();
+            
         }
 
         private void Open()

@@ -33,6 +33,7 @@ namespace Teko.Test.Editor.Models
                 Record rec = new Record(jObj);
                 Children.Add(rec);
             }
+            IsOpen = true;
         }
 
         internal void Save(string fileName)
@@ -47,6 +48,20 @@ namespace Teko.Test.Editor.Models
 
             File.WriteAllText(fileName, builder.ToString());
             Process.Start(fileName);
+        }
+
+        internal void Close()
+        {
+            Children.Clear();
+            IsOpen = false;
+        }
+
+        internal void Create()
+        {
+            Children.Clear();
+            var record = new Record(new JObject());
+            Children.Add(record);
+            IsOpen = true;
         }
     }
 }

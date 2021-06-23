@@ -121,13 +121,15 @@ namespace Teko.Test.Editor.Models
             }
         }
 
+
         public bool IsLeaf
         {
             get
             {
                 if (token != null)
                 {
-                    return token.First is JValue;
+                    return token is JValue 
+                        || (token is JProperty property && property.Value is JValue);
                 }
                 return false;
             }
@@ -136,6 +138,7 @@ namespace Teko.Test.Editor.Models
         public bool IsProperty => token is JProperty;
         public bool IsContainer => token is JContainer;
         public bool IsArray => token is JArray;
+        public bool IsValue => token is JValue;
         public bool IsObject => token is JObject;
         public bool IsRoot => parent == null;
         public bool IsPropertyArray => token is JProperty property && property.Value is JArray;
@@ -144,13 +147,14 @@ namespace Teko.Test.Editor.Models
         public ObservableCollection<Record> Children { get; } = new ObservableCollection<Record>();
 
         public bool EditMode
-        { 
-            get => editMode; 
-            set {
+        {
+            get => editMode;
+            set
+            {
                 SetProperty(ref editMode, value);
                 RaisePropertyChanged(nameof(CanEditName));
                 RaisePropertyChanged(nameof(CanEditValue));
-            } 
+            }
         }
 
         internal Record AddPropertyAfter(string key, string value)
@@ -162,32 +166,56 @@ namespace Teko.Test.Editor.Models
             return rec;
         }
 
-        internal Record CreateProperty(string key, string value)
+        public Record AddObjectInside()
         {
-            if (IsObject)
+            var newToken = new JObject();
+            return AddNewTokenInside("object", newToken);
+        }
+
+
+        public Record AddArrayInside(string key)
+        {
+            var newToken = new JArray();
+
+            return AddNewTokenInside(key, newToken);
+        }
+
+        public Record AddObjectInside(string key)
+        {
+            var newToken = new JObject();
+
+            return AddNewTokenInside(key, newToken);
+        }
+
+        public Record AddPropertyInside(string key, string value)
+        {
+            var newToken = new JValue(value);
+            return AddNewTokenInside(key, newToken);
+        }
+
+        private Record AddNewTokenInside(string key, JToken value)
+        {
+            if (token is JObject jObj)
             {
-                var property = new JProperty(key, value);
-                token.Last.AddAfterSelf(property);
-                //token.AddAnnotation(property);
-                var child = new Record(property, this);
+                jObj.Add(key, value);
+                //token.Last.AddAfterSelf(newToken);
+                var child = new Record(jObj.Last, this);
                 Children.Add(child);
                 return child;
             }
-            else if (IsPropertyObject )
+            else if (token is JProperty property && property.Value is JObject obj)
             {
-                var property = new JProperty(key, value);
-                token.First.First.AddAfterSelf(property);
-                //token.AddAnnotation(property);
-                var child = new Record(property, this);
+                obj.Add(key, value);
+                var child = new Record(obj.Last, this);
                 Children.Add(child);
                 return child;
             }
-            else if (IsPropertyArray )
+            else if (token is JProperty property1 && property1.Value is JArray array)
             {
-                var property = new JProperty(key, value);
-                token.First.First.First.AddAfterSelf(property);
-                //token.AddAnnotation(property);
-                var child = new Record(property, this);
+                //if (newToken is JProperty property2)
+                //    newToken = property2.Value;
+                array.Add(value);
+                var child = new Record(array.Last, this);
                 Children.Add(child);
                 return child;
             }
@@ -224,7 +252,7 @@ namespace Teko.Test.Editor.Models
                     Children.Add(new Record(child, this));
                 }
             }
-        } 
+        }
         #endregion
     }
 }
