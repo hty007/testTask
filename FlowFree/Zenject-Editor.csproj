@@ -56,28 +56,23 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\Source\Editor\EditorStaticInstaller.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\Source\Editor\EditorWindow\ZenjectEditorWindow.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\Source\Editor\Editors\BaseCompositeInstallerEditor.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\Source\Editor\Editors\CompositeInstallerEditorDescriptions.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\Source\Editor\Editors\CompositeMonoInstallerEditor.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\Source\Editor\Editors\CompositeScriptableObjectInstallerEditor.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\Source\Editor\Editors\ContextEditor.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\Source\Editor\Editors\GameObjectContextEditor.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\Source\Editor\Editors\InstallerPropertyInfo.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\Source\Editor\Editors\ProjectContextEditor.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\Source\Editor\Editors\RunnableContextEditor.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\Source\Editor\Editors\SceneContextEditor.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\Source\Editor\Editors\SceneDecoratorContextEditor.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\Source\Editor\ObjectGraphVisualizer.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\Source\Editor\SceneParentLoading\DefaultSceneContractConfig.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\Source\Editor\SceneParentLoading\SceneParentAutomaticLoader.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\Source\Editor\UnityInspectorListEditor.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\Source\Editor\ZenMenuItems.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\Source\Editor\ZenUnityEditorUtil.cs" />
+    <Compile Include="Assets\Plugins\Zenject\Source\Editor\EditorStaticInstaller.cs" />
+    <Compile Include="Assets\Plugins\Zenject\Source\Editor\EditorWindow\ZenjectEditorWindow.cs" />
+    <Compile Include="Assets\Plugins\Zenject\Source\Editor\Editors\ContextEditor.cs" />
+    <Compile Include="Assets\Plugins\Zenject\Source\Editor\Editors\GameObjectContextEditor.cs" />
+    <Compile Include="Assets\Plugins\Zenject\Source\Editor\Editors\ProjectContextEditor.cs" />
+    <Compile Include="Assets\Plugins\Zenject\Source\Editor\Editors\RunnableContextEditor.cs" />
+    <Compile Include="Assets\Plugins\Zenject\Source\Editor\Editors\SceneContextEditor.cs" />
+    <Compile Include="Assets\Plugins\Zenject\Source\Editor\Editors\SceneDecoratorContextEditor.cs" />
+    <Compile Include="Assets\Plugins\Zenject\Source\Editor\ObjectGraphVisualizer.cs" />
+    <Compile Include="Assets\Plugins\Zenject\Source\Editor\SceneParentLoading\DefaultSceneContractConfig.cs" />
+    <Compile Include="Assets\Plugins\Zenject\Source\Editor\SceneParentLoading\SceneParentAutomaticLoader.cs" />
+    <Compile Include="Assets\Plugins\Zenject\Source\Editor\UnityInspectorListEditor.cs" />
+    <Compile Include="Assets\Plugins\Zenject\Source\Editor\ZenMenuItems.cs" />
+    <Compile Include="Assets\Plugins\Zenject\Source\Editor\ZenUnityEditorUtil.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Plugins\Zenject\Plugins\Zenject\Source\Editor\Zenject-Editor.asmdef" />
+    <None Include="Assets\Plugins\Zenject\Source\Editor\Zenject-Editor.asmdef" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -273,19 +268,19 @@
       <HintPath>C:\Program Files\Unity\Hub\Editor\2019.4.28f1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Mdb">
-      <HintPath>Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Mdb.dll</HintPath>
+      <HintPath>Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Mdb.dll</HintPath>
     </Reference>
     <Reference Include="Zenject.ReflectionBaking.Mono.Cecil">
-      <HintPath>Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.dll</HintPath>
+      <HintPath>Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.dll</HintPath>
     </Reference>
     <Reference Include="Zenject-usage">
-      <HintPath>Assets\Plugins\Zenject\Plugins\Zenject\Source\Usage\Zenject-usage.dll</HintPath>
+      <HintPath>Assets\Plugins\Zenject\Source\Usage\Zenject-usage.dll</HintPath>
     </Reference>
     <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Pdb">
-      <HintPath>Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Pdb.dll</HintPath>
+      <HintPath>Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Pdb.dll</HintPath>
     </Reference>
     <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Rocks">
-      <HintPath>Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Rocks.dll</HintPath>
+      <HintPath>Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Rocks.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>Library\PackageCache\com.unity.ext.nunit@1.0.6\net35\unity-custom\nunit.framework.dll</HintPath>

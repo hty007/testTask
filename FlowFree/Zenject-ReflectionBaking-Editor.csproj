@@ -56,22 +56,22 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Common\CecilExtensions.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Common\ReflectionBakingModuleEditor.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Unity\AssemblyPathRegistry.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Unity\ReflectionBakingBuildObserver.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Unity\ReflectionBakingInternalUtil.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Unity\ReflectionBakingMenuItems.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Unity\UnityAssemblyResolver.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Unity\ZenjectReflectionBakingSettings.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Unity\ZenjectReflectionBakingSettingsEditor.cs" />
+    <Compile Include="Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Common\CecilExtensions.cs" />
+    <Compile Include="Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Common\ReflectionBakingModuleEditor.cs" />
+    <Compile Include="Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Unity\AssemblyPathRegistry.cs" />
+    <Compile Include="Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Unity\ReflectionBakingBuildObserver.cs" />
+    <Compile Include="Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Unity\ReflectionBakingInternalUtil.cs" />
+    <Compile Include="Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Unity\ReflectionBakingMenuItems.cs" />
+    <Compile Include="Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Unity\UnityAssemblyResolver.cs" />
+    <Compile Include="Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Unity\ZenjectReflectionBakingSettings.cs" />
+    <Compile Include="Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Unity\ZenjectReflectionBakingSettingsEditor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Zenject-ReflectionBaking-Editor.asmdef" />
-    <None Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Pdb.dll" />
-    <None Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Rocks.dll" />
-    <None Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Mdb.dll" />
-    <None Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.dll" />
+    <None Include="Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Zenject-ReflectionBaking-Editor.asmdef" />
+    <None Include="Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Pdb.dll" />
+    <None Include="Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Rocks.dll" />
+    <None Include="Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Mdb.dll" />
+    <None Include="Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.dll" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -267,19 +267,19 @@
       <HintPath>C:\Program Files\Unity\Hub\Editor\2019.4.28f1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Mdb">
-      <HintPath>Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Mdb.dll</HintPath>
+      <HintPath>Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Mdb.dll</HintPath>
     </Reference>
     <Reference Include="Zenject.ReflectionBaking.Mono.Cecil">
-      <HintPath>Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.dll</HintPath>
+      <HintPath>Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.dll</HintPath>
     </Reference>
     <Reference Include="Zenject-usage">
-      <HintPath>Assets\Plugins\Zenject\Plugins\Zenject\Source\Usage\Zenject-usage.dll</HintPath>
+      <HintPath>Assets\Plugins\Zenject\Source\Usage\Zenject-usage.dll</HintPath>
     </Reference>
     <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Pdb">
-      <HintPath>Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Pdb.dll</HintPath>
+      <HintPath>Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Pdb.dll</HintPath>
     </Reference>
     <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Rocks">
-      <HintPath>Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Rocks.dll</HintPath>
+      <HintPath>Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Rocks.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>Library\PackageCache\com.unity.ext.nunit@1.0.6\net35\unity-custom\nunit.framework.dll</HintPath>

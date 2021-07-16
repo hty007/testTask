@@ -56,11 +56,11 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\Async\Tests\Addressable\TestAddressable.cs" />
+    <Compile Include="Assets\Zenject\Plugins\Zenject\OptionalExtras\Async\Tests\Addressable\TestAddressable.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\Async\Tests\Addressable\ReadMe.txt" />
-    <None Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\Async\Tests\Addressable\Extenject-Addressable-Tests.asmdef" />
+    <None Include="Assets\Zenject\Plugins\Zenject\OptionalExtras\Async\Tests\Addressable\Extenject-Addressable-Tests.asmdef" />
+    <None Include="Assets\Zenject\Plugins\Zenject\OptionalExtras\Async\Tests\Addressable\ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -250,7 +250,7 @@
       <HintPath>Library\PackageCache\com.unity.ext.nunit@1.0.6\net35\unity-custom\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Zenject-usage">
-      <HintPath>Assets\Plugins\Zenject\Plugins\Zenject\Source\Usage\Zenject-usage.dll</HintPath>
+      <HintPath>Assets\Zenject\Plugins\Zenject\Source\Usage\Zenject-usage.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2019.4.28f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>
@@ -608,18 +608,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Zenject.csproj">
-      <Project>{998BD9B2-AA1C-33FF-ED37-92E919B2D973}</Project>
-      <Name>Zenject</Name>
-    </ProjectReference>
-    <ProjectReference Include="Zenject-TestFramework.csproj">
-      <Project>{275491BA-DE47-3281-D64C-2AB8DE0ADDE4}</Project>
-      <Name>Zenject-TestFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="Extenject-Async.csproj">
-      <Project>{E6267036-EB54-40A1-E9E1-D0D7237EBD9F}</Project>
-      <Name>Extenject-Async</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

@@ -56,21 +56,21 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\AddressableInject.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\AsyncDiContainerExtensions.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\AsyncInject.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\Binders\AddressableFromBinderGeneric.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\Binders\AsyncFromBinderBase.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\Binders\AsyncFromBinderGeneric.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\Binders\ConcreteAddressableBinderGeneric.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\Binders\ConcreteAddressableIdBinderGeneric.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\Binders\ConcreteAsyncBinderGeneric.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\Binders\ConcreteAsyncIdBinderGeneric.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\Providers\AddressableProviderSimple.cs" />
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\Providers\AsyncMethodProviderSimple.cs" />
+    <Compile Include="Assets\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\AddressableInject.cs" />
+    <Compile Include="Assets\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\AsyncDiContainerExtensions.cs" />
+    <Compile Include="Assets\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\AsyncInject.cs" />
+    <Compile Include="Assets\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\Binders\AddressableFromBinderGeneric.cs" />
+    <Compile Include="Assets\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\Binders\AsyncFromBinderBase.cs" />
+    <Compile Include="Assets\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\Binders\AsyncFromBinderGeneric.cs" />
+    <Compile Include="Assets\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\Binders\ConcreteAddressableBinderGeneric.cs" />
+    <Compile Include="Assets\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\Binders\ConcreteAddressableIdBinderGeneric.cs" />
+    <Compile Include="Assets\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\Binders\ConcreteAsyncBinderGeneric.cs" />
+    <Compile Include="Assets\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\Binders\ConcreteAsyncIdBinderGeneric.cs" />
+    <Compile Include="Assets\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\Providers\AddressableProviderSimple.cs" />
+    <Compile Include="Assets\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\Providers\AsyncMethodProviderSimple.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\Extenject-Async.asmdef" />
+    <None Include="Assets\Zenject\Plugins\Zenject\OptionalExtras\Async\Runtime\Extenject-Async.asmdef" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -265,20 +265,20 @@
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2019.4.28f1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Mdb">
-      <HintPath>Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Mdb.dll</HintPath>
-    </Reference>
     <Reference Include="Zenject.ReflectionBaking.Mono.Cecil">
-      <HintPath>Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.dll</HintPath>
+      <HintPath>Assets\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.dll</HintPath>
     </Reference>
-    <Reference Include="Zenject-usage">
-      <HintPath>Assets\Plugins\Zenject\Plugins\Zenject\Source\Usage\Zenject-usage.dll</HintPath>
+    <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Mdb">
+      <HintPath>Assets\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Mdb.dll</HintPath>
     </Reference>
     <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Pdb">
-      <HintPath>Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Pdb.dll</HintPath>
+      <HintPath>Assets\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Pdb.dll</HintPath>
     </Reference>
     <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Rocks">
-      <HintPath>Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Rocks.dll</HintPath>
+      <HintPath>Assets\Zenject\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Rocks.dll</HintPath>
+    </Reference>
+    <Reference Include="Zenject-usage">
+      <HintPath>Assets\Zenject\Plugins\Zenject\Source\Usage\Zenject-usage.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2019.4.28f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>
@@ -633,10 +633,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Zenject.csproj">
-      <Project>{998BD9B2-AA1C-33FF-ED37-92E919B2D973}</Project>
-      <Name>Zenject</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

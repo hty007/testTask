@@ -56,10 +56,10 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\Async\Tests\Async\TestAsync.cs" />
+    <Compile Include="Assets\Zenject\Plugins\Zenject\OptionalExtras\Async\Tests\Async\TestAsync.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Plugins\Zenject\Plugins\Zenject\OptionalExtras\Async\Tests\Extenject-Async-Tests.asmdef" />
+    <None Include="Assets\Zenject\Plugins\Zenject\OptionalExtras\Async\Tests\Extenject-Async-Tests.asmdef" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -249,7 +249,7 @@
       <HintPath>Library\PackageCache\com.unity.ext.nunit@1.0.6\net35\unity-custom\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Zenject-usage">
-      <HintPath>Assets\Plugins\Zenject\Plugins\Zenject\Source\Usage\Zenject-usage.dll</HintPath>
+      <HintPath>Assets\Zenject\Plugins\Zenject\Source\Usage\Zenject-usage.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2019.4.28f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>
