@@ -10,7 +10,7 @@ namespace FlowFree
 {
     public class GameController : IGameController
     {
-        private static readonly string PATH_LEVELS = Path.Combine(Application.streamingAssetsPath + "Levels");
+        private static readonly string PATH_LEVELS = Path.Combine(Application.streamingAssetsPath , "Levels");
 
         private List<string> levelNames = new List<string>();
 
@@ -27,30 +27,28 @@ namespace FlowFree
 
         public async Task FindLevels()
         {
-            var log = Renat.Auto();
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
-                log.Property(nameof(PATH_LEVELS), PATH_LEVELS);
                 DirectoryInfo info = new DirectoryInfo(PATH_LEVELS);
-                log.Property(nameof(info.FullName), info.FullName);
                 var levels = info.GetFiles();
 
                 foreach (var item in levels)
                 {
-                    log.Property(nameof(item.Name), item.Name);
+                    if (item.Extension == ".meta")
+                        continue;
                     var inputs = File.ReadAllLines(item.FullName);
                     Level level = DataHelper.ParseLevel(inputs);
                     if (level == null)
                     {
-                        Debug.LogWarning($"Внимание уровень '{item.Name}' не квадратный!");
+                        var txt = string.Join("\n", inputs);
+                        Debug.LogWarning($"Внимание уровень '{item.Name}' не квадратный!\n{txt}");
                         continue;
                     }
                     level.Name = Path.GetFileNameWithoutExtension(item.Name);
-                    log.Property("level", level.Name);
                     data.AddLevel(level);
+                    await Task.Delay(500);
                 }
             });
-            log.AddText("всё");
             LevelChenge?.Invoke();
         }
     }

@@ -15,17 +15,21 @@ namespace FlowFree
 
         public int this[int i, int j] 
         {
-            get 
+            get
             {
-                if (i < count & j < count)
-                    return cells[i, j];
-                throw new ArgumentOutOfRangeException();
+                if (i >= count | j >= count)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+                return cells[i, j];
             }
             set 
             {
-                if (i < count & j < count)
-                    cells[i, j] = value;
-                throw new ArgumentOutOfRangeException();
+                if (i >= count | j >= count)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+                cells[i, j] = value;
             }
         }
 

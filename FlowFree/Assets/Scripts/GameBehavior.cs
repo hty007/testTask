@@ -1,26 +1,41 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Threading.Tasks;
+using UnityEngine;
 using Zenject;
 
 namespace FlowFree
 {
     public class GameBehavior : MonoBehaviour
     {
+        [SerializeField]
+        private GameObject pleaseHold = null;
+
         private IGameController controller;
 
         private void Start()
         {
             if (controller == null)
             {
-                Debug.Log("controller null");
+                Debug.Log("controller is null");
                 return;
             }
-
-            Debug.Log("GameBehavior start");
-            controller.FindLevels();
-            controller.LevelChenge += OnLevelNamesChenged;
+            controller.LevelChenge += OnLevelChenged;
+            StartCoroutine(LoadLevels());
         }
 
-        private void OnLevelNamesChenged()
+        private IEnumerator LoadLevels()
+        {
+            Task load = controller.FindLevels();
+            yield return new WaitForEndOfFrame();
+            pleaseHold.SetActive(true);
+            while (!load.IsCompleted)
+            {
+                yield return new WaitForEndOfFrame();
+            }
+            pleaseHold.SetActive(false);
+        }
+
+        private void OnLevelChenged()
         {
             var log = Renat.Auto();
             foreach (var item in controller.LevelNames)
