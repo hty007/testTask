@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace FlowFree
@@ -11,5 +10,7 @@ namespace FlowFree
         public void AddLevel(Level level) => levels.Add(level);
 
         public IReadOnlyCollection<string> GetLevelNames() => levels.Select(l => l.Name).ToList();
+
+        internal Level GetLavel(int index) => levels[index];
     }
 }

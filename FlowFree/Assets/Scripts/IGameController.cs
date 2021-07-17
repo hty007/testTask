@@ -8,8 +8,9 @@ namespace FlowFree
     {
         IReadOnlyCollection<string> LevelNames { get; }
 
-        event Action LevelChenge;
+        event Action LevelsLoad;
 
         Task FindLevels();
+        void SetLavel(int v);
     }
 }

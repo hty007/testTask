@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using Zenject;
 
@@ -9,18 +11,14 @@ namespace FlowFree
     {
         [SerializeField]
         private GameObject pleaseHold = null;
+        [SerializeField]
+        private TMP_Dropdown levelSelector = null;
 
         private IGameController controller;
 
-        private void Start()
+        public void SetLavel(int index)
         {
-            if (controller == null)
-            {
-                Debug.Log("controller is null");
-                return;
-            }
-            controller.LevelChenge += OnLevelChenged;
-            StartCoroutine(LoadLevels());
+            controller.SetLavel(index);
         }
 
         private IEnumerator LoadLevels()
@@ -35,13 +33,11 @@ namespace FlowFree
             pleaseHold.SetActive(false);
         }
 
-        private void OnLevelChenged()
+        private void OnLevelLoaded()
         {
-            var log = Renat.Auto();
-            foreach (var item in controller.LevelNames)
-            {
-                log.AddText(item);
-            }
+            levelSelector.ClearOptions();
+            levelSelector.AddOptions(controller.LevelNames.ToList());
+            controller.SetLavel(0);
         }
 
         [Inject]
@@ -50,10 +46,29 @@ namespace FlowFree
             this.controller = controller;
         }
 
+        private void Start()
+        {
+            if (controller == null)
+            {
+                Debug.Log("controller is null");
+                return;
+            }
+            controller.LevelsLoad += OnLevelLoaded;
+            levelSelector.onValueChanged.AddListener(SetLavel);
+            StartCoroutine(LoadLevels());
+        }
+        private void OnDestroy()
+        {
+            controller.LevelsLoad -= OnLevelLoaded;
+            levelSelector.onValueChanged.RemoveListener(SetLavel);
+        }
+
         private void Update()
         {
             Renat.Update();
         }
+
+
     }
 
     #region Debag Renat

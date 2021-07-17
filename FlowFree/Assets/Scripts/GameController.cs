@@ -10,21 +10,23 @@ namespace FlowFree
 {
     public class GameController : IGameController
     {
-        private static readonly string PATH_LEVELS = Path.Combine(Application.streamingAssetsPath , "Levels");
-
+        #region fields
+        private static readonly string PATH_LEVELS = Path.Combine(Application.streamingAssetsPath, "Levels");
         private List<string> levelNames = new List<string>();
-
         private GameData data;
-
-        public GameController(GameData data)
-        {
-            this.data = data;
-        }
-
+        private Level current;
+        #endregion
+        #region ctor
+        public GameController(GameData data) => this.data = data;
+        #endregion
+        #region property and event
         public IReadOnlyCollection<string> LevelNames => data.GetLevelNames();
+        public Level Current => current;
 
-        public event Action LevelChenge;
-
+        public event Action LevelsLoad;
+        public event Action CurrentChange;
+        #endregion
+        #region public methods
         public async Task FindLevels()
         {
             await Task.Run(async () =>
@@ -49,7 +51,17 @@ namespace FlowFree
                     await Task.Delay(500);
                 }
             });
-            LevelChenge?.Invoke();
+            LevelsLoad?.Invoke();
         }
+
+        public void SetLavel(int index)
+        {
+            current = data.GetLavel(index);
+            CurrentChange?.Invoke();
+        }
+        #endregion
+        #region private methods
+
+        #endregion
     }
 }
