@@ -63,9 +63,12 @@
     <Compile Include="Assets\Scripts\GameInstaller.cs" />
     <Compile Include="Assets\Scripts\GamePlacePresenter.cs" />
     <Compile Include="Assets\Scripts\IGameController.cs" />
+    <Compile Include="Assets\Scripts\IPlaceController.cs" />
     <Compile Include="Assets\Scripts\Level.cs" />
     <Compile Include="Assets\Scripts\LoadGameBehavior.cs" />
+    <Compile Include="Assets\Scripts\PlaceController.cs" />
     <Compile Include="Assets\Scripts\Settings.cs" />
+    <Compile Include="Assets\Scripts\TypeLine.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
