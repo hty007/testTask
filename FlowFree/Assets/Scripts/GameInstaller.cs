@@ -1,3 +1,5 @@
+using System;
+using UnityEngine;
 using Zenject;
 
 namespace FlowFree
@@ -9,6 +11,13 @@ namespace FlowFree
             Container.Bind<IGameController>().To<GameController>().AsSingle();
             Container.Bind<GameData>().AsSingle();
 
+            Container.Bind<Settings>().FromMethod(GetSettings);
+
+        }
+
+        private Settings GetSettings()
+        {
+            return GameObject.FindObjectOfType<Settings>();
         }
     }
 }

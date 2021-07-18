@@ -4,7 +4,7 @@ namespace FlowFree
 {
     public class Level
     {
-        private int count;
+        private readonly int count;
         private int[,] cells;
 
         public Level(int count)
@@ -34,5 +34,7 @@ namespace FlowFree
         }
 
         public string Name { get; internal set; }
+
+        public int Count => count;
     }
 }

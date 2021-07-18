@@ -7,7 +7,7 @@ using Zenject;
 
 namespace FlowFree
 {
-    public class GameBehavior : MonoBehaviour
+    public class LoadGameBehavior : MonoBehaviour
     {
         [SerializeField]
         private GameObject pleaseHold = null;
@@ -16,10 +16,7 @@ namespace FlowFree
 
         private IGameController controller;
 
-        public void SetLavel(int index)
-        {
-            controller.SetLavel(index);
-        }
+        public void SetLavel(int index) => controller.SetLavel(index);
 
         private IEnumerator LoadLevels()
         {
@@ -37,14 +34,11 @@ namespace FlowFree
         {
             levelSelector.ClearOptions();
             levelSelector.AddOptions(controller.LevelNames.ToList());
-            controller.SetLavel(0);
+            //controller.SetLavel(0);
         }
 
         [Inject]
-        private void Init(IGameController controller)
-        {
-            this.controller = controller;
-        }
+        private void Init(IGameController controller) => this.controller = controller;
 
         private void Start()
         {
@@ -61,14 +55,10 @@ namespace FlowFree
         {
             controller.LevelsLoad -= OnLevelLoaded;
             levelSelector.onValueChanged.RemoveListener(SetLavel);
+            controller.SetLavel(0);
         }
 
-        private void Update()
-        {
-            Renat.Update();
-        }
-
-
+        private void Update() => Renat.Update();
     }
 
     #region Debag Renat
@@ -270,6 +260,7 @@ namespace FlowFree
             internal void Tick() => Lifetime -= Time.deltaTime;
         }
     }
+
     #endregion
 
 }
