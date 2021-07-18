@@ -11,6 +11,11 @@ namespace FlowFree
 
         public IReadOnlyCollection<string> GetLevelNames() => levels.Select(l => l.Name).ToList();
 
-        internal Level GetLavel(int index) => levels[index];
+        public Level GetLavel(int index)
+        {
+            if (index >= levels.Count)
+                return null;
+            return levels[index];
+        }
     }
 }

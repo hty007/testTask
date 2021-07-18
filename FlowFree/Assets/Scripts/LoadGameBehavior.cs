@@ -27,6 +27,7 @@ namespace FlowFree
             {
                 yield return new WaitForEndOfFrame();
             }
+            controller.SetLavel(0);
             pleaseHold.SetActive(false);
         }
 
@@ -34,7 +35,6 @@ namespace FlowFree
         {
             levelSelector.ClearOptions();
             levelSelector.AddOptions(controller.LevelNames.ToList());
-            //controller.SetLavel(0);
         }
 
         [Inject]
@@ -55,7 +55,7 @@ namespace FlowFree
         {
             controller.LevelsLoad -= OnLevelLoaded;
             levelSelector.onValueChanged.RemoveListener(SetLavel);
-            controller.SetLavel(0);
+            
         }
 
         private void Update() => Renat.Update();
