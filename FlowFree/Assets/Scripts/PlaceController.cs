@@ -37,8 +37,11 @@ namespace FlowFree
             }
             data[pos.x, pos.y] = value;
 
+            Renat.Log($"->Correct: pos {pos}, val {value}");
+
             if (TryLeftVector(pos, out Vector2Int left))
             {
+                Renat.Log($"-->left: {left}");
                 var leftValue = data[left.x, left.y];
                 if (leftValue == value)
                 {
@@ -50,6 +53,7 @@ namespace FlowFree
             if (TryRightVector(pos, out Vector2Int right))
             {
                 var rightValue = data[right.x, right.y];
+                Renat.Log($"-->right: {right}, rightValue: {rightValue}");
                 if (rightValue == value)
                 {
                     SendUpdate(right, TypeLine.Left);
@@ -60,6 +64,7 @@ namespace FlowFree
             if (TryTopVector(pos, out Vector2Int top))
             {
                 var topValue = data[top.x, top.y];
+                Renat.Log($"-->top: {top}, topValue: {topValue}");
                 if (topValue == value)
                 {
                     SendUpdate(top, TypeLine.Bottom);
@@ -70,6 +75,7 @@ namespace FlowFree
             if (TryBottomVector(pos, out Vector2Int bottom))
             {
                 var bottomValue = data[bottom.x, bottom.y];
+                Renat.Log($"-->bottom: {bottom}, bottomValue: {bottomValue}");
                 if (bottomValue == value)
                 {
                     SendUpdate(bottom, TypeLine.Top);
@@ -89,11 +95,12 @@ namespace FlowFree
         private bool TryVector(Vector2Int pos, int x, int y, out Vector2Int vector)
         {
             vector = new Vector2Int(pos.x + x, pos.y + y);
-            return vector.x > 0 && vector.x < Count && vector.y > 0 && vector.y < Count; 
+            return vector.x >= 0 && vector.x < Count && vector.y >= 0 && vector.y < Count; 
         }
 
         private void SendUpdate(Vector2Int pos, TypeLine type)
         {
+            Renat.Log($"->SendUpdate: {pos}, {type}");
             listeners[pos].Invoke(type, true);
         }
 

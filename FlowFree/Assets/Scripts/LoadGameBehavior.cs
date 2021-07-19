@@ -72,6 +72,20 @@ namespace FlowFree
             return $"<a href=\"{sourceFilePath}\" line=\"{sourceLineNumber}\">{content}</a>";
         }
 
+        public static void Log(string message, 
+            [System.Runtime.CompilerServices.CallerMemberName] string memberName = "",
+            [System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "",
+            [System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
+        {
+            if (autoCollect.Count == 0)
+            {
+                var log = CreateLog(memberName, sourceFilePath, sourceLineNumber);
+                autoCollect.Add(log);
+                log.SetTime();
+            }
+            autoCollect[0].Add(message, memberName, sourceFilePath, sourceLineNumber);
+        }   
+
         public static void Message(GameObject gameObject = null,
             [System.Runtime.CompilerServices.CallerMemberName] string memberName = "",
             [System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "",

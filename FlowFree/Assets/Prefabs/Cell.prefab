@@ -94,10 +94,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e630d76c3a3bc34c8d427163f9c461b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collider: {fileID: 4533131409729547798}
   center: {fileID: 991536960865953537}
   top: {fileID: 2690315436086709397}
-  bottom: {fileID: 991536960865953537}
+  bottom: {fileID: 6057091342526964204}
   right: {fileID: 1951346124384633009}
   left: {fileID: 4768432553289585504}
 --- !u!61 &4533131409729547798

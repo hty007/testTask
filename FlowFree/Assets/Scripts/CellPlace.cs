@@ -58,9 +58,10 @@ namespace FlowFree
         {
             if (isMove)
             {
+                Renat.Log($"CellPlace -> Enter: {IndexX}, {IndexY}, {Value}");
                 Value = moveValue;
-                controller.Correct(new Vector2Int(IndexX, IndexY), Value);
-                Debug.Log($"{IndexX}, {IndexY}, {Value}");
+                if (!IsStatic)
+                    controller.Correct(new Vector2Int(IndexX, IndexY), Value);
             }
         }
 
@@ -81,18 +82,24 @@ namespace FlowFree
 
         private void ChengeAciveLine(TypeLine line, bool isActive)
         {
+            Renat.Log($"---->ChengeAciveLine: {line}, {isActive}");
+
             switch (line)
             {
                 case TypeLine.Top:
+                    top.color = settings.GetColor(Value);
                     top.gameObject.SetActive(isActive);
                     break;
                 case TypeLine.Right:
+                    right.color = settings.GetColor(Value);
                     right.gameObject.SetActive(isActive);
                     break;
                 case TypeLine.Bottom:
+                    bottom.color = settings.GetColor(Value);
                     bottom.gameObject.SetActive(isActive);
                     break;
                 case TypeLine.Left:
+                    left.color = settings.GetColor(Value);
                     left.gameObject.SetActive(isActive);
                     break;
                 case TypeLine.Reset:
