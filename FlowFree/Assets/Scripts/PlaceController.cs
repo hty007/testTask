@@ -41,22 +41,23 @@ namespace FlowFree
 
         public void BeginLine(Vector2Int pos)
         {
-            var log = Renat.Auto();
-            log.AddText($"BeginLine {pos}");
             // Начало движения
             var cell = data[pos.x, pos.y];
             // Ячейка должнеа быть закрашена
             if (!cell.IsEmpty)
             { // Ячейка не пустая можно двигатся
+                Renat.Log($"BeginLine: {pos}");
                 canMove = true;
                 if (!lines.ContainsKey(cell.color))
                 {
                     lines.Add(cell.color, new Stack<Cell>());
                 }
+                Renat.Log($"lines.Count: {lines.Count}");
 
                 line = lines[cell.color];
                 if (cell.isRoot)
                 {
+                    Renat.Log($"cell.isRoot: {cell.isRoot}");
                     if (line.Count == 0)
                     {
                         line.Push(cell);
@@ -67,7 +68,9 @@ namespace FlowFree
                         {
                             DoEmpty(item);
                         }
+                        line.Clear();
                     }
+                    Renat.Log($"line.Count: {line.Count}");
                 }
                 else
                 {
@@ -95,9 +98,7 @@ namespace FlowFree
             if (!canMove)
                 return;
 
-            var log = Renat.Auto();
-            log.AddText($"Move {pos}");
-
+            Renat.Log($"Move {pos}");
             var cell = data[pos.x, pos.y];
 
             if (line.Count == 0 && cell.isRoot)
@@ -112,7 +113,7 @@ namespace FlowFree
             }
 
             Cell back = line.Peek();
-            log.Property("back", back.position);
+            Renat.Log($"back: {back.position}");
             if (Vector2Int.Distance(cell.position, back.position) != 1)
             {
                 // Движение произошло по диоганали
@@ -120,7 +121,7 @@ namespace FlowFree
             }
             else if (cell.IsEmpty)// Пустая ячейка
             {
-                log.AddText("IsEmpty");
+                Renat.Log($"IsEmpty");
                 AddCell(cell, back);
             }
             else if (!cell.IsEmpty)// Заполненая ячейка
@@ -130,11 +131,12 @@ namespace FlowFree
                     if (cell.isRoot)
                     {
                         //Цель достигнута
+                        Renat.Log($"Finish");
                         Connect(cell, back);
                     }
                     else
                     { //  cell уже есть в line обрезать line по cell
-                        log.Add("Ячейка не пустая, цвет совподает");
+                        Renat.Log("Ячейка не пустая, цвет совподает");
                         var empty = line.Pop();
                         while (empty != cell)
                         {
@@ -148,14 +150,14 @@ namespace FlowFree
                         DoEmpty(cell);
 
                         AddCell(cell, back);
-
-                        log.Property("line.Count", line.Count);
+                        Renat.Log($"line.Count {line.Count}");
                     }
                 }
                 else// Цвет не совподает
                 {
                     if (cell.isRoot)
                     {
+                        Renat.Log($"isRoot not color");
                         foreach (var item in line)
                         {
                             DoEmpty(item);
@@ -163,6 +165,7 @@ namespace FlowFree
                     }
                     else
                     {
+                        Renat.Log($" not color");
                         var line2 = lines[cell.color];
                         var empty = line2.Peek();
                         while (empty != cell)
@@ -170,7 +173,6 @@ namespace FlowFree
                             if (line2.Count == 1)
                                 continue;
                             empty = line2.Pop();
-                            log.AddText($"Стираю {empty.position} [{empty.color}]");
                             DoEmpty(empty);
                         }
 
