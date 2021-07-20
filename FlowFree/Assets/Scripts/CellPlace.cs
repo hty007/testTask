@@ -63,13 +63,17 @@ namespace FlowFree
                     center.color = color;
                     center.gameObject.SetActive(true);
                     break;
+                case TypeAction.CenterOff:
+                    center.color = color;
+                    center.gameObject.SetActive(false);
+                    break;
                 case TypeAction.Reset:
 
                     top.gameObject.SetActive(false);
                     right.gameObject.SetActive(false);
                     bottom.gameObject.SetActive(false);
                     left.gameObject.SetActive(false);
-                    center.gameObject.SetActive(false);
+                    // center.gameObject.SetActive(false);
                     
                     break;
                 default:

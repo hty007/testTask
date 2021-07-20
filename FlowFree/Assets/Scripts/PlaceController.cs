@@ -34,6 +34,9 @@ namespace FlowFree
             RunAction(cell, TypeAction.Reset);
             if (cell.isRoot)
                 RunAction(cell, TypeAction.Center);
+            else
+                RunAction(cell, TypeAction.CenterOff);
+
         }
 
         public void BeginLine(Vector2Int pos)
@@ -52,12 +55,29 @@ namespace FlowFree
                 }
 
                 line = lines[cell.color];
-                
+                if (cell.isRoot)
+                {
+                    if (line.Count == 0)
+                    {
+                        line.Push(cell);
+                    }
+                    else
+                    {
+                        foreach (var item in line)
+                        {
+                            DoEmpty(item);
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.Log("Продолжение движения?");
+                }
             }
-            else
-            {
-                Renat.Log("Ячейка пустая");
-            }
+            //else
+            //{
+            //    Renat.Log("Ячейка пустая");
+            //}
         }
 
         public void EndLine(Vector2Int pos)
@@ -80,13 +100,19 @@ namespace FlowFree
 
             var cell = data[pos.x, pos.y];
 
-            if (line.Count == 0 && cell.isRoot) 
+            if (line.Count == 0 && cell.isRoot)
             {
                 line.Push(cell);
                 return;
             }
+            if (line.Count == 0)
+            {
+                Debug.LogWarning("Движение слишком быстрое!");
+                return;
+            }
 
             Cell back = line.Peek();
+            log.Property("back", back.position);
             if (Vector2Int.Distance(cell.position, back.position) != 1)
             {
                 // Движение произошло по диоганали
@@ -94,9 +120,8 @@ namespace FlowFree
             }
             else if (cell.IsEmpty)// Пустая ячейка
             {
-                line.Push(cell);
-                cell.color = back.color;
-                Connect(cell, back);
+                log.AddText("IsEmpty");
+                AddCell(cell, back);
             }
             else if (!cell.IsEmpty)// Заполненая ячейка
             {
@@ -109,39 +134,77 @@ namespace FlowFree
                     }
                     else
                     { //  cell уже есть в line обрезать line по cell
-                        log.AddText("Ячейка не пустая, цвет совподает");
+                        log.Add("Ячейка не пустая, цвет совподает");
                         var empty = line.Pop();
                         while (empty != cell)
                         {
-                            DoEmpty(empty);
-                            back = line.Peek();
+                            DoEmpty(empty);                            
+                            empty = line.Pop();
+                            if (line.Count == 1)
+                                break;
                         }
 
-                        Connect(cell, back);
+                        back = line.Peek();
+                        DoEmpty(cell);
+
+                        AddCell(cell, back);
+
+                        log.Property("line.Count", line.Count);
                     }
                 }
                 else// Цвет не совподает
                 {
-                    // очистить старый цвет
+                    if (cell.isRoot)
+                    {
+                        foreach (var item in line)
+                        {
+                            DoEmpty(item);
+                        }
+                    }
+                    else
+                    {
+                        var line2 = lines[cell.color];
+                        var empty = line2.Peek();
+                        while (empty != cell)
+                        {
+                            if (line2.Count == 1)
+                                continue;
+                            empty = line2.Pop();
+                            log.AddText($"Стираю {empty.position} [{empty.color}]");
+                            DoEmpty(empty);
+                        }
+
+                        // Todo:  line2 [c]x[b]-[b]
+
+                        cell.color = back.color;
+                        Connect(cell, back);
+                    }
                 }
             }
-            else if (cell.isRoot)// Другая неизменная ячейка
-            {
-                if (back.color == cell.color) // Цвет совподает
-                {
-                    Connect(cell, back);
-                }
-                else// Цвет не совподает
-                {
-                    // ломаем всю линию?
-                }
-            }
+            //else if (cell.isRoot)// Другая неизменная ячейка
+            //{
+            //    if (back.color == cell.color) // Цвет совподает
+            //    {
+            //        Connect(cell, back);
+            //    }
+            //    else// Цвет не совподает
+            //    {
+            //        // ломаем всю линию?
+            //    }
+            //}
+        }
 
-
+        private void AddCell(Cell cell, Cell back)
+        {
+            line.Push(cell);
+            cell.color = back.color;
+            Connect(cell, back);
         }
 
         private void DoEmpty(Cell empty)
         {
+            if (!empty.isRoot)
+                empty.color = 0;
             empty.Invoke(TypeAction.Reset, Color.white);
         }
 

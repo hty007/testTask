@@ -8,5 +8,6 @@
         Left,
         Reset,
         Center,
+        CenterOff,
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
@@ -256,6 +257,7 @@ namespace FlowFree
             internal void Property(string key, int value) => Property(key, value.ToString());
             internal void Property(string key, double value) => Property(key, value.ToString());
             internal void Property(string key, float value) => Property(key, value.ToString());
+            internal void Property(string key, Vector2Int value) => Property(key, value.ToString());
 
             internal void Send(int count)
             {

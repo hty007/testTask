@@ -29,7 +29,7 @@ namespace FlowFree
         #region public methods
         public async Task FindLevels()
         {
-            await Task.Run(async () =>
+            await Task.Run(() =>
             {
                 DirectoryInfo info = new DirectoryInfo(PATH_LEVELS);
                 var levels = info.GetFiles();
