@@ -2,7 +2,7 @@
 
 namespace FlowFree
 {
-    public class Settings : MonoBehaviour
+    public class Settings : MonoBehaviour, ISettings
     {
         private readonly Color DEFAULT_COLOR = Color.white;
         [SerializeField]
@@ -11,7 +11,7 @@ namespace FlowFree
         public Color GetColor(int number)
         {
             var index = number - 1;
-            if (colors.Length <= index)
+            if (colors.Length <= index || index < 0)
                 return DEFAULT_COLOR;
             return colors[index];
         }

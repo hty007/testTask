@@ -48,7 +48,6 @@ namespace FlowFree
                     }
                     level.Name = Path.GetFileNameWithoutExtension(item.Name);
                     data.AddLevel(level);
-                    await Task.Delay(500);
                 }
             });
             LevelsLoad?.Invoke();

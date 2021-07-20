@@ -1,17 +1,13 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace FlowFree
 {
+    // This view
     public class CellPlace : MonoBehaviour
     {
-        public static Settings settings;
-        private static bool isMove;
-        private static int moveValue;
-
-        //[SerializeField]
-        //private Collider2D collider = null;
         [SerializeField]
         private Image center = null;
         [SerializeField]
@@ -25,91 +21,56 @@ namespace FlowFree
         private Renat.RenatLog log;
         internal static IPlaceController controller;
 
-        public int IndexX { get; private set; }
+        public Vector2Int Position { get; private set; }
         public int IndexY { get; private set; }
-        public int Value { get; private set; }
-        public bool IsStatic { get; private set; } = false;
 
-        public void SetPosition(int i, int j)
-        {
-            IndexX = i;
-            IndexY = j;
-        }
+        public void SetPosition(Vector2Int pos) => Position = pos;
 
-        public void SetValue(int value)
-        {
-            Value = value;
-            IsStatic = true;
-            // controller.Correct(new Vector2Int(IndexX, IndexY), Value);
-        }
+        public void OnMouseDown() => controller.BeginLine(Position);
 
-        public void OnMouseDown()
-        {
-            if (IsStatic)
-            {
-                isMove = true;
-                moveValue = Value;
-            }
-        }
+        public void OnMouseUp() => controller.EndLine(Position);
 
-        public void OnMouseUp() => isMove = false;
-
-        public void OnMouseEnter()
-        {
-            if (isMove)
-            {
-                Renat.Log($"CellPlace -> Enter: {IndexX}, {IndexY}, {Value}");
-                Value = moveValue;
-                if (!IsStatic)
-                    controller.Correct(new Vector2Int(IndexX, IndexY), Value);
-            }
-        }
+        public void OnMouseEnter() => controller.Move(Position);
 
         private void Start()
         {
-            if (Value != 0)
-            {
-                center.gameObject.SetActive(true);
-                center.color = settings.GetColor(Value);
-            }
-            else
-            { 
-                center.gameObject.SetActive(false);
-            }
-            controller.AddListener(new Vector2Int(IndexX, IndexY), ChengeAciveLine);
-
+            controller.AddListener(Position, RunAction);
         }
 
-        private void ChengeAciveLine(TypeLine line, bool isActive)
+        private void RunAction(TypeAction line, Color color)
         {
-            Renat.Log($"---->ChengeAciveLine: {line}, {isActive}");
+            // Renat.Log($"RunAction:{Position}, {line}, {color}");
 
             switch (line)
             {
-                case TypeLine.Top:
-                    top.color = settings.GetColor(Value);
-                    top.gameObject.SetActive(isActive);
+                case TypeAction.Top:
+                    top.color = color;
+                    top.gameObject.SetActive(true);
                     break;
-                case TypeLine.Right:
-                    right.color = settings.GetColor(Value);
-                    right.gameObject.SetActive(isActive);
+                case TypeAction.Right:
+                    right.color = color;
+                    right.gameObject.SetActive(true);
                     break;
-                case TypeLine.Bottom:
-                    bottom.color = settings.GetColor(Value);
-                    bottom.gameObject.SetActive(isActive);
+                case TypeAction.Bottom:
+                    bottom.color = color;
+                    bottom.gameObject.SetActive(true);
                     break;
-                case TypeLine.Left:
-                    left.color = settings.GetColor(Value);
-                    left.gameObject.SetActive(isActive);
+                case TypeAction.Left:
+                    left.color = color;
+                    left.gameObject.SetActive(true);
                     break;
-                case TypeLine.Reset:
+                case TypeAction.Center:
+                    center.color = color;
+                    center.gameObject.SetActive(true);
+                    break;
+                case TypeAction.Reset:
 
                     top.gameObject.SetActive(false);
                     right.gameObject.SetActive(false);
                     bottom.gameObject.SetActive(false);
                     left.gameObject.SetActive(false);
-                    if(!IsStatic)
-                        Value = 0;
+                    center.gameObject.SetActive(false);
+                    
                     break;
                 default:
                     break;

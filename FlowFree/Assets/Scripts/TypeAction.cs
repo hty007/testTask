@@ -1,11 +1,12 @@
 ﻿namespace FlowFree
 {
-    public enum TypeLine
+    public enum TypeAction
     { 
         Top,
         Right,
         Bottom,
         Left,
         Reset,
+        Center,
     }
 }

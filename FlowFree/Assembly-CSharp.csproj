@@ -63,11 +63,12 @@
      <Compile Include="Assets\Scripts\GamePlacePresenter.cs" />
      <Compile Include="Assets\Scripts\IGameController.cs" />
      <Compile Include="Assets\Scripts\IPlaceController.cs" />
+     <Compile Include="Assets\Scripts\ISettings.cs" />
      <Compile Include="Assets\Scripts\Level.cs" />
      <Compile Include="Assets\Scripts\LoadGameBehavior.cs" />
      <Compile Include="Assets\Scripts\PlaceController.cs" />
      <Compile Include="Assets\Scripts\Settings.cs" />
-     <Compile Include="Assets\Scripts\TypeLine.cs" />
+     <Compile Include="Assets\Scripts\TypeAction.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

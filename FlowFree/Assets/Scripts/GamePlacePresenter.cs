@@ -14,6 +14,7 @@ namespace FlowFree
         [SerializeField]
         private CellPlace cellPrefab = null;
         private IGameController game;
+        private ISettings settings;
         private IPlaceController place;
         private GridLayoutGroup gridLayout;
         private List<CellPlace> cells;
@@ -26,6 +27,7 @@ namespace FlowFree
 
             // установка размера ячеек
             Level level = game.Current;
+            Renat.Log($"Fill {level.Count}");
             int count = level.Count;
             float height = root.rect.height;
             root.sizeDelta = new Vector2(height, 0);
@@ -35,8 +37,8 @@ namespace FlowFree
             float cellHeight = ((height - padding.top - padding.bottom) / count) - spacing.y;
             gridLayout.cellSize = new Vector2(cellHeight, cellHeight);
 
-            // Todo костыль убрать обязательно
-            CellPlace.controller.SetCount(count);
+            //// Todo костыль убрать обязательно
+            //CellPlace.controller.SetCount(count);
 
             // Создание новых ячеек
             for (int j = 0; j < count; j++)
@@ -45,10 +47,10 @@ namespace FlowFree
                 {
                     // TODO: in factory
                     var cell = Instantiate<CellPlace>(cellPrefab, root);
-                    cell.SetPosition(i, j);
+                    cell.SetPosition(new Vector2Int(i, j));
 
-                    if (level[i, j] != 0)
-                        cell.SetValue(level[i, j]);
+                    //if (level[i, j] != 0)
+                    //    cell.SetValue(level[i, j]);
                     
                     cells.Add(cell);
                 }
@@ -56,24 +58,25 @@ namespace FlowFree
         }
 
         [Inject]
-        private void Init(IGameController game, /*IPlaceController place,*/ Settings settings)
+        private void Init(IGameController game,  IPlaceController place)
         {
             this.game = game;
-            // this.place = place;
+
             // TODO move to factory
-            CellPlace.settings = settings;
-            //CellPlace.controller = place;
+            this.place = place;
         }
 
         private void Start()
         {
+
             cells = new List<CellPlace>();
             game.CurrentChange += Fill;
 
             var height = root.rect.size.y;
             root.sizeDelta = new Vector2(height, 0);
 
-            CellPlace.controller = new PlaceController(game);
+            // Todo cell factory
+            CellPlace.controller = place;
 
             gridLayout = GetComponent<GridLayoutGroup>();
         }

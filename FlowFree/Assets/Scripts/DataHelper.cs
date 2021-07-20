@@ -9,20 +9,20 @@ namespace FlowFree
             int count = inputs.Length;
             Level level = new Level(count);
 
-            for (int i = 0; i < inputs.Length; i++)
+            for (int y = 0; y < inputs.Length; y++)
             {
-                string input = inputs[i];
+                string input = inputs[y];
                 string[] cells = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                 if (cells.Length != count)
                 {
                     return null;
                 }
-                for (int j = 0; j < cells.Length; j++)
+                for (int x = 0; x < cells.Length; x++)
                 {
-                    if (int.TryParse(cells[j], out int value))
+                    if (int.TryParse(cells[x], out int value))
                     {
-                        level[i, j] = value;
+                        level[x, y] = value;
                     }
                 }
             }

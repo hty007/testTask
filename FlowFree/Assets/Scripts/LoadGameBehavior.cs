@@ -198,14 +198,13 @@ namespace FlowFree
 
             private System.Text.StringBuilder builder;
 
-            private void AddTime(float time = 0.5f) => Lifetime += time;
+            public void AddTime(float time = 0.5f) => Lifetime += time;
 
-            internal void SetTime(float time = 1f) => Lifetime = time;
+            public void SetTime(float time = 1f) => Lifetime = time;
 
             public void AddText(string text)
             {
                 builder.AppendLine(text);
-                AddTime();
             }
 
             public void Add(string message,
@@ -216,7 +215,6 @@ namespace FlowFree
                 builder.Append(message);
                 builder.Append(" | ");
                 builder.AppendLine(CreateLink(sourceFilePath, sourceLineNumber, "link"));
-                AddTime();
             }
 
             public void Send(GameObject gameObject = null)
@@ -241,7 +239,6 @@ namespace FlowFree
                 builder.AppendLine($":");
                 builder.AppendLine(ex.Message);
                 //builder.AppendLine(ex.StackTrace);
-                SetTime();
 
             }
 
@@ -250,7 +247,6 @@ namespace FlowFree
                 builder.Append(key);
                 builder.Append(": ");
                 builder.AppendLine(value);
-                AddTime(0);
             }
 
             internal void Space() => builder.AppendLine();
