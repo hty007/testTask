@@ -11,6 +11,8 @@ namespace FlowFree
     public class LoadGameBehavior : MonoBehaviour
     {
         [SerializeField]
+        private Button exitTopMenu = null;
+        [SerializeField]
         private GameObject pleaseHold = null;
         [SerializeField]
         private Dropdown levelSelector = null;
@@ -82,6 +84,7 @@ namespace FlowFree
             nextLevelButton.onClick.AddListener(NextLevelClick);
             repeatLevel.onClick.AddListener(RepeatLevelClick);
             exit.onClick.AddListener(ExitClick);
+            exitTopMenu.onClick.AddListener(ExitClick);
 
         }
 
