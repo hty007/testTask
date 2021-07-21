@@ -113,5 +113,13 @@ namespace FlowFree
             levelSelector.onValueChanged.RemoveListener(SetLavel);
             
         }
+
+        private void Update()
+        {
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
+        }
     }
 }

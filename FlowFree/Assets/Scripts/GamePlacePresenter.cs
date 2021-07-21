@@ -27,7 +27,6 @@ namespace FlowFree
 
             // установка размера ячеек
             Level level = game.Current;
-            Renat.Log($"Fill {level.Count}");
             int count = level.Count;
             float height = root.rect.height;
             root.sizeDelta = new Vector2(height, 0);
