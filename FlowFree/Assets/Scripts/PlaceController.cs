@@ -109,6 +109,7 @@ namespace FlowFree
             if (line.Count == 0)
             {
                 Debug.LogWarning("Движение слишком быстрое!");
+                canMove = false;
                 return;
             }
 
@@ -116,7 +117,8 @@ namespace FlowFree
             Renat.Log($"back: {back}");
             if (Vector2Int.Distance(cell.position, back.position) != 1)
             {
-                // Движение произошло по диоганали
+                Debug.LogWarning("Движение произошло по диоганали!");
+                canMove = false;
                 return;
             }
             else if (cell.IsEmpty)// Пустая ячейка
@@ -157,10 +159,15 @@ namespace FlowFree
                     }
                     else 
                     {
-                        //Цель достигнута
-
-                        Renat.Log($"Finish");
                         AddCell(cell, back);
+
+                        if (cell.isRoot)
+                        {
+                            //Цель достигнута
+                            Renat.Log($"Finish");
+
+                            UpdateStatus(); 
+                        }
                     }
                 }
                 else// Цвет не совподает
@@ -214,17 +221,11 @@ namespace FlowFree
                     }
                 }
             }
-            //else if (cell.isRoot)// Другая неизменная ячейка
-            //{
-            //    if (back.color == cell.color) // Цвет совподает
-            //    {
-            //        Connect(cell, back);
-            //    }
-            //    else// Цвет не совподает
-            //    {
-            //        // ломаем всю линию?
-            //    }
-            //}
+        }
+
+        private void UpdateStatus()
+        {
+            throw new NotImplementedException();
         }
 
         private void AddCell(Cell cell, Cell back)
