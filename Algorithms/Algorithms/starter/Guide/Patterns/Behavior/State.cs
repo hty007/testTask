@@ -21,7 +21,7 @@ namespace sterter.Guide.Patterns.Behavior
 {
     class Program
     {
-        static void Main()
+        static void m_Main()
         {
             Context_State context = new Context_State(new StateA());
             context.Request(); // Переход в состояние StateB
