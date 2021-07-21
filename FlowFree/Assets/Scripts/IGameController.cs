@@ -11,8 +11,10 @@ namespace FlowFree
 
         event Action LevelsLoad;
         event Action CurrentChange;
+        event Action NextLevelLoad;
 
         Task FindLevels();
         void SetLavel(int v);
+        void CurrentLevelCompalete();
     }
 }

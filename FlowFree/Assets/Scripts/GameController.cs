@@ -24,9 +24,15 @@ namespace FlowFree
         public Level Current => current;
 
         public event Action LevelsLoad;
+        public event Action NextLevelLoad;
         public event Action CurrentChange;
         #endregion
         #region public methods
+        public void CurrentLevelCompalete()
+        {
+            NextLevelLoad?.Invoke();
+        }
+
         public async Task FindLevels()
         {
             await Task.Run(() =>

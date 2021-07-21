@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
-using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace FlowFree
@@ -13,9 +13,21 @@ namespace FlowFree
         [SerializeField]
         private GameObject pleaseHold = null;
         [SerializeField]
-        private TMP_Dropdown levelSelector = null;
+        private Dropdown levelSelector = null;
+
+        [Header("Next Level")]
+        [SerializeField]
+        private GameObject nextLevelPanel = null;
+        [SerializeField]
+        private Button nextLevelButton = null;
+        [SerializeField]
+        private Button repeatLevel = null;
+        [SerializeField]
+        private Button exit = null;
 
         private IGameController controller;
+        private ISettings settings;
+        private int currentIndexLevel;
 
         public void SetLavel(int index) => controller.SetLavel(index);
 
@@ -28,7 +40,8 @@ namespace FlowFree
             {
                 yield return new WaitForEndOfFrame();
             }
-            controller.SetLavel(0);
+            currentIndexLevel = 0;
+            controller.SetLavel(currentIndexLevel);
             pleaseHold.SetActive(false);
         }
 
@@ -39,7 +52,11 @@ namespace FlowFree
         }
 
         [Inject]
-        private void Init(IGameController controller) => this.controller = controller;
+        private void Init(IGameController controller, ISettings settings)
+        {
+            this.controller = controller;
+            this.settings = settings;
+        }
 
         private void Start()
         {
@@ -48,10 +65,48 @@ namespace FlowFree
                 Debug.Log("controller is null");
                 return;
             }
-            controller.LevelsLoad += OnLevelLoaded;
+
+            levelSelector.gameObject.SetActive(settings.SelectLavel);
+            if (settings.SelectLavel)
+            {
+                controller.LevelsLoad += OnLevelLoaded;
+            }
+
+            controller.NextLevelLoad += OnNextLevelLoad;
             levelSelector.onValueChanged.AddListener(SetLavel);
             StartCoroutine(LoadLevels());
+
+            pleaseHold.SetActive(false);
+            nextLevelPanel.SetActive(false);
+
+            nextLevelButton.onClick.AddListener(NextLevelClick);
+            repeatLevel.onClick.AddListener(RepeatLevelClick);
+            exit.onClick.AddListener(ExitClick);
+
         }
+
+        private void ExitClick()
+        {
+            Application.Quit();
+        }
+
+        private void OnNextLevelLoad()
+        {
+            nextLevelPanel.SetActive(true);
+        }
+
+        private void RepeatLevelClick()
+        {
+            controller.SetLavel(currentIndexLevel);
+            nextLevelPanel.SetActive(false);
+        }
+
+        private void NextLevelClick()
+        {
+            controller.SetLavel(++currentIndexLevel);
+            nextLevelPanel.SetActive(false);
+        }
+
         private void OnDestroy()
         {
             controller.LevelsLoad -= OnLevelLoaded;

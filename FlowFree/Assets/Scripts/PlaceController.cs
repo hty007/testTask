@@ -225,7 +225,26 @@ namespace FlowFree
 
         private void UpdateStatus()
         {
-            throw new NotImplementedException();
+            bool lavelCompleted = true;
+            foreach (var line in lines)
+            {
+                if (line.Value.Count < 2)
+                {
+                    lavelCompleted = false;
+                }
+                else
+                {
+                    var first = line.Value.First();
+                    var last = line.Value.Last();
+                    if (!first.isRoot || !last.isRoot)
+                    {
+                        lavelCompleted = false;
+                    }
+                }
+
+            }
+            if (lavelCompleted)
+                game.CurrentLevelCompalete();
         }
 
         private void AddCell(Cell cell, Cell back)
@@ -294,6 +313,13 @@ namespace FlowFree
                     var value = level[i, j];
                     var cell = new Cell(value, new Vector2Int(i, j));
                     data[i, j] = cell;
+                    if (cell.Color != 0)
+                    { 
+                        if (!lines.ContainsKey(cell.Color))
+                        {
+                            lines.Add(cell.Color, new Stack<Cell>());
+                        }
+                    }
                 }
             }
         }
