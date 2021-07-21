@@ -4,3 +4,5 @@ https://play.google.com/store/apps/details?id=com.bigduckgames.flow&hl=en&gl=US
 
 
 Сделел на Unity 2019.4.28f1.
+
+Пытался сделать максимально близко к MVC
