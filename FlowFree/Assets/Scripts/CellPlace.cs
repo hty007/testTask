@@ -18,7 +18,6 @@ namespace FlowFree
         private Image right = null;
         [SerializeField]
         private Image left = null;
-        private Renat.RenatLog log;
         internal static IPlaceController controller;
 
         public Vector2Int Position { get; private set; }
@@ -39,8 +38,6 @@ namespace FlowFree
 
         private void RunAction(TypeAction line, Color color)
         {
-            // Renat.Log($"RunAction:{Position}, {line}, {color}");
-
             switch (line)
             {
                 case TypeAction.Top:
@@ -73,7 +70,6 @@ namespace FlowFree
                     right.gameObject.SetActive(false);
                     bottom.gameObject.SetActive(false);
                     left.gameObject.SetActive(false);
-                    // center.gameObject.SetActive(false);
                     
                     break;
                 default:

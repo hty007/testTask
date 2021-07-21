@@ -37,9 +37,6 @@ namespace FlowFree
             float cellHeight = ((height - padding.top - padding.bottom) / count) - spacing.y;
             gridLayout.cellSize = new Vector2(cellHeight, cellHeight);
 
-            //// Todo костыль убрать обязательно
-            //CellPlace.controller.SetCount(count);
-
             // Создание новых ячеек
             for (int j = 0; j < count; j++)
             {
@@ -48,10 +45,6 @@ namespace FlowFree
                     // TODO: in factory
                     var cell = Instantiate<CellPlace>(cellPrefab, root);
                     cell.SetPosition(new Vector2Int(i, j));
-
-                    //if (level[i, j] != 0)
-                    //    cell.SetValue(level[i, j]);
-                    
                     cells.Add(cell);
                 }
             }
