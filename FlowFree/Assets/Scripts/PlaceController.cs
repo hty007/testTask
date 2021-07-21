@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace FlowFree
@@ -46,18 +47,18 @@ namespace FlowFree
             // Ячейка должнеа быть закрашена
             if (!cell.IsEmpty)
             { // Ячейка не пустая можно двигатся
-                Renat.Log($"BeginLine: {pos}");
+                Renat.Log($"===>BeginLine: {cell}");
                 canMove = true;
-                if (!lines.ContainsKey(cell.color))
+                if (!lines.ContainsKey(cell.Color))
                 {
-                    lines.Add(cell.color, new Stack<Cell>());
+                    lines.Add(cell.Color, new Stack<Cell>());
                 }
                 Renat.Log($"lines.Count: {lines.Count}");
 
-                line = lines[cell.color];
+                line = lines[cell.Color];
                 if (cell.isRoot)
                 {
-                    Renat.Log($"cell.isRoot: {cell.isRoot}");
+                    Renat.Log($"cell.isRoot: {cell}");
                     if (line.Count == 0)
                     {
                         line.Push(cell);
@@ -72,10 +73,10 @@ namespace FlowFree
                     }
                     Renat.Log($"line.Count: {line.Count}");
                 }
-                else
-                {
-                    Debug.Log("Продолжение движения?");
-                }
+                //else
+                //{
+                //    Debug.Log("Продолжение движения?");
+                //}
             }
             //else
             //{
@@ -85,11 +86,10 @@ namespace FlowFree
 
         public void EndLine(Vector2Int pos)
         {
-            var log = Renat.Auto(); 
-            log.AddText($"EndLine {pos}");
+            Renat.Log($"===>EndLine {pos}");
             canMove = false;
 
-            log.Property("count", line.Count);
+            Renat.Log($"count: {line.Count}");
         }
 
         public void Move(Vector2Int pos)
@@ -98,8 +98,8 @@ namespace FlowFree
             if (!canMove)
                 return;
 
-            Renat.Log($"Move {pos}");
             var cell = data[pos.x, pos.y];
+            Renat.Log($"===>Move {cell}");
 
             if (line.Count == 0 && cell.isRoot)
             {
@@ -113,7 +113,7 @@ namespace FlowFree
             }
 
             Cell back = line.Peek();
-            Renat.Log($"back: {back.position}");
+            Renat.Log($"back: {back}");
             if (Vector2Int.Distance(cell.position, back.position) != 1)
             {
                 // Движение произошло по диоганали
@@ -121,36 +121,46 @@ namespace FlowFree
             }
             else if (cell.IsEmpty)// Пустая ячейка
             {
-                Renat.Log($"IsEmpty");
                 AddCell(cell, back);
             }
             else if (!cell.IsEmpty)// Заполненая ячейка
             {
-                if (back.color == cell.color) // Цвет совподает
+                if (back.Color == cell.Color) // Цвет совподает
                 {
-                    if (cell.isRoot)
-                    {
-                        //Цель достигнута
-                        Renat.Log($"Finish");
-                        Connect(cell, back);
-                    }
-                    else
-                    { //  cell уже есть в line обрезать line по cell
-                        Renat.Log("Ячейка не пустая, цвет совподает");
+                    var color = back.Color;
+                    bool isOld = line.Contains(cell);
+                    if (isOld)
+                    { 
+                        Renat.Log($"isOld:  {cell}");
+                        DoEmpty(cell);
+
                         var empty = line.Pop();
                         while (empty != cell)
                         {
                             DoEmpty(empty);                            
                             empty = line.Pop();
-                            if (line.Count == 1)
+                            if (line.Count == 0)
                                 break;
                         }
 
-                        back = line.Peek();
-                        DoEmpty(cell);
+                        cell.Color = color;
+                        if (line.Count > 0)
+                        {
+                            back = line.Peek();
+                            Connect(cell, back);
+                            Renat.Log($"line.Count {line.Count}");
+                        }
 
-                        AddCell(cell, back);
+                        line.Push(cell);
+
                         Renat.Log($"line.Count {line.Count}");
+                    }
+                    else 
+                    {
+                        //Цель достигнута
+
+                        Renat.Log($"Finish");
+                        AddCell(cell, back);
                     }
                 }
                 else// Цвет не совподает
@@ -162,24 +172,45 @@ namespace FlowFree
                         {
                             DoEmpty(item);
                         }
+                        canMove = false;
                     }
                     else
                     {
                         Renat.Log($" not color");
-                        var line2 = lines[cell.color];
-                        var empty = line2.Peek();
+                        var line2 = lines[cell.Color];
+
+                        var empty = line2.Pop();
                         while (empty != cell)
                         {
-                            if (line2.Count == 1)
-                                continue;
-                            empty = line2.Pop();
                             DoEmpty(empty);
+                            empty = line2.Pop();
+                            Renat.Log($"Pop empty: {empty}");
+                            if (line2.Count == 1)
+                                break;
                         }
 
-                        // Todo:  line2 [c]x[b]-[b]
+                        Cell back2 = null;
+                        foreach (var item in line2.Reverse())
+                        {
+                            DoEmpty(item);
+                            if (back2 == null)
+                            {
+                                back2 = item;
+                            }
+                            else
+                            {
+                                item.Color = back2.Color;
+                                Connect(back2, item);
+                                back2 = item;
+                            }
+                        }
 
-                        cell.color = back.color;
-                        Connect(cell, back);
+
+                        // Todo:  line2 [c]x[b]-[b]
+                        DoEmpty(cell);
+                        AddCell(cell, back);
+                        //cell.Color = back.Color;
+                        //Connect(cell, back);
                     }
                 }
             }
@@ -199,14 +230,13 @@ namespace FlowFree
         private void AddCell(Cell cell, Cell back)
         {
             line.Push(cell);
-            cell.color = back.color;
+            cell.Color = back.Color;
             Connect(cell, back);
         }
 
         private void DoEmpty(Cell empty)
         {
-            if (!empty.isRoot)
-                empty.color = 0;
+            empty.Color = 0;
             empty.Invoke(TypeAction.Reset, Color.white);
         }
 
@@ -244,11 +274,12 @@ namespace FlowFree
 
         private void RunAction(Cell cell, TypeAction type)
         {
-            cell.Invoke(type, settings.GetColor(cell.color));
+            cell.Invoke(type, settings.GetColor(cell.Color));
         }
 
         private void OnCurrentChanged()
         {
+            lines.Clear();
             var level = game.Current;
             Count = level.Count;
             Renat.Log($"OnCurrentChanged {level.Count}");
@@ -270,7 +301,7 @@ namespace FlowFree
         private class Cell
         {
             public static PlaceController controller;
-            public int color;
+            private int color;
             public readonly Vector2Int position;
             public readonly bool isRoot = false;
 
@@ -322,15 +353,31 @@ namespace FlowFree
                 }
             }
 
-            public bool IsEmpty => !isRoot && color == 0;
+            public bool IsEmpty => !isRoot && Color == 0;
+
+            public int Color 
+            {
+                get => color;
+                set { 
+                    if (!isRoot) 
+                        color = value; 
+                } 
+            }
 
             public PlaceChangeDelegate Invoke;
 
             public Cell(int value, Vector2Int pos)
             {
-                color = value;
+                Color = value;
                 position = pos;
                 isRoot = value != 0;
+            }
+
+            public override string ToString()
+            {
+                if (isRoot)
+                    return $"root{position}[{color}]";
+                return $"{position}[{color}]";
             }
         }
         #endregion
