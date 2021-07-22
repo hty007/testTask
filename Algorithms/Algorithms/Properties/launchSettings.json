@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Algorithms": {
+      "commandName": "Project",
+      "commandLineArgs": "exe 1 1"
+    }
+  }
+}
