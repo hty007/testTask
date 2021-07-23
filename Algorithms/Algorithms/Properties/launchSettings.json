@@ -1,6 +1,9 @@
 {
   "profiles": {
     "Algorithms": {
+      "commandName": "Project"
+    },
+    "exe1-1": {
       "commandName": "Project",
       "commandLineArgs": "exe 1 1"
     }

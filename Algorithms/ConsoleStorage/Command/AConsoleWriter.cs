@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleStorage.Utility;
+using System;
 using System.Text;
 
 namespace ConsoleStorage.Command
@@ -11,10 +12,7 @@ namespace ConsoleStorage.Command
         /// <param name="message">сообщение</param>
         protected void Error(string message)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.WriteLine(message);
-            Console.ResetColor();
+            ConsoleHelper.Error(message);
         }
 
         /// <summary>

@@ -40,14 +40,23 @@ namespace Algorithms
             return result.ToArray();
         }
 
-        internal static void GetPropertyIsAttributes(Type item, Type type)
+        /// <summary>
+        /// Найти все методы с определённым атрибутом
+        /// </summary>
+        /// <returns>Типы свойств с атрибутом <c>attr</c></returns>
+        /// <param name="unit">Модеь или класс в котором ищутся методы</param>
+        /// <param name="attr">Атрибут по которому ищутся методы</param>
+        public static PropertyInfo[] GetPropertyIsAttributes(Type unit, Type attr)
         {
-            throw new NotImplementedException();
+            var result = new List<PropertyInfo>();
+            foreach (var pro in unit.GetProperties())
+            {
+                if (pro.GetCustomAttribute(attr) != null)
+                    result.Add(pro);
+            }
+            return result.ToArray();
         }
 
-        internal static void GetPropertyIsAttribute(Type item)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
