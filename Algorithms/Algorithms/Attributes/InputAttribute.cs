@@ -8,7 +8,10 @@ namespace Algorithms
         {
             this.Text = text;
         }
+        public InputAttribute()
+        {
+        }
 
-        public string Text { get; }
+        public string Text { get; } = string.Empty;
     }
 }

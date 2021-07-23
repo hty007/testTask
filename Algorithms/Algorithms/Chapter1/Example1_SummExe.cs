@@ -4,10 +4,10 @@ using System.Text;
 namespace Algorithms.Chapter1
 {
     [Exercise(
-        chapter: 1,
-        exercise: 2,
-        text: "Докажите что значение <a*b> может быть больше, чем значение min(a,b).")]
-    public class MultiplicationExe
+        chapter: 1, 
+        exercise: 1, 
+        text: "Докажите что значение <a+b> может быть больше, чем значение min(a,b).")]
+    public class Example1_SummExe
     {
         [Input("Первое значение")]
         public int A { get; set; }
@@ -32,7 +32,7 @@ namespace Algorithms.Chapter1
             {
                 for (int b = min; b <= max; b++)
                 {
-                    if (Check_ex2(a, b))
+                    if (a + b < Math.Min(a, b))
                     {
                         find++;
                         Result.AppendLine($"---Найдено <{a}> и <{b}>");
@@ -40,15 +40,10 @@ namespace Algorithms.Chapter1
                 }
             }
             Result.AppendLine("======");
-            if (find == 0)
+            if (find == 0) 
                 Result.AppendLine("Ничего не найдено");
             else
                 Result.AppendLine($"Найдено {find} подходящих элементов.");
-        }
-
-        private static bool Check_ex2(int a, int b)
-        {
-            return a * b < Math.Min(a, b);
         }
     }
 }

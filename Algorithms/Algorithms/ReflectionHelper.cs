@@ -29,7 +29,7 @@ namespace Algorithms
         /// <returns>Типы методов с атрибутом <c>attr</c></returns>
         /// <param name="unit">Модеь или класс в котором ищутся методы</param>
         /// <param name="attr">Атрибут по которому ищутся методы</param>
-        public static MethodInfo[] GetMetodIsAttribute(Type unit, Type attr)
+        public static MethodInfo[] GetMetodsIsAttribute(Type unit, Type attr)
         {
             var result = new List<MethodInfo>();
             foreach (var met in unit.GetMethods())

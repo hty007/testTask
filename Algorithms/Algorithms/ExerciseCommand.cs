@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace Algorithms
 {
-
-
     public class ExerciseCommand
     {
         private static Type[] exerciseTypes;
@@ -48,14 +46,12 @@ namespace Algorithms
                                 var instanse = Instance(item);
                                 var inPro = ReflectionHelper.GetPropertyIsAttributes(item, typeof(InputAttribute));
                                 // Вводим с клавиатурв
-                                AskQuestions(instanse, inPro);
-                                
-                                var methods = ReflectionHelper.GetMetodIsAttribute(item, typeof(RunAlgorithmAttribute));
-                                foreach (var method in methods)
-                                {
-                                    if (method.GetParameters().Length == 0)
-                                        method.Invoke(instanse, new object[] { });
-                                }
+                                if (inPro.Length > 0)
+                                    AskQuestions(instanse, inPro);
+
+                                RunAllMethodsIsAttributes(item, instanse, typeof(InputAttribute));
+                                RunAllMethodsIsAttributes(item, instanse, typeof(RunAlgorithmAttribute));
+                                RunAllMethodsIsAttributes(item, instanse, typeof(OutputAttribute));
 
                                 var outPro = ReflectionHelper.GetPropertyIsAttributes(item, typeof(OutputAttribute));
                                 PrintOutput(instanse, outPro);
@@ -68,6 +64,16 @@ namespace Algorithms
             catch (Exception ex)
             {
                 ConsoleHelper.Error($"\n{ex.GetType().Name}: {ex.Message}");
+            }
+        }
+
+        private static void RunAllMethodsIsAttributes(Type item, object instanse, Type attr)
+        {
+            var inMeth = ReflectionHelper.GetMetodsIsAttribute(item, attr);
+            foreach (var method in inMeth)
+            {
+                if (method.GetParameters().Length == 0)
+                    method.Invoke(instanse, new object[] { });
             }
         }
 
