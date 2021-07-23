@@ -8,9 +8,9 @@ namespace Algorithms.Models
 {
     public class AVertex
     {
-        private List<AEdge> edges = new List<AEdge>();
+        protected List<AEdge> edges = new List<AEdge>();
 
-        public IReadOnlyCollection<AEdge> Edges { get => edges; }
+        public virtual IReadOnlyCollection<AEdge> Edges { get => edges; }
         public void AddEdge(AEdge edge)
         {
             Connect(this, edge);

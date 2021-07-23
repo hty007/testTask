@@ -40,10 +40,24 @@ namespace ConsoleStorage.Utility
             Console.WriteLine(" -----");
         }
 
+        public static int SelectItem(string message, params string[] items)
+        {
+            Console.WriteLine(message);
+            int index = 0;
+            foreach (var item in items)
+            {
+                Console.WriteLine($"   {index++}. {item}");
+            }
+            var line = ReadDigitsFromConsole();
+            if (int.TryParse(line, out num))
+                return num;
+            return -1;
+        }
+
         public static bool QueryInt(string message, out int num)
         {
             Console.Write(message);
-            var line = ReadDigitsFromConsole();
+            var line = ReadDigitsFromConsoleInt();
             if (int.TryParse(line, out num))
                 return true;
 
@@ -51,7 +65,47 @@ namespace ConsoleStorage.Utility
             return false;
         }
 
-        public static string ReadDigitsFromConsole()
+        public static string Query(string message)
+        {
+            Console.Write(message);
+            return Console.ReadLine();
+        }
+
+        public static void WriteProperty(string name, object value)
+        {
+            Console.WriteLine($"{name}: {value}");
+        }
+
+        public static void WriteLineS(int length, string text)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Пишет сообщение красными буквами на белом фоне
+        /// </summary>
+        /// <param name="message">сообщение</param>
+        public static void Error(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.WriteLine(message);
+            Console.ResetColor();
+        }
+
+        public static bool QueryFloat(string message, out float half)
+        {
+            Console.Write(message);
+            var line = ReadDigitsFromConsoleFloat();
+            if (float.TryParse(line, NumberStyles.Any, CultureInfo.InvariantCulture, out half))
+                return true;
+
+            half = 0;
+            return false;
+        }
+
+        #region TODO Не копируй свой код
+        public static string ReadDigitsFromConsoleFloat()
         {
             string result = "";
             while (true)
@@ -88,43 +142,67 @@ namespace ConsoleStorage.Utility
             }
         }
 
-        public static string Query(string message)
+        public static string ReadDigitsFromConsoleInt()
         {
-            Console.Write(message);
-            return Console.ReadLine();
+            string result = "";
+            while (true)
+            {
+                var k = Console.ReadKey(true);
+                switch (k.Key)
+                {
+                    case ConsoleKey.Backspace:
+                        if (result.Length > 0)
+                        {
+                            result = result.Remove(startIndex: result.Length - 1, count: 1);
+                            Console.Write(value: $"{k.KeyChar} {k.KeyChar}");
+                        }
+                        break;
+                    case ConsoleKey.Enter:
+                        Console.WriteLine();
+                        return result;
+                    case ConsoleKey.OemMinus:
+                        Console.Write(value: k.KeyChar);
+                        result += k.KeyChar;
+                        break;
+                    default:
+                        if (char.IsDigit(c: k.KeyChar))
+                        {
+                            Console.Write(value: k.KeyChar);
+                            result += k.KeyChar;
+                        }
+                        break;
+                }
+            }
         }
 
-        public static void WriteProperty(string name, object value)
+        public static string ReadDigitsFromConsole()
         {
-            Console.WriteLine($"{name}: {value}");
-        }
-
-        public static void WriteLineS(int length, string text)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Пишет сообщение красными буквами на белом фоне
-        /// </summary>
-        /// <param name="message">сообщение</param>
-        public static void Error(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.WriteLine(message);
-            Console.ResetColor();
-        }
-
-        public static bool QueryFloat(string message, out float half)
-        {
-            Console.Write(message);
-            var line = ReadDigitsFromConsole();
-            if (float.TryParse(line, NumberStyles.Any, CultureInfo.InvariantCulture, out half))
-                return true;
-
-            half = 0;
-            return false;
-        }
+            string result = "";
+            while (true)
+            {
+                var k = Console.ReadKey(true);
+                switch (k.Key)
+                {
+                    case ConsoleKey.Backspace:
+                        if (result.Length > 0)
+                        {
+                            result = result.Remove(startIndex: result.Length - 1, count: 1);
+                            Console.Write(value: $"{k.KeyChar} {k.KeyChar}");
+                        }
+                        break;
+                    case ConsoleKey.Enter:
+                        Console.WriteLine();
+                        return result;
+                    default:
+                        if (char.IsDigit(c: k.KeyChar))
+                        {
+                            Console.Write(value: k.KeyChar);
+                            result += k.KeyChar;
+                        }
+                        break;
+                }
+            }
+        } 
+        #endregion
     }
 }

@@ -4,11 +4,11 @@ namespace Algorithms.Models
 {
     public class AEdge
     {
-        private AVertex vertex1;
-        private AVertex vertex2;
+        protected AVertex vertex1;
+        protected AVertex vertex2;
 
-        public AVertex Vertex1 { get => vertex1; }
-        public AVertex Vertex2 { get => vertex2; }
+        public virtual AVertex Vertex1 { get => vertex1; }
+        public virtual AVertex Vertex2 { get => vertex2; }
 
         public static bool SetVertex(AEdge edge, AVertex vertex)
         {
