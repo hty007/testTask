@@ -1,5 +1,6 @@
 ﻿using ConsoleStorage.Command;
 using ConsoleStorage.Utility;
+using System;
 using System.Text;
 
 namespace Algorithms.Chapter1
@@ -10,24 +11,37 @@ namespace Algorithms.Chapter1
         text: "Начертите сеть дорог с двумя точками а и b, такими, что маршрут между ними, преодолеваемый за кратчайшее время, не является самым коротким.")]
     public partial class Example3_RoadsMin : AConsoleWriter
     {
+        private RectangleGraph graph;
+
         [Input]
         public void InputParams()
         {
-            Header(" --- Установка входных параметров --- ");
-            Clear();
-            int index = ConsoleHelper.SelectItem("Выберите действие: ", "Загрузить ранее созданный граф", "Создать граф");
-            GraphStore store = new GraphStore();
-            if (index == 1)
-                store.Load();
-            else
-                store.Create();
+            try
+            {
+                Header(" --- Установка входных параметров --- ");
+                Clear();
+                int index = ConsoleHelper.SelectItem("Выберите действие: ", "Загрузить ранее созданный граф", "Создать граф");
+                GraphStore store = new GraphStore();
+                if (index == 0)
+                    store.Load();
+                else
+                    store.Create();
 
-            RectangleGraph graph = store.Graph;
+                graph = store.Graph;
 
+                GraphStore.PrintGraph(graph);
 
+                index = ConsoleHelper.SelectItem("Выберите действие: ", "Выполнить алгоритм", "Редактировать граф");
+                if (index == 1)
+                    store.Edit();
 
-
-
+                Clear();
+            }
+            catch (Exception ex)
+            {
+                Error($"{ex.GetType().Name}: {ex.Message}");
+                Line($"{ex.StackTrace}");
+            }
         }
 
 

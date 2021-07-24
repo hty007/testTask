@@ -10,17 +10,22 @@ namespace Algorithms.Chapter1
         {
             private int wight;
             private int heigth;
+            private int INDEX;
+
+            public string FileName { get; internal set; }
 
             public RectangleGraph(int wight, int heigth)
             {
                 this.wight = wight;
                 this.heigth = heigth;
 
+
+
                 for (int j = 0; j < heigth; j++)
                 {
                     for (int i = 0; i < wight; i++)
                     {
-                        vertices.Add(new Vertex(i, j));
+                        vertices.Add(new Vertex(i, j) { Id = GetNewId()});
                     }
                 }
 
@@ -44,6 +49,9 @@ namespace Algorithms.Chapter1
                     }
                 }
             }
+
+            private int GetNewId() => INDEX++;
+
             public int Wight => wight;
             public int Heigth => heigth;
 
@@ -52,6 +60,7 @@ namespace Algorithms.Chapter1
             private void CreateEdge(Vertex vertex1, Vertex vertex2)
             {
                 var edge = new Edge(vertex1, vertex2);
+                edge.Id = GetNewId();
                 edges.Add(edge);
             }
 
@@ -66,8 +75,8 @@ namespace Algorithms.Chapter1
                 return i >= 0 && i < wight && j >= 0 && j < heigth;
             }
 
-            public override IReadOnlyCollection<Vertex> Vertices => (IReadOnlyCollection<Vertex>)vertices;
-            public override IReadOnlyCollection<Edge> Edges => (IReadOnlyCollection<Edge>)edges;
+            //public override IReadOnlyCollection<Vertex> Vertices => (IReadOnlyCollection<Vertex>)vertices;
+            //public override IReadOnlyCollection<Edge> Edges => edges;
 
         }
     }

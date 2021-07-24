@@ -46,11 +46,12 @@ namespace ConsoleStorage.Utility
             int index = 0;
             foreach (var item in items)
             {
-                Console.WriteLine($"   {index++}. {item}");
+                Console.WriteLine($"   {++index}. {item}");
             }
+            Console.Write("Ввод: ");
             var line = ReadDigitsFromConsole();
-            if (int.TryParse(line, out num))
-                return num;
+            if (int.TryParse(line, out int num))
+                return num-1;
             return -1;
         }
 

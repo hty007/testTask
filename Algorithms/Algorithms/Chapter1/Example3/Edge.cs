@@ -18,6 +18,8 @@ namespace Algorithms.Chapter1
             public override Vertex Vertex1 => (Vertex)vertex1;
             public override Vertex Vertex2 => (Vertex)vertex2;
 
+            public int Id { get; internal set; }
+
             public override string ToString()
             {
                 return $"({Vertex1})->({Vertex2})";
