@@ -58,21 +58,41 @@ namespace Algorithms.Chapter1
                 bool edit = true;
                 while (edit)
                 {
-                    Clear();
-                    Header("Редактор графов");
-                    Line($"Объект {Graph.FileName}");
-                    PrintGraph(Graph);
-                    if (ConsoleHelper.QueryInt("Введите номер вершины для редактирования (выход - отрицательная величина): ", out int id))
+                    try
                     {
-                        if (id < 0)
-                            edit = false;
+                        Clear();
+                        Header("Редактор графов");
+                        Line($"Объект {Graph.FileName}");
+                        PrintGraph(Graph);
+                        if (ConsoleHelper.QueryInt("Введите номер вершины для редактирования (выход - отрицательная величина): ", out int id))
+                        {
+                            if (id < 0)
+                                edit = false;
 
-                        var vertex = Graph.Vertices.First(v => ((Vertex)v).Id == id) as Vertex;
-                        PrintVertex(vertex);
-                        Console.ReadLine();
+                            var vertex = Graph.Vertices.First(v => v.Id == id);
+                            PrintVertex(vertex);
+                            if (ConsoleHelper.QueryInt("Введите id ребра для редактирования (выход - отрицательная величина): ", out id))
+                            {
+                                var edge = vertex.Edges.First(ed => ed.Id == id);
+
+
+                                if (ConsoleHelper.QueryFloat($"Введите время движения [{edge.Vertex1.Id}=>{edge.Vertex2.Id}]: ", out float newTime))
+                                {
+                                    edge.Time = newTime;
+                                }
+                            }
+                        }
                     }
-
+                    catch 
+                    {
+                        continue;
+                    }
                 }
+
+                int answer = ConsoleHelper.SelectItem("Сохранить этот граф?", "Да", "Нет");
+                if (answer == 0)
+                    SaveGraph(Graph);
+
             }
 
             private void PrintVertex(Vertex vertex)
@@ -218,17 +238,25 @@ namespace Algorithms.Chapter1
                 {
                     Console.Write("    ");
                     if (edge.Vertex1 == vertex)
-                        Console.Write("→");
+                    {
+                        Console.Write("->");
+                        Console.Write(edge.Vertex2.Id);
+                    }
                     else if (edge.Vertex2 == vertex)
-                        Console.Write("←");
-                    else 
+                    {
+                        Console.Write("<-");
+                        Console.Write(edge.Vertex1.Id);
+                    }
+                    else
                         Console.Write("?");
 
+                    Console.Write(" id:");
                     Console.BackgroundColor = ConsoleColor.DarkGray;
                     Console.Write(edge.Id);
                     Console.ResetColor();
 
                     Console.Write($"  {edge.Time}");
+                    Console.WriteLine();
                 }
             }
 

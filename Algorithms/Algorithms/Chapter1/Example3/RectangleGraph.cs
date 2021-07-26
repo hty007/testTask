@@ -1,6 +1,7 @@
 ﻿using Algorithms.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Algorithms.Chapter1
 {
@@ -75,8 +76,8 @@ namespace Algorithms.Chapter1
                 return i >= 0 && i < wight && j >= 0 && j < heigth;
             }
 
-            //public override IReadOnlyCollection<Vertex> Vertices => (IReadOnlyCollection<Vertex>)vertices;
-            //public override IReadOnlyCollection<Edge> Edges => edges;
+            public override IReadOnlyCollection<Vertex> Vertices => vertices.Select(a => (Vertex)a).ToList();
+            public override IReadOnlyCollection<Edge> Edges => edges.Select(a=>(Edge)a).ToList();
 
         }
     }
