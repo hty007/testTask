@@ -1,16 +1,37 @@
 ﻿using ConsoleStorage.Command;
 using ConsoleStorage.Utility;
 using System;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Algorithms
 {
-    public class ExerciseCommand
+    public static class ExerciseCommand
     {
         private static Type[] exerciseTypes;
 
-        public static void Use(ICommandExecutor executor)
+        public static void UseCharterList(ICommandExecutor executor)
+        {
+            var command = new IntegerCommand("charter ch", PrintExercise);
+            command.Discription = "Выводит названия всех упражнений в главе";
+            executor.Add(command);
+        }
+
+        private static void PrintExercise(int arg)
+        {
+            foreach (var item in exerciseTypes)
+            {
+                var exeAttr = Attribute.GetCustomAttribute(item, typeof(ExerciseAttribute)) as ExerciseAttribute;
+                if (exeAttr.Chapter == arg)
+                {
+                    Console.WriteLine($"{exeAttr.Exercise}: {exeAttr.Text}");
+                }
+            }
+        }
+
+        public static void UseExercise(ICommandExecutor executor)
         {
             var exercise = new ArrayCommand("exe exercise", Exercise);
             exercise.Discription = "Выполняет упражение exercise <Номер главы> <номер задания>";
@@ -22,7 +43,22 @@ namespace Algorithms
 
         private static void FindExercise()
         {
-            exerciseTypes = ReflectionHelper.GetTypeThisAssembly(typeof(ExerciseAttribute));
+            try
+            {
+                var dirInfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+                for (int i = 0; i < 4; i++)
+                {
+                    dirInfo = dirInfo.Parent;
+                }
+
+                var paths = dirInfo.GetFiles("*.dll", SearchOption.AllDirectories).Select(p => p.FullName).ToArray();
+
+                exerciseTypes = ReflectionHelper.GetTypesFromLibraries(paths, typeof(ExerciseAttribute));
+            }
+            catch
+            {
+                ConsoleHelper.Error("Ошибка загрузки топов!");
+            }
         }
 
         public static void Exercise(string[] inputs)
@@ -104,7 +140,7 @@ namespace Algorithms
                     bool success = false;
                     InputAttribute inAttr = Attribute.GetCustomAttribute(pro, typeof(InputAttribute)) as InputAttribute;
 
-                        // TODO: Не копируй свой код
+                    // TODO: Не копируй свой код
                     if (pro.PropertyType == typeof(int))
                     {
                         success = ConsoleHelper.QueryInt($"{pro.Name} {inAttr.Text}: ", out int num);
@@ -138,11 +174,11 @@ namespace Algorithms
                     }
                     else
                     {
-                        
+
                         throw new NotImplementedException($" Ввод типа [{pro.PropertyType.Name}] не определён.");
                     }
                 }
-            
+
             }
         }
 

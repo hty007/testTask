@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleStorage.Command
 {
-    internal class HelpCommand : AConsoleCommand
+    public class HelpCommand : AConsoleCommand
     {
         private string[] calls = new string[] { "help" };
         private List<AConsoleCommand> commands;

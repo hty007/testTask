@@ -10,22 +10,13 @@ namespace ConsoleStorage.Command
         /// Пишет сообщение красными буквами на белом фоне
         /// </summary>
         /// <param name="message">сообщение</param>
-        protected void Error(string message)
-        {
-            ConsoleHelper.Error(message);
-        }
+        protected void Error(string message) => ConsoleHelper.Error(message);
 
         /// <summary>
         /// Пишет сообщение черными буквами на белом фоне
         /// </summary>
         /// <param name="message">сообщение</param>
-        protected void Header(string header)
-        {
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.WriteLine(header);
-            Console.ResetColor();
-        }
+        protected void Header(string header) => ConsoleHelper.Header(header);
 
         /// <summary>
         /// Пишет сообщение с переносом строки

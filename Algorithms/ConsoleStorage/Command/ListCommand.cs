@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleStorage.Command
 {
-    internal class ListCommand : AConsoleCommand
+    public class ListCommand : AConsoleCommand
     {
         private List<AConsoleCommand> commands;
         private string[] calls = new string[] { "commands", "com-ls", "ls-com" };

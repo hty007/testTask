@@ -13,7 +13,7 @@ namespace Algorithms
             CommandFactory.UseStop(executor);
             CommandFactory.UseClear(executor);
 
-            ExerciseCommand.Use(executor); 
+            AlgorithmsFactory.Use(executor); 
 
             await executor.Run(args);
         }

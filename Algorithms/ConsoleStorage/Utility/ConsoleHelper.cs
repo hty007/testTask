@@ -40,6 +40,14 @@ namespace ConsoleStorage.Utility
             Console.WriteLine(" -----");
         }
 
+        internal static void Header(string header)
+        {
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.WriteLine(header);
+            Console.ResetColor();
+        }
+
         public static int SelectItem(string message, params string[] items)
         {
             Console.WriteLine(message);

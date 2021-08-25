@@ -24,6 +24,40 @@ namespace Algorithms
         }
 
         /// <summary>
+        /// Все типы перечисленных библиотек с определённым артибутом
+        /// </summary>
+        /// <returns>Возвращает все типы сборки с артибутом <c>baseType</c></returns>
+        /// <param name="baseType">отрибут по которому ищутся типы</param>
+        public static Type[] GetTypesFromLibraries(string[] paths, Type attr)
+        {
+            var result = new List<Type>();
+            foreach (var path in paths)
+            {
+                try
+                {
+                    var assembly = Assembly.LoadFrom(path);
+                    Type[] types = GetTypesFromAssembly(assembly, attr);
+                    result.AddRange(types);
+                }
+                catch { }
+            }
+
+            return result.ToArray();
+        }
+
+        public static Type[] GetTypesFromAssembly(Assembly assembly, Type attr)
+        {
+            var result = new List<Type>();
+            var modules = assembly.DefinedTypes;
+            foreach (var mod in modules)
+            {
+                if (mod.GetCustomAttribute(attr) != null)
+                    result.Add(mod);
+            }
+            return result.ToArray();
+        }
+
+        /// <summary>
         /// Найти все методы с определённым атрибутом
         /// </summary>
         /// <returns>Типы методов с атрибутом <c>attr</c></returns>

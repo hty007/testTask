@@ -2,7 +2,7 @@
 
 namespace Algorithms
 {
-    internal class ExerciseAttribute : Attribute
+    public class ExerciseAttribute : Attribute
     {
         public ExerciseAttribute(int chapter, int exercise, string text) 
         {
