@@ -8,8 +8,7 @@
       "commandLineArgs": "exe 1 1"
     },
     "current exe": {
-      "commandName": "Project",
-      "commandLineArgs": "exe 1 3"
+      "commandName": "Project"
     }
   }
 }

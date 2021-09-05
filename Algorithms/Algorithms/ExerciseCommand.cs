@@ -1,6 +1,7 @@
 ﻿using ConsoleStorage.Command;
 using ConsoleStorage.Utility;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -54,6 +55,13 @@ namespace Algorithms
                 var paths = dirInfo.GetFiles("*.dll", SearchOption.AllDirectories).Select(p => p.FullName).ToArray();
 
                 exerciseTypes = ReflectionHelper.GetTypesFromLibraries(paths, typeof(ExerciseAttribute));
+                List<Type> types = new List<Type>();
+                foreach (var type in exerciseTypes)
+                {
+                    if (!types.Contains(type))
+                        types.Add(type);
+                }
+                exerciseTypes = types.ToArray();
             }
             catch
             {
