@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Protocol\Protocol.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="WpfStorage">
       <HintPath>..\using\WpfStorage.dll</HintPath>
     </Reference>

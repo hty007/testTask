@@ -5,12 +5,14 @@ VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XmlClient", "XmlClient\XmlClient.csproj", "{72A1D1FC-4797-43A1-9404-F324DBC4B9FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XmlServer", "XmlServer\XmlServer.csproj", "{1E602C43-CABB-40E2-B01D-5231C57B522D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XmlServer", "XmlServer\XmlServer.csproj", "{1E602C43-CABB-40E2-B01D-5231C57B522D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FA007801-B50D-4E66-BF57-CB6F83D63F1A}"
 	ProjectSection(SolutionItems) = preProject
 		using\WpfStorage.dll = using\WpfStorage.dll
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protocol", "Protocol\Protocol.csproj", "{73F7CFB9-FE4A-4332-B718-140F44E62519}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +28,10 @@ Global
 		{1E602C43-CABB-40E2-B01D-5231C57B522D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E602C43-CABB-40E2-B01D-5231C57B522D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E602C43-CABB-40E2-B01D-5231C57B522D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73F7CFB9-FE4A-4332-B718-140F44E62519}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73F7CFB9-FE4A-4332-B718-140F44E62519}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73F7CFB9-FE4A-4332-B718-140F44E62519}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73F7CFB9-FE4A-4332-B718-140F44E62519}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
