@@ -11,8 +11,8 @@
     <Window.Resources>
         <systemConverters:BooleanToVisibilityConverter x:Key="BoolToVisible"/>
         <converters:BooleanToVisibilityConverter x:Key="InvertBoolToVisible" True="Collapsed" False="Visible"/>
-        <Style TargetType="{x:Type TextBox}">
-            <Setter Property="Width" Value="180"/>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="5, 0"/>
         </Style>
     </Window.Resources>
     <Grid>
@@ -20,12 +20,13 @@
             <RowDefinition Height="30"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        <WrapPanel Grid.Row="0">
+        <WrapPanel Margin="5" Grid.Row="0">
+            <Button Content="Создать файл" Command="{Binding CreateCommand}"/>
             <Button Content="Настроить сервер" Command="{Binding ConfigureServerCommand}"/>
             <Button Content="Запустить сервер" Visibility="{Binding ServerIsWorking, Converter={StaticResource InvertBoolToVisible}}" Command="{Binding StartServerCommand}"/>
             <Button Content="Остановить сервер" Visibility="{Binding ServerIsWorking, Converter={StaticResource BoolToVisible}}" Command="{Binding StopServerCommand}"/>
         </WrapPanel>
-        <ListBox ItemsSource="{Binding Requests}">
+        <ListBox ItemsSource="{Binding Requests}" Grid.Row="1">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>

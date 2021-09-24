@@ -6,10 +6,18 @@
         xmlns:local="clr-namespace:XmlClient"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="400">
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="5,0"/>
+        </Style>
+    </Window.Resources>
     <Grid>
         <WrapPanel>
-            <Button Margin="5" Command="{Binding ConfigureServerCommand}">Настройка сервера</Button>
+            <Button Margin="5" Command="{Binding ConfigureServerCommand}">Настройка клиента</Button>
+            <Button Margin="5" Command="{Binding ListServerCommand}" ToolTip="Получить список файлов на сервере">Список файлов</Button>
         </WrapPanel>
+        
+        
            
     </Grid>
 </Window>

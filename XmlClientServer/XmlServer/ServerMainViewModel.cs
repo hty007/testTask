@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Protocol;
+using System;
 using System.Collections.ObjectModel;
 using WPFStorage.Base;
 using WPFStorage.Settings;
@@ -15,17 +16,10 @@ namespace XmlServer
             ConfigureServerCommand = new RelayCommand(ConfigureServer);
             StartServerCommand = new RelayCommand(StartServer);
             StopServerCommand = new RelayCommand(StopServer);
+            CreateCommand = new RelayCommand(Create);
 
             Server = new ServerController();
             Server.ClientRequest += OnRequest;
-            //string str = "\n";
-        }
-
-        private void OnRequest(MyContext context)
-        {
-            var request = new PoolRequest();
-            request.Id = context.LocalEndPoint.ToString();
-            Requests.Add(request);
         }
 
         public ObservableCollection<PoolRequest> Requests { get; set; } = new ObservableCollection<PoolRequest>();
@@ -36,6 +30,7 @@ namespace XmlServer
         public RelayCommand ConfigureServerCommand { get; }
         public RelayCommand StartServerCommand { get; }
         public RelayCommand StopServerCommand { get; }
+        public RelayCommand CreateCommand { get; }
         public ServerController Server { get; }
 
         public void Closed(object sender, EventArgs e)
@@ -45,6 +40,25 @@ namespace XmlServer
                 Server.Stop();
 
             }
+        }
+
+        private void Create()
+        {
+            EditorModel editor = new EditorModel(new ProtocolModel());
+
+            var res = editor.OpenDialog();
+
+
+            ProtocolModel model = editor.GetModel();
+
+
+        }
+
+        private void OnRequest(MyContext context)
+        {
+            var request = new PoolRequest();
+            request.Id = context.LocalEndPoint.ToString();
+            Requests.Add(request);
         }
 
         private void StopServer()

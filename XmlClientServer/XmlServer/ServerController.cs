@@ -11,7 +11,7 @@ namespace XmlServer
         private static readonly string DATA_DIR = "data";
         private MyListener listener;
         private bool canListen;
-        private List<string> files = new List<string>();
+        private List<string> files = new List<string>() { "renat", "lila"};
 
         public ServerController()
         {
@@ -114,9 +114,9 @@ namespace XmlServer
                     {
                         bw.Write(fileName);
                     }
-                }
 
-                context.Send(response);
+                    context.Send(response);
+                }
             }
         }
 

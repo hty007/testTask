@@ -10,6 +10,7 @@ namespace XmlClient
         public ClientMainView()
         {
             InitializeComponent();
+            DataContext = new ClientMainViewModel();
         }
     }
 }

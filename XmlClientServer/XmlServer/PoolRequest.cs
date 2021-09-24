@@ -6,6 +6,6 @@ namespace XmlServer
     {
         private string id;
 
-        public string Id { get => id; set =>SetProperty(ref id, value; }
+        public string Id { get => id; set =>SetProperty(ref id, value); }
     }
 }
