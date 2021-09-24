@@ -5,7 +5,7 @@ namespace Protocol
 {
     public class StreamHelper
     {
-        public static MemoryStream ModelToStream(ProtocolModel model)
+        public static MemoryStream ModelToStream(MailModel model)
         {
             MemoryStream ms = new MemoryStream();
             using (BinaryWriter bw = new BinaryWriter(ms))
@@ -25,10 +25,10 @@ namespace Protocol
             return ms;
         }
 
-        public static ProtocolModel StreamToModel(MemoryStream ms, int start = 4)
+        public static MailModel StreamToModel(MemoryStream ms, int start = 4)
         {
             ms.Position = start;
-            var model = new ProtocolModel();
+            var model = new MailModel();
             using (BinaryReader br = new BinaryReader(ms))
             {
                 model.FormatVersion = br.ReadInt32();

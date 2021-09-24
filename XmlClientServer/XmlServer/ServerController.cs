@@ -8,7 +8,7 @@ namespace XmlServer
 {
     internal class ServerController
     {
-        private static readonly string DATA_DIR = "data";
+        public static readonly string DATA_DIR = "data";
         private MyListener listener;
         private bool canListen;
         private List<string> files = new List<string>() { "renat", "lila"};
@@ -123,7 +123,7 @@ namespace XmlServer
         private void GenerateHandle(BinaryReader br, MyContext context)
         {
             // Генерируем файл
-            ProtocolModel model = StreamHelper.StreamToModel(context.Data);
+            MailModel model = StreamHelper.StreamToModel(context.Data);
             var xml = XMLHelper.GetXML(model);
 
             using (MemoryStream response = new MemoryStream())

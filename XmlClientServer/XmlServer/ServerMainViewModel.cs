@@ -1,6 +1,7 @@
 ﻿using Protocol;
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using WPFStorage.Base;
 using WPFStorage.Settings;
 
@@ -38,20 +39,35 @@ namespace XmlServer
             if (ServerIsWorking)
             {
                 Server.Stop();
-
             }
         }
 
         private void Create()
         {
-            EditorModel editor = new EditorModel(new ProtocolModel());
+            // Todo: Вынести
+            EditorModel editor = new EditorModel(new MailModel()
+            {
+                Color = new byte[] { 250, 100, 100, 100 },
+                Image = Properties.Resources.baikal,
+            }) ;
+
+            var dir = ServerController.DATA_DIR;
+            string fileName = Path.Combine(dir, "Model.xml");
+            int index = 0;
+            while (File.Exists(fileName))
+            {
+                fileName = Path.Combine(dir, $"Model{++index}.xml");
+            }
+            editor.FileName = fileName;
 
             var res = editor.OpenDialog();
 
-
-            ProtocolModel model = editor.GetModel();
-
-
+            if (res == true)
+            {
+                MailModel model = editor.GetModel();
+                var xml = XMLHelper.GetXML(model);
+                File.WriteAllText(editor.FileName, xml);
+            }
         }
 
         private void OnRequest(MyContext context)

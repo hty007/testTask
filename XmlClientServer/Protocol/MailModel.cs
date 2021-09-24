@@ -1,6 +1,6 @@
 ﻿namespace Protocol
 {
-    public class ProtocolModel
+    public class MailModel
     {
         public int FormatVersion { get; set; }
         public string From { get; set; }

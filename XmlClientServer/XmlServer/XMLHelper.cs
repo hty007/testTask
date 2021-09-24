@@ -6,11 +6,11 @@ namespace XmlServer
 {
     internal class XMLHelper
     {
-        internal static ProtocolModel GetModel(string xml)
+        internal static MailModel GetModel(string xml)
         {
             var doc = XDocument.Parse(xml);
             var xModel = doc.Element("model");
-            ProtocolModel model = new ProtocolModel();
+            MailModel model = new MailModel();
             model.Id = (uint)xModel.Attribute(nameof(model.Id));
             model.FormatVersion = (int)xModel.Attribute(nameof(model.FormatVersion));
 
@@ -28,7 +28,7 @@ namespace XmlServer
             return model;
         }
 
-        internal static string GetXML(ProtocolModel model)
+        internal static string GetXML(MailModel model)
         {
             var doc = new XDocument();
             var xModel = new XElement("model");
