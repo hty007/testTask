@@ -22,8 +22,8 @@ namespace XmlServer
             uint num = uint.Parse(strColor, System.Globalization.NumberStyles.AllowHexSpecifier);
             model.Color = BitConverter.GetBytes(num);
 
-            var strImage = (string)xModel.Element(nameof(model.image));
-            model.image = Convert.FromBase64String(strImage);
+            var strImage = (string)xModel.Element(nameof(model.Image));
+            model.Image = Convert.FromBase64String(strImage);
 
             return model;
         }
@@ -38,7 +38,7 @@ namespace XmlServer
             xModel.Add(new XElement(nameof(model.From), model.From));
             xModel.Add(new XElement(nameof(model.Text), model.Text));
             xModel.Add(new XElement(nameof(model.Color), BitConverter.ToString(model.Color)));
-            xModel.Add(new XElement(nameof(model.image), Convert.ToBase64String(model.image)));
+            xModel.Add(new XElement(nameof(model.Image), Convert.ToBase64String(model.Image)));
             doc.Add(xModel);
 
             return doc.ToString();

@@ -9,6 +9,6 @@
         public string Text { get; set; }
         // 4 byte
         public byte[] Color { get; set; }
-        public byte[] image { get; set; }
+        public byte[] Image { get; set; }
     }
 }

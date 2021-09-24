@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace XmlServer
 {
-    public class MyContext
+    public class MyContext : IDisposable
     {
         private TcpClient client;
 
@@ -40,6 +40,19 @@ namespace XmlServer
             while (stream.DataAvailable);
             memory.Position = 0;
             return memory;
+        }
+
+        internal void Send(MemoryStream ms)
+        {
+            var ns = client.GetStream();
+            ms.WriteTo(ns);
+            ns.Flush();
+        }
+
+        public void Dispose()
+        {
+            Data.Dispose();
+            client.Dispose();
         }
     }
 }

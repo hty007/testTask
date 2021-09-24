@@ -20,10 +20,19 @@
             <RowDefinition Height="30"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        <WrapPanel>
+        <WrapPanel Grid.Row="0">
             <Button Content="Настроить сервер" Command="{Binding ConfigureServerCommand}"/>
             <Button Content="Запустить сервер" Visibility="{Binding ServerIsWorking, Converter={StaticResource InvertBoolToVisible}}" Command="{Binding StartServerCommand}"/>
             <Button Content="Остановить сервер" Visibility="{Binding ServerIsWorking, Converter={StaticResource BoolToVisible}}" Command="{Binding StopServerCommand}"/>
         </WrapPanel>
+        <ListBox ItemsSource="{Binding Requests}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Id}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Window>

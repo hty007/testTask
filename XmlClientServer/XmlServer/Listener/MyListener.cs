@@ -14,6 +14,8 @@ namespace XmlServer
         private int port;
         TcpListener listener;
 
+        public bool IsWork { get; private set; }
+
         public MyListener(int port)
         {
             this.port = port;
@@ -22,6 +24,9 @@ namespace XmlServer
 
         public async Task<MyContext> GetContextAsync()
         {
+            if (!IsWork)
+                throw new Exception("Перед 'GetContextAsync' необходимо запустить сервер методом 'Start'");
+            
             // получаем входящее подключение
             TcpClient client = await listener.AcceptTcpClientAsync();
             var context = new MyContext(client);
@@ -29,8 +34,17 @@ namespace XmlServer
             return context;
         }
 
-        public void Start() => listener.Start();
-        //public void Stop() => listener.Stop();
+        public void Start()
+        {
+            IsWork = true;
+            listener.Start();
+        }
+
+        public void Stop()
+        {
+            IsWork = false;
+            listener.Stop();
+        }
 
         //public HttpListener
 

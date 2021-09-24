@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using WPFStorage.Base;
+using WPFStorage.Settings;
 
 namespace XmlServer
 {
     internal class ServerMainViewModel : ObservableObject
     {
         private bool serverIsWorking;
+        private int port = 5011;
 
         public ServerMainViewModel()
         {
@@ -14,10 +17,20 @@ namespace XmlServer
             StopServerCommand = new RelayCommand(StopServer);
 
             Server = new ServerController();
-
-            string str = "\n";
+            Server.ClientRequest += OnRequest;
+            //string str = "\n";
         }
 
+        private void OnRequest(MyContext context)
+        {
+            var request = new PoolRequest();
+            request.Id = context.LocalEndPoint.ToString();
+            Requests.Add(request);
+        }
+
+        public ObservableCollection<PoolRequest> Requests { get; set; } = new ObservableCollection<PoolRequest>();
+
+        public int Port { get => port; set => SetProperty(ref port, value); }
         public bool ServerIsWorking { get => serverIsWorking; set => SetProperty(ref serverIsWorking, value); }
 
         public RelayCommand ConfigureServerCommand { get; }
@@ -27,7 +40,11 @@ namespace XmlServer
 
         public void Closed(object sender, EventArgs e)
         {
-            //throw new NotImplementedException();
+            if (ServerIsWorking)
+            {
+                Server.Stop();
+
+            }
         }
 
         private void StopServer()
@@ -38,13 +55,21 @@ namespace XmlServer
 
         private void StartServer()
         {
+            Server.SetPort(Port);
             Server.Start();
             ServerIsWorking = true;
         }
 
         private void ConfigureServer()
         {
-            throw new NotImplementedException();
+            var settings = new Settings();
+            settings.Title = "Настройка сервера";
+
+            settings.AddUpDownIterator("port", "Post")
+                .SetInkermenter(1)
+                .SetIsInteger(true)
+                .SetMinValue(1)
+                .SetMaxValue(10000);
         }
     }
 }

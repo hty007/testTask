@@ -6,7 +6,7 @@ parse:
 repeat:
 [0(4байта)][имя файла]
 response:
-[0(4байта)][key][value]... [key][value]
+[0(4байта)][FormatVersion][Id][To][From][Text][countColor][Color][CountImage][image]
 
 
 */
@@ -19,6 +19,14 @@ namespace Protocol
     {
         parse,
         repeat,
-        response,
+        generate,
+        getList,
+    }
+
+    public enum ClientCommand
+    {
+        list,
+        xml,
+        model,
     }
 }
