@@ -4,9 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XmlClient"
+        xmlns:systemConverters="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
+        xmlns:converters="clr-namespace:WPFStorage.Converters;assembly=WpfStorage"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="400">
     <Window.Resources>
+        <systemConverters:BooleanToVisibilityConverter x:Key="BoolToVisible"/>
+        <converters:BooleanToVisibilityConverter x:Key="InvertBoolToVisible" True="Collapsed" False="Visible"/>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Margin" Value="5,0"/>
         </Style>
@@ -14,7 +18,10 @@
     <Grid>
         <WrapPanel>
             <Button Margin="5" Command="{Binding ConfigureServerCommand}">Настройка клиента</Button>
+            <Button Margin="5" Command="{Binding ConnectCommand}" Visibility="{Binding IsConnect, Converter={StaticResource InvertBoolToVisible}}">Подключится</Button>
+            <Button Margin="5" Command="{Binding DisconnectCommand}" Visibility="{Binding IsConnect, Converter={StaticResource BoolToVisible}}">Отключится</Button>
             <Button Margin="5" Command="{Binding ListServerCommand}" ToolTip="Получить список файлов на сервере">Список файлов</Button>
+            <Button Margin="5" Command="{Binding ParseFileCommand}" ToolTip="Отправить файлов на сервере">Отправить файл</Button>
         </WrapPanel>
         
         

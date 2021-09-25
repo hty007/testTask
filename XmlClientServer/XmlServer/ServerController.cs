@@ -17,6 +17,7 @@ namespace XmlServer
         public ServerController()
         {
             Directory.CreateDirectory(DATA_DIR);
+            files = new List<string>(GetFileNames());
         }
 
         public int Port { get; private set; }
@@ -68,6 +69,7 @@ namespace XmlServer
                 {
                     MyContext context = await listener.GetContextAsync();
                     _ = Task.Run(() => RequestHandle(context));
+                    ClientRequest?.Invoke(context);
                 }
                 catch (Exception ex)
                 { 
@@ -84,18 +86,20 @@ namespace XmlServer
         {
             using (BinaryReader br = new BinaryReader(context.Data))
             {
+                // TODO: parsing команды надо перенести в отдельный класс или в MyContext
                 ServerCommand command = (ServerCommand)br.ReadInt32();
                 switch (command)
                 {
-                    case ServerCommand.generate:
-                        GenerateHandle(br, context);
-                        break;
-                    case ServerCommand.parse:
-                        ParseHandle(br, context);
-                        break;
-                    case ServerCommand.repeat:
-                        RepeatHandle(br);
-                        break;
+                    //case ServerCommand.generate:
+                    //    GenerateHandle(br, context);
+                    //    break;
+                    //case ServerCommand.parse:
+                    //    ParseHandle(br, context);
+                    //    break;
+                    //case ServerCommand.repeat:
+                    //    RepeatHandle(br);
+                    //    break;
+                    case ServerCommand.getList:
                     default:
                         ListHandle(context);
                         break;

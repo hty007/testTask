@@ -22,6 +22,8 @@ namespace XmlClient
         public MemoryStream Stream => memory;
         public BinaryReader Reader => reader;
 
+        public long Position => Stream.Position;
+
         public void Dispose()
         {
             memory.Dispose();

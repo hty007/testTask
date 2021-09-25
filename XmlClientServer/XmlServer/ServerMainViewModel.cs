@@ -2,7 +2,10 @@
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Text;
+using System.Windows.Threading;
 using WPFStorage.Base;
+using WPFStorage.Dialogs;
 using WPFStorage.Settings;
 
 namespace XmlServer
@@ -103,6 +106,12 @@ namespace XmlServer
         {
             var request = new PoolRequest();
             request.Id = context.LocalEndPoint.ToString();
+            //StringBuilder message = new StringBuilder();
+            //message.AppendLine($"LocalEndPoint: {context.LocalEndPoint}");
+            //message.AppendLine($"RemoteEndPoint: {context.RemoteEndPoint}");
+            //message.AppendLine($"AddressFamily: {context.AddressFamily}");
+            //Dispatcher.CurrentDispatcher.Invoke(() => WinBox.ShowMessage(message.ToString()));
+;
             Requests.Add(request);
         }
 

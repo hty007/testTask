@@ -23,9 +23,20 @@ namespace XmlClient
             writer.Dispose();
         }
 
-        internal void WriteCommand(ServerCommand getList)
+        public void WriteCommand(ServerCommand cmd)
         {
-            writer.Write((int)getList);
+            writer.Write((int)cmd);
+        }
+
+        public void WriteString(string fileName)
+        {
+            writer.Write(fileName);
+        }
+
+        internal void WriteFile(string fileName)
+        {
+            var content = File.ReadAllText(fileName);
+            writer.Write(content);
         }
     }
 }

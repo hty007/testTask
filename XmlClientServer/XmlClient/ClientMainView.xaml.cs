@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace XmlClient
 {
@@ -11,6 +12,15 @@ namespace XmlClient
         {
             InitializeComponent();
             DataContext = new ClientMainViewModel();
+            Closed += ClientMainView_Closed;
+        }
+
+        private void ClientMainView_Closed(object sender, System.EventArgs e)
+        {
+            if (DataContext is IDisposable model)
+            {
+                model.Dispose();
+            }
         }
     }
 }
