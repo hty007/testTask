@@ -18,12 +18,17 @@ namespace XmlServer
             StartServerCommand = new RelayCommand(StartServer);
             StopServerCommand = new RelayCommand(StopServer);
             CreateCommand = new RelayCommand(Create);
+            EditFileCommand = new RelayCommand<string>(EditFile);
 
             Server = new ServerController();
             Server.ClientRequest += OnRequest;
+
+            var names = Server.GetFileNames();
+            Files = new ObservableCollection<string>(names);
         }
 
         public ObservableCollection<PoolRequest> Requests { get; set; } = new ObservableCollection<PoolRequest>();
+        public ObservableCollection<string> Files { get; set; }
 
         public int Port { get => port; set => SetProperty(ref port, value); }
         public bool ServerIsWorking { get => serverIsWorking; set => SetProperty(ref serverIsWorking, value); }
@@ -32,6 +37,7 @@ namespace XmlServer
         public RelayCommand StartServerCommand { get; }
         public RelayCommand StopServerCommand { get; }
         public RelayCommand CreateCommand { get; }
+        public RelayCommand<string> EditFileCommand { get; }
         public ServerController Server { get; }
 
         public void Closed(object sender, EventArgs e)
@@ -42,21 +48,44 @@ namespace XmlServer
             }
         }
 
+        private void EditFile(string fileName)
+        {
+            var dir = ServerController.DATA_DIR;
+            var fileInFolder = Path.Combine(dir, fileName);
+            MailModel model = ModelFileHelper.Load(fileInFolder);
+            EditorModel editor = new EditorModel(model);
+            editor.FileName = fileName;
+
+            var res = editor.OpenDialog();
+
+            if (res == true)
+            {
+                // TODO: Если польхователь введёт имя которое уже есть в папке?
+                ModelFileHelper.Save(editor.GetModel(), Path.Combine(dir, editor.FileName));
+                if (fileName != editor.FileName)
+                {
+                    Files.Remove(fileName);
+                    Files.Add(editor.FileName);
+                }
+            }
+        }
+
+
         private void Create()
         {
-            // Todo: Вынести
+            // Todo: Вынести в отдельный контроллер
             EditorModel editor = new EditorModel(new MailModel()
             {
-                Color = new byte[] { 250, 100, 100, 100 },
+                Color = "#FFFFFF00",
                 Image = Properties.Resources.baikal,
             }) ;
 
             var dir = ServerController.DATA_DIR;
-            string fileName = Path.Combine(dir, "Model.xml");
+            string fileName = "Model.xml";
             int index = 0;
-            while (File.Exists(fileName))
+            while (File.Exists(Path.Combine(dir, fileName)))
             {
-                fileName = Path.Combine(dir, $"Model{++index}.xml");
+                fileName = $"Model{++index}.xml";
             }
             editor.FileName = fileName;
 
@@ -64,9 +93,9 @@ namespace XmlServer
 
             if (res == true)
             {
-                MailModel model = editor.GetModel();
-                var xml = XMLHelper.GetXML(model);
-                File.WriteAllText(editor.FileName, xml);
+                // TODO: Если польхователь введёт имя которое уже есть в папке?
+                ModelFileHelper.Save(editor.GetModel(), Path.Combine(dir, editor.FileName));
+                Files.Add(editor.FileName);
             }
         }
 

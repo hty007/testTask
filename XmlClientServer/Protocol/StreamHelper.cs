@@ -15,7 +15,6 @@ namespace Protocol
                 bw.Write(model.To);
                 bw.Write(model.From);
                 bw.Write(model.Text);
-                bw.Write(model.Color.Length);
                 bw.Write(model.Color);
                 bw.Write(model.Image.Length);
                 bw.Write(model.Image);
@@ -36,8 +35,7 @@ namespace Protocol
                 model.To = br.ReadString();
                 model.From = br.ReadString();
                 model.Text = br.ReadString();
-                int countColor = br.ReadInt32();
-                model.Color = br.ReadBytes(countColor);
+                model.Color = br.ReadString();
                 int countImage = br.ReadInt32();
                 model.Image = br.ReadBytes(countImage);
             }

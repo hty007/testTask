@@ -17,16 +17,19 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="30"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        <WrapPanel Margin="5" Grid.Row="0">
-            <Button Content="Создать файл" Command="{Binding CreateCommand}"/>
+        <Menu Grid.Row="0"></Menu>
+        <WrapPanel Margin="5" Grid.Row="1">
             <Button Content="Настроить сервер" Command="{Binding ConfigureServerCommand}"/>
             <Button Content="Запустить сервер" Visibility="{Binding ServerIsWorking, Converter={StaticResource InvertBoolToVisible}}" Command="{Binding StartServerCommand}"/>
             <Button Content="Остановить сервер" Visibility="{Binding ServerIsWorking, Converter={StaticResource BoolToVisible}}" Command="{Binding StopServerCommand}"/>
         </WrapPanel>
-        <ListBox ItemsSource="{Binding Requests}" Grid.Row="1">
+        <TabControl Grid.Row="2">
+            <TabItem Header="Запросы">
+                <ListBox ItemsSource="{Binding Requests}" Grid.Row="1">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -35,5 +38,43 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+                
+            </TabItem>
+            <TabItem Header="Файлы">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0">
+                        <Button Content="Создать файл" Command="{Binding CreateCommand}"/>
+                        
+                    </StackPanel>
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding Files}" x:Name="listFile">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="2" BorderBrush="Gray" BorderThickness="0.5">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding }">
+                                            <TextBlock.InputBindings>
+                                                <MouseBinding Gesture="LeftClick" Command="{Binding Path=DataContext.EditFileCommand, ElementName=listFile}" CommandParameter="{Binding }"/>
+                                            </TextBlock.InputBindings>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        
+                    </ItemsControl>
+                    
+                </Grid>
+                
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

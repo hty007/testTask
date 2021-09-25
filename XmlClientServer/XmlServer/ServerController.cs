@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace XmlServer
@@ -28,6 +29,12 @@ namespace XmlServer
             listener = new MyListener(Port);
             listener.Start();
             Listing();
+        }
+
+        public IEnumerable<string> GetFileNames()
+        {
+            var dataDir = new DirectoryInfo(DATA_DIR);
+            return dataDir.GetFiles().Select(f => f.Name);
         }
 
         public bool SetPort(int port)

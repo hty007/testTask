@@ -8,7 +8,7 @@
         public uint Id { get; set; }
         public string Text { get; set; }
         // 4 byte
-        public byte[] Color { get; set; }
+        public string Color { get; set; }
         public byte[] Image { get; set; }
     }
 }

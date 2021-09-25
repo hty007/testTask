@@ -1,5 +1,6 @@
 ﻿using Protocol;
 using System;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace XmlServer
@@ -18,9 +19,8 @@ namespace XmlServer
             model.From = (string)xModel.Element(nameof(model.From));
             model.Text = (string)xModel.Element(nameof(model.Text));
 
-            var strColor = (string)xModel.Element(nameof(model.Color));
-            uint num = uint.Parse(strColor, System.Globalization.NumberStyles.AllowHexSpecifier);
-            model.Color = BitConverter.GetBytes(num);
+            // TODO Найти преобразование в hex
+            model.Color = (string)xModel.Element(nameof(model.Color));
 
             var strImage = (string)xModel.Element(nameof(model.Image));
             model.Image = Convert.FromBase64String(strImage);
@@ -37,11 +37,19 @@ namespace XmlServer
             xModel.Add(new XElement(nameof(model.To), model.To));
             xModel.Add(new XElement(nameof(model.From), model.From));
             xModel.Add(new XElement(nameof(model.Text), model.Text));
-            xModel.Add(new XElement(nameof(model.Color), BitConverter.ToString(model.Color)));
+            xModel.Add(new XElement(nameof(model.Color), model.Color));
             xModel.Add(new XElement(nameof(model.Image), Convert.ToBase64String(model.Image)));
             doc.Add(xModel);
 
             return doc.ToString();
+        }
+
+        public static byte[] StringToByteArray(string hex)
+        {
+            return Enumerable.Range(0, hex.Length)
+                             .Where(x => x % 2 == 0)
+                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                             .ToArray();
         }
     }
 }
