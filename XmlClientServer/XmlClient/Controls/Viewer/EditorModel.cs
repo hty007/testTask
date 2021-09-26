@@ -1,4 +1,5 @@
 ﻿using Protocol;
+using System;
 using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -18,6 +19,7 @@ namespace XmlClient
         private Color color;
         private BitmapImage image;
         private string fileName;
+        private DateTime time;
         #endregion
         #region constuctor
 
@@ -64,6 +66,8 @@ namespace XmlClient
         public uint Id { get => id; set => SetProperty(ref id, value); }
         public string To { get => to; set => SetProperty(ref to, value); }
         public string From { get => from; set => SetProperty(ref from, value); }
+        
+        public DateTime Time { get => time; set => SetProperty(ref time, value); }
         public string Text { get => text; set => SetProperty(ref text, value); }
         public Color Color { get => color; set => SetProperty(ref color, value); }
         public BitmapImage Image { get => image; set => SetProperty(ref image, value); }

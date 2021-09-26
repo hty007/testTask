@@ -18,10 +18,9 @@ namespace Protocol
                 bw.Write(model.Color);
                 bw.Write(model.Image.Length);
                 bw.Write(model.Image);
-
+                return new MemoryStream(ms.ToArray());
             }
 
-            return ms;
         }
 
         public static MailModel StreamToModel(MemoryStream ms, int start = 4)

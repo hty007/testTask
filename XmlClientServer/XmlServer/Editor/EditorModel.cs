@@ -32,6 +32,7 @@ namespace XmlServer
             Text = model.Text;
             //Color = Colors.Red;
             Color = ToColor(model.Color);
+            
             Image = ToImage(model.Image);
 
             LoadImageCommand = new RelayCommand(LoadImage);
@@ -119,20 +120,15 @@ namespace XmlServer
 
         public static Color ToColor(string stringColor)
         {
-            var color = (Color)ColorConverter.ConvertFromString(stringColor);
-            return color;
-            //if (bytes != null)
-            //{
-            //    if (bytes.Length >= 4)
-            //    {
-            //        return Color.FromArgb(bytes[0], bytes[1], bytes[2], bytes[3]);
-            //    }
-            //    if (bytes.Length == 3)
-            //    {
-            //        return Color.FromRgb(bytes[0], bytes[1], bytes[2]);
-            //    }
-            //}
-            //return default;
+            try
+            {
+                var color = (Color)ColorConverter.ConvertFromString(stringColor);
+                return color;
+            }
+            catch
+            {
+                return Colors.Black;
+            }
         }
 
         public static byte[] ToBytes(Color color)

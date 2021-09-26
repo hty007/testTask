@@ -19,7 +19,6 @@ namespace XmlServer
             model.From = (string)xModel.Element(nameof(model.From));
             model.Text = (string)xModel.Element(nameof(model.Text));
 
-            // TODO Найти преобразование в hex
             model.Color = (string)xModel.Element(nameof(model.Color));
 
             var strImage = (string)xModel.Element(nameof(model.Image));

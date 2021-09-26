@@ -28,5 +28,6 @@ namespace Protocol
         list,
         xml,
         model,
+        fail,
     }
 }

@@ -32,14 +32,35 @@
         </Menu>
         
         <WrapPanel Grid.Row="1">
-            <Button Margin="5" Command="{Binding ConfigureServerCommand}">Настройка клиента</Button>
-            <Button Margin="5" Command="{Binding ConnectCommand}" Visibility="{Binding IsConnect, Converter={StaticResource InvertBoolToVisible}}">Подключится</Button>
-            <Button Margin="5" Command="{Binding DisconnectCommand}" Visibility="{Binding IsConnect, Converter={StaticResource BoolToVisible}}">Отключится</Button>
-            <Button Margin="5" Command="{Binding ListServerCommand}" ToolTip="Получить список файлов на сервере">Список файлов</Button>
+            <Border Margin="5" Width="150" Height="30" BorderBrush="Gray" BorderThickness="0.5">
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsConnect}" Value="false">
+                                <Setter Property="Background" Value="Red"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsConnect}" Value="true">
+                                <Setter Property="Background" Value="Green"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Visibility="{Binding IsConnect, Converter={StaticResource BoolToVisible}}">Подключено</TextBlock>
+                    <TextBlock Visibility="{Binding IsConnect, Converter={StaticResource InvertBoolToVisible}}">Разеденино</TextBlock>
+                </StackPanel>
+            </Border>
+            <Button Margin="5" Command="{Binding ConnectCommand}" Visibility="{Binding IsConnect, Converter={StaticResource InvertBoolToVisible}}">
+                <Image Source="Resources/conected.png"  Width="20"/>
+            </Button>
+            <Button Margin="5" Command="{Binding DisconnectCommand}" Visibility="{Binding IsConnect, Converter={StaticResource BoolToVisible}}">
+                <Image Source="Resources/disconected.png" Width="20"/>
+            </Button>
+            <!--<Button Margin="5" Command="{Binding ListServerCommand}" ToolTip="Получить список файлов на сервере">Список файлов</Button>-->
             <Button Margin="5" Command="{Binding ParseFileCommand}" ToolTip="Отправить файлов на сервере">Отправить файл</Button>
         </WrapPanel>
 
-        <TabControl Grid.Row="2">
+        <TabControl Grid.Row="2" SelectedIndex="{Binding IndexTab, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <TabItem Header="История"></TabItem>
             <TabItem Header="Текуший запрос">
                 <controls:ViewerView  DataContext="{Binding Viewer}"/>

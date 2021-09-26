@@ -30,15 +30,16 @@
         <TabControl Grid.Row="2">
             <TabItem Header="Запросы">
                 <ListBox ItemsSource="{Binding Requests}" Grid.Row="1">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <TextBlock Text="{Binding Id}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-                
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="10,0" Text="{Binding Id}"/>
+                                <TextBlock Margin="10,0" Text="{Binding Command}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
             </TabItem>
             <TabItem Header="Файлы">
                 <Grid>
@@ -48,7 +49,7 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" Grid.Row="0">
                         <Button Content="Создать файл" Command="{Binding CreateCommand}"/>
-                        
+
                     </StackPanel>
                     <ItemsControl Grid.Row="1" ItemsSource="{Binding Files}" x:Name="listFile">
                         <ItemsControl.ItemsPanel>
@@ -69,11 +70,11 @@
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
-                        
+
                     </ItemsControl>
-                    
+
                 </Grid>
-                
+
             </TabItem>
         </TabControl>
     </Grid>

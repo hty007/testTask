@@ -106,6 +106,7 @@ namespace XmlServer
         {
             var request = new PoolRequest();
             request.Id = context.LocalEndPoint.ToString();
+            request.Command = context.Command;
             //StringBuilder message = new StringBuilder();
             //message.AppendLine($"LocalEndPoint: {context.LocalEndPoint}");
             //message.AppendLine($"RemoteEndPoint: {context.RemoteEndPoint}");

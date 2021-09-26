@@ -2,6 +2,7 @@
 using Protocol;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Sockets;
 using WPFStorage.Base;
 using WPFStorage.Dialogs;
@@ -14,6 +15,7 @@ namespace XmlClient
         private string targetServer = "127.0.0.1";
         private MyClient client;
         private bool isConnect;
+        private int indexTab;
 
         public ClientMainViewModel()
         {
@@ -36,6 +38,8 @@ namespace XmlClient
         public ViewerViewModel Viewer { get; }
         public SettingViewModel Setting { get; }
         public int TargetPort { get => targetPort; set =>SetProperty(ref targetPort, value); }
+        public int IndexTab { get => indexTab; set => SetProperty(ref indexTab, value); }
+        
         public string TargetServer { get => targetServer; set =>SetProperty(ref targetServer, value); }
         public bool IsConnect { get => isConnect; set => SetProperty(ref isConnect, value); }
 
@@ -68,7 +72,7 @@ namespace XmlClient
             if (!Setting.ValidIp)
             {
                 WinBox.ShowMessage("Применение настроек отменено из-за ошибки ввода целевого Ip");
-                return
+                return;
             }
             bool needConnect = false;
             if (isConnect)
@@ -94,7 +98,7 @@ namespace XmlClient
                     return;
                 }
                 OpenFileDialog openFile = new OpenFileDialog();
-                openFile.Filter = "XML files (*.xml)|*.txt|All files (*.*)|*.*";
+                openFile.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
 
                 openFile.CheckFileExists = true;
                 openFile.AddExtension = true;
@@ -105,9 +109,8 @@ namespace XmlClient
 
 
                     Viewer.SetModel(model);
-                    //var viewer = new ViewerViewModel(model);
-                    //// Todo: Время полученного сообщения;
-                    //viewer.OpenDialog();
+                    Viewer.Time = DateTime.Now;
+                    IndexTab = 1;
                 }
             }
             catch

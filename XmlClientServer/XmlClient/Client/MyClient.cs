@@ -82,7 +82,7 @@ namespace XmlClient
             using (MyRequest request = new MyRequest())
             {
                 request.WriteCommand(ServerCommand.parse);
-                request.WriteString(fileName);
+                request.WriteString(Path.GetFileName(fileName));
                 request.WriteFile(fileName);
 
                 stream = client.GetStream();

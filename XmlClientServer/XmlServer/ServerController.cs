@@ -12,7 +12,7 @@ namespace XmlServer
         public static readonly string DATA_DIR = "data";
         private MyListener listener;
         private bool canListen;
-        private List<string> files = new List<string>() { "renat", "lila"};
+        private List<string> files;
 
         public ServerController()
         {
@@ -24,12 +24,40 @@ namespace XmlServer
 
         public event Action<MyContext> ClientRequest;
 
+        private static void SendFail(MyContext context)
+        {
+            using (MemoryStream response = new MemoryStream())
+            {
+                using (BinaryWriter bw = new BinaryWriter(response))
+                    bw.Write((int)ClientCommand.fail);
+
+                context.Send(response);
+            }
+        }
+
+        private static void SendModel(MyContext context, MailModel model)
+        {
+            using (MemoryStream response = new MemoryStream())
+            {
+                using (BinaryWriter bw = new BinaryWriter(response))
+                {
+                    using (MemoryStream modelStream = StreamHelper.ModelToStream(model))
+                    {
+                        bw.Write((int)ClientCommand.model);
+                        modelStream.WriteTo(response);
+
+                        context.Send(response);
+                    }
+                }
+            }
+        }
+
         public void Start()
         {
             canListen = true;
             listener = new MyListener(Port);
             listener.Start();
-            Listing();
+            _ = Task.Run(Listing);
         }
 
         public IEnumerable<string> GetFileNames()
@@ -68,11 +96,30 @@ namespace XmlServer
                 try
                 {
                     MyContext context = await listener.GetContextAsync();
-                    _ = Task.Run(() => RequestHandle(context));
-                    ClientRequest?.Invoke(context);
+                    _ = Task.Run(() =>
+                    {
+                        switch (context.Command)
+                        {
+                            //case ServerCommand.generate:
+                            //    GenerateHandle(br, context);
+                            //    break;
+                            case ServerCommand.parse:
+                                ParseHandle(context);
+                                break;
+                            case ServerCommand.repeat:
+                                RepeatHandle(context);
+                                break;
+                            case ServerCommand.getList:
+                            default:
+                                ListHandle(context);
+                                break;
+                        }
+                        ClientRequest?.Invoke(context);
+                        context.Dispose();
+                    });
                 }
                 catch (Exception ex)
-                { 
+                {
                     // TODO: Реализовать логгирование
                 }
             }
@@ -88,29 +135,25 @@ namespace XmlServer
             {
                 // TODO: parsing команды надо перенести в отдельный класс или в MyContext
                 ServerCommand command = (ServerCommand)br.ReadInt32();
-                switch (command)
-                {
-                    //case ServerCommand.generate:
-                    //    GenerateHandle(br, context);
-                    //    break;
-                    //case ServerCommand.parse:
-                    //    ParseHandle(br, context);
-                    //    break;
-                    //case ServerCommand.repeat:
-                    //    RepeatHandle(br);
-                    //    break;
-                    case ServerCommand.getList:
-                    default:
-                        ListHandle(context);
-                        break;
-                }
             }
             context.Dispose();
         }
 
-        private void RepeatHandle(BinaryReader br)
+        private void RepeatHandle(MyContext context)
         {
-            throw new NotImplementedException();
+            // Принимаем файл
+            var br = context.GetReader();
+
+            var fileName = br.ReadString();
+            if (!files.Contains(fileName))
+            {
+                SendFail(context);
+                return;
+            }
+
+            var xml = File.ReadAllText(Path.Combine(DATA_DIR, fileName));
+            var model = XMLHelper.GetModel(xml);
+            SendModel(context, model);
         }
 
         private void ListHandle(MyContext context)
@@ -149,21 +192,15 @@ namespace XmlServer
             }
         }
 
-        private void ParseHandle(BinaryReader br, MyContext context)
+        private void ParseHandle(MyContext context)
         {// Принимаем файл
+            var br = context.GetReader();
             var fileName = br.ReadString();
             var xml = br.ReadString();
             var model = XMLHelper.GetModel(xml);
 
-            using (MemoryStream response = new MemoryStream())
-            {
-                using (BinaryWriter bw = new BinaryWriter(response))
-                    bw.Write((int)ClientCommand.model);
-                using (MemoryStream modelStream = StreamHelper.ModelToStream(model))
-                    modelStream.WriteTo(response);
+            SendModel(context, model);
 
-                context.Send(response);
-            }
             File.WriteAllText(Path.Combine(DATA_DIR, fileName), xml);
             files.Add(fileName);
         }
