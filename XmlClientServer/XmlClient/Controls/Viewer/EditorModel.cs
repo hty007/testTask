@@ -1,16 +1,13 @@
-﻿using Microsoft.Win32;
-using Protocol;
-using System;
+﻿using Protocol;
 using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WPFStorage.Base;
-using XmlClient.Viewer;
 
 namespace XmlClient
 {
     // TODO: Абстрагировать Editor и Viewer 
-    internal class ViewerModel: ObservableObject
+    public class ViewerViewModel: ObservableObject
     {
         #region fields
         private int formatVersion;
@@ -20,22 +17,13 @@ namespace XmlClient
         private string text;
         private Color color;
         private BitmapImage image;
-        private ViewerWindow window;
         private string fileName;
         #endregion
         #region constuctor
 
-        public ViewerModel(MailModel model)
+        public ViewerViewModel()
         {
-            FormatVersion = model.FormatVersion;
-            Id = model.Id;
-            To = model.To;
-            From = model.From;
-            Text = model.Text;
-            Color = ToColor(model.Color);
-            Image = ToImage(model.Image);
-
-            OkCommand = new RelayCommand(Ok);
+            
         } 
         #endregion
         #region Properties
@@ -82,7 +70,18 @@ namespace XmlClient
         public RelayCommand LoadImageCommand { get; }
         public RelayCommand CancelCommand { get; }
         public RelayCommand OkCommand { get; }
-        public bool? PressOk { get; private set; } 
+        public bool? PressOk { get; private set; }
+
+        public void SetModel(MailModel model)
+        {
+            FormatVersion = model.FormatVersion;
+            Id = model.Id;
+            To = model.To;
+            From = model.From;
+            Text = model.Text;
+            Color = ToColor(model.Color);
+            Image = ToImage(model.Image);
+        }
         #endregion
         #region static methods
         //  https://stackoverflow.com/questions/14337071/convert-array-of-bytes-to-bitmapimage
@@ -111,22 +110,22 @@ namespace XmlClient
         #region public
         
 
-        public bool? OpenDialog()
-        {
-            window = new ViewerWindow();
-            window.DataContext = this;
-            window.ShowDialog();
+        //public bool? OpenDialog()
+        //{
+        //    window = new ViewerView();
+        //    window.DataContext = this;
+        //    window.ShowDialog();
 
-            return PressOk;
-        }
+        //    return PressOk;
+        //}
         #endregion
         #region private
-        private void Ok()
-        {
-            window.DialogResult = true;
-            PressOk = true;
-            window.Close();
-        }
+        //private void Ok()
+        //{
+        //    window.DialogResult = true;
+        //    PressOk = true;
+        //    window.Close();
+        //}
         #endregion
     }
 }

@@ -21,12 +21,20 @@ namespace XmlClient
             ConnectCommand = new RelayCommand(Connect);
             DisconnectCommand = new RelayCommand(Disconnect);
             ParseFileCommand = new RelayCommand(ParseFileAsync);
+            Viewer = new ViewerViewModel();
+            Setting = new SettingViewModel();
+            Setting.Ip = TargetServer;
+            Setting.Port = TargetPort;
+
+            Setting.ClickAppleSetting += OnClickAppleSetting;
         }
 
         public RelayCommand ListServerCommand { get; }
         public RelayCommand ConnectCommand { get; }
         public RelayCommand DisconnectCommand { get; }
         public RelayCommand ParseFileCommand { get; }
+        public ViewerViewModel Viewer { get; }
+        public SettingViewModel Setting { get; }
         public int TargetPort { get => targetPort; set =>SetProperty(ref targetPort, value); }
         public string TargetServer { get => targetServer; set =>SetProperty(ref targetServer, value); }
         public bool IsConnect { get => isConnect; set => SetProperty(ref isConnect, value); }
@@ -55,6 +63,27 @@ namespace XmlClient
             }
         }
 
+        private void OnClickAppleSetting()
+        {
+            if (!Setting.ValidIp)
+            {
+                WinBox.ShowMessage("Применение настроек отменено из-за ошибки ввода целевого Ip");
+                return
+            }
+            bool needConnect = false;
+            if (isConnect)
+            {
+                Disconnect();
+                needConnect = true;
+            }
+            TargetServer = Setting.Ip;
+            TargetPort = Setting.Port;
+
+            if (needConnect)
+                Connect();
+
+        }
+
         private async void ParseFileAsync()
         {
             try
@@ -75,9 +104,10 @@ namespace XmlClient
                     MailModel model = await client.ParseModel(openFile.FileName);
 
 
-                    var viewer = new ViewerModel(model);
-                    // Todo: Время полученного сообщения;
-                    viewer.OpenDialog();
+                    Viewer.SetModel(model);
+                    //var viewer = new ViewerViewModel(model);
+                    //// Todo: Время полученного сообщения;
+                    //viewer.OpenDialog();
                 }
             }
             catch

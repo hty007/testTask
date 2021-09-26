@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:XmlClient"
         xmlns:systemConverters="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
         xmlns:converters="clr-namespace:WPFStorage.Converters;assembly=WpfStorage"
+        xmlns:controls="clr-namespace:XmlClient.Controls"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="400">
     <Window.Resources>
@@ -16,14 +17,37 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <WrapPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="Клиент">
+                <MenuItem Header="Выход" />
+            </MenuItem>
+            <MenuItem Header="О программе">
+                
+            </MenuItem>
+        </Menu>
+        
+        <WrapPanel Grid.Row="1">
             <Button Margin="5" Command="{Binding ConfigureServerCommand}">Настройка клиента</Button>
             <Button Margin="5" Command="{Binding ConnectCommand}" Visibility="{Binding IsConnect, Converter={StaticResource InvertBoolToVisible}}">Подключится</Button>
             <Button Margin="5" Command="{Binding DisconnectCommand}" Visibility="{Binding IsConnect, Converter={StaticResource BoolToVisible}}">Отключится</Button>
             <Button Margin="5" Command="{Binding ListServerCommand}" ToolTip="Получить список файлов на сервере">Список файлов</Button>
             <Button Margin="5" Command="{Binding ParseFileCommand}" ToolTip="Отправить файлов на сервере">Отправить файл</Button>
         </WrapPanel>
-        
+
+        <TabControl Grid.Row="2">
+            <TabItem Header="История"></TabItem>
+            <TabItem Header="Текуший запрос">
+                <controls:ViewerView  DataContext="{Binding Viewer}"/>
+            </TabItem>
+            <TabItem Header="Настройки">
+                <controls:SettingsControl                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        DataContext="{Binding Setting}"/>
+            </TabItem>
+        </TabControl>
         
            
     </Grid>
