@@ -14,6 +14,7 @@ namespace XmlServer
     {
         private bool serverIsWorking;
         private int port = 5011;
+        private Dispatcher dispatcher;
 
         public ServerMainViewModel()
         {
@@ -25,13 +26,17 @@ namespace XmlServer
 
             Server = new ServerController();
             Server.ClientRequest += OnRequest;
+            Server.ExeptionRequest += OnExeption;
 
             var names = Server.GetFileNames();
             Files = new ObservableCollection<string>(names);
+            dispatcher = Dispatcher.CurrentDispatcher;
         }
+
 
         public ObservableCollection<PoolRequest> Requests { get; set; } = new ObservableCollection<PoolRequest>();
         public ObservableCollection<string> Files { get; set; }
+
 
         public int Port { get => port; set => SetProperty(ref port, value); }
         public bool ServerIsWorking { get => serverIsWorking; set => SetProperty(ref serverIsWorking, value); }
@@ -81,7 +86,7 @@ namespace XmlServer
             {
                 Color = "#FFFFFF00",
                 Image = Properties.Resources.baikal,
-            }) ;
+            });
 
             var dir = ServerController.DATA_DIR;
             string fileName = "Model.xml";
@@ -102,6 +107,14 @@ namespace XmlServer
             }
         }
 
+        private void OnExeption(Exception obj)
+        {
+            var pool = new PoolRequest();
+            pool.Message = $"{obj.GetType().Name}: {obj.Message}";
+
+            dispatcher.Invoke(() => Requests.Add(pool));
+        }
+
         private void OnRequest(MyContext context)
         {
             var request = new PoolRequest();
@@ -112,8 +125,8 @@ namespace XmlServer
             //message.AppendLine($"RemoteEndPoint: {context.RemoteEndPoint}");
             //message.AppendLine($"AddressFamily: {context.AddressFamily}");
             //Dispatcher.CurrentDispatcher.Invoke(() => WinBox.ShowMessage(message.ToString()));
-;
-            Requests.Add(request);
+            ;
+            dispatcher.Invoke(() => Requests.Add(request));
         }
 
         private void StopServer()

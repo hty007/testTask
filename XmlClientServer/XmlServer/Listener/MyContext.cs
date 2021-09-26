@@ -59,9 +59,9 @@ namespace XmlServer
 
         public void Dispose()
         {
-            reader.Dispose();
-            Data.Dispose();
-            client.Dispose();
+            reader?.Dispose();
+            Data?.Dispose();
+            client?.Dispose();
         }
 
         internal BinaryReader GetReader()

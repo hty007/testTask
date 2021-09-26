@@ -23,6 +23,7 @@ namespace XmlServer
         public int Port { get; private set; }
 
         public event Action<MyContext> ClientRequest;
+        public event Action<Exception> ExeptionRequest;
 
         private static void SendFail(MyContext context)
         {
@@ -93,16 +94,16 @@ namespace XmlServer
         {
             while (canListen)
             {
-                try
+                MyContext context = await listener.GetContextAsync();
+                _ = Task.Run(() =>
                 {
-                    MyContext context = await listener.GetContextAsync();
-                    _ = Task.Run(() =>
+                    try
                     {
                         switch (context.Command)
                         {
-                            //case ServerCommand.generate:
-                            //    GenerateHandle(br, context);
-                            //    break;
+                                //case ServerCommand.generate:
+                                //    GenerateHandle(br, context);
+                                //    break;
                             case ServerCommand.hello:
                                 CheckConnect(context);
                                 break;
@@ -118,13 +119,16 @@ namespace XmlServer
                                 break;
                         }
                         ClientRequest?.Invoke(context);
+                    }
+                    catch (Exception ex)
+                    {
+                        ExeptionRequest?.Invoke(ex);
+                    }
+                    finally
+                    {
                         context.Dispose();
-                    });
-                }
-                catch (Exception ex)
-                {
-                    // TODO: Реализовать логгирование
-                }
+                    }
+                });
             }
         }
 
@@ -133,9 +137,11 @@ namespace XmlServer
             using (MemoryStream response = new MemoryStream())
             {
                 using (BinaryWriter bw = new BinaryWriter(response))
+                {
                     bw.Write((int)ClientCommand.hello);
-
-                context.Send(response);
+                    bw.Flush();
+                    context.Send(response);
+                }
             }
         }
 

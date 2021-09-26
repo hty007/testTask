@@ -12,7 +12,7 @@ namespace XmlClient
     {
         private int port;
         private DispatcherTimer timer;
-        private int updateTime = 100;
+        private int updateTime = 5000;
         private bool isConnect;
         private string ip;
 
@@ -21,9 +21,9 @@ namespace XmlClient
             this.Ip = targetServer;
             this.Port = targetPort;
 
-            timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(0, 0, 0, 0, UpdateTime);
-            timer.Tick += CheckConnect;
+            //timer = new DispatcherTimer();
+            //timer.Interval = new TimeSpan(0, 0, 0, 0, UpdateTime);
+            //timer.Tick += CheckConnect;
         }
 
         public event Action<bool> IsConnectedChanged;
@@ -59,12 +59,13 @@ namespace XmlClient
         /// </summary>
         public void Connect()
         {
-            timer.Start();
+            //timer.Start();
+            CheckConnect(this, null);
         }
 
         public void Disconnect()
         {
-            timer.Stop();
+            timer?.Stop();
             IsConnect = false;
         }
 
@@ -73,13 +74,12 @@ namespace XmlClient
 
         private void UpdateInterval(int milliseconds)
         {
-            timer.Stop();
             timer.Interval = new TimeSpan(0, 0, 0, 0, milliseconds);
-            timer.Start();
         }
 
         public async Task<List<string>> GetList()
         {
+            timer.Stop();
             using (TcpClient client = new TcpClient())
             {
                 client.SendTimeout = UpdateTime;
@@ -120,12 +120,17 @@ namespace XmlClient
                 {
                     IsConnect = false;
                 }
+                finally 
+                { 
+                    timer.Start();
+                }
                 return null;
             }
         }
 
         public async Task<MailModel> ParseModel(string fileName)
         {
+            timer.Stop();
             using (TcpClient client = new TcpClient())
             {
                 client.SendTimeout = UpdateTime;
@@ -162,17 +167,21 @@ namespace XmlClient
                 {
                     IsConnect = false;
                 }
+                finally
+                {
+                    timer.Start();
+                }
                 return null;
             }
         }
 
         private async void CheckConnect(object sender, EventArgs e)
         {
-            timer.Stop();
+            //timer.Stop();
             using (TcpClient client = new TcpClient())
             {
-                client.SendTimeout = UpdateTime;
-                client.ReceiveTimeout = UpdateTime;
+                //client.SendTimeout = UpdateTime;
+                //client.ReceiveTimeout = UpdateTime;
                 try
                 {
                     await client.ConnectAsync(Ip, Port);
@@ -181,7 +190,8 @@ namespace XmlClient
                         request.WriteCommand(ServerCommand.hello);
 
                         var stream = client.GetStream();
-                        await Task.Run(() => request.Stream.WriteTo(stream));
+                        request.Stream.Position = 0;
+                        request.Stream.WriteTo(stream);
                     }
 
                     using (MyResponse response = new MyResponse())
@@ -199,8 +209,11 @@ namespace XmlClient
                 {
                     IsConnect = false;
                 }
+                finally
+                {
+                    //timer.Start();
+                }
             }
-            timer.Start();
         }
     }
 }
