@@ -103,6 +103,9 @@ namespace XmlServer
                             //case ServerCommand.generate:
                             //    GenerateHandle(br, context);
                             //    break;
+                            case ServerCommand.hello:
+                                CheckConnect(context);
+                                break;
                             case ServerCommand.parse:
                                 ParseHandle(context);
                                 break;
@@ -125,18 +128,15 @@ namespace XmlServer
             }
         }
 
-        /// <summary>
-        /// Формируем ответ и отвечаем
-        /// </summary>
-        /// <param name="context"></param>
-        private void RequestHandle(MyContext context)
+        private void CheckConnect(MyContext context)
         {
-            using (BinaryReader br = new BinaryReader(context.Data))
+            using (MemoryStream response = new MemoryStream())
             {
-                // TODO: parsing команды надо перенести в отдельный класс или в MyContext
-                ServerCommand command = (ServerCommand)br.ReadInt32();
+                using (BinaryWriter bw = new BinaryWriter(response))
+                    bw.Write((int)ClientCommand.hello);
+
+                context.Send(response);
             }
-            context.Dispose();
         }
 
         private void RepeatHandle(MyContext context)

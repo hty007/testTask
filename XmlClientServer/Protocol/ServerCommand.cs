@@ -17,6 +17,7 @@ namespace Protocol
 {
     public enum  ServerCommand
     {
+        hello,
         parse,
         repeat,
         generate,
@@ -25,6 +26,7 @@ namespace Protocol
 
     public enum ClientCommand
     {
+        hello,
         list,
         xml,
         model,

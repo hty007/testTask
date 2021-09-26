@@ -29,6 +29,8 @@ namespace XmlClient
             Setting.Port = TargetPort;
 
             Setting.ClickAppleSetting += OnClickAppleSetting;
+            client = new MyClient(TargetServer, TargetPort);
+            client.IsConnectedChanged += Client_IsConnectedChanged;
         }
 
         public RelayCommand ListServerCommand { get; }
@@ -45,17 +47,14 @@ namespace XmlClient
 
         private void Disconnect()
         {
-            client.Dispose();
-            IsConnect = false;
+            client.Disconnect();
         }
 
         private void Connect()
         {
             try
             {
-                client = new MyClient(TargetServer, TargetPort);
                 client.Connect();
-                IsConnect = true;
             }
             catch (SocketException socketEx)
             {
@@ -65,6 +64,11 @@ namespace XmlClient
             {
                 WinBox.ShowMessage($"{ex.GetType().Name}: {ex.Message}");
             }
+        }
+
+        private void Client_IsConnectedChanged(bool obj)
+        {
+            IsConnect = obj;
         }
 
         private void OnClickAppleSetting()
@@ -80,8 +84,8 @@ namespace XmlClient
                 Disconnect();
                 needConnect = true;
             }
-            TargetServer = Setting.Ip;
-            TargetPort = Setting.Port;
+            client.Ip = TargetServer = Setting.Ip;
+            client.Port = TargetPort = Setting.Port;
 
             if (needConnect)
                 Connect();
