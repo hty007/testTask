@@ -113,7 +113,7 @@ namespace XmlClient
                     IndexTab = 1;
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 IsConnect = false;
             }

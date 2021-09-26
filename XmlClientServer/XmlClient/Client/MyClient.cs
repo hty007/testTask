@@ -87,12 +87,13 @@ namespace XmlClient
 
                 stream = client.GetStream();
                 await Task.Run(() => request.Stream.WriteTo(stream));
+                stream.Flush();
             }
 
             using (MyResponse response = new MyResponse())
             {
                 await Task.Run(() => response.GetData(stream));
-                stream.Close();
+                //stream.Close();
 
                 ClientCommand command = response.ReadCommand();
                 if (command == ClientCommand.model)
