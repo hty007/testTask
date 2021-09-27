@@ -7,19 +7,13 @@ namespace XmlServer
 {
     public class MyListener : IDisposable
     {
-        //
-        // TODO: https://ru.wikipedia.org/wiki/HTTPS
-        //
-
-        private int port;
         TcpListener listener;
 
         public bool IsWork { get; private set; }
 
-        public MyListener(int port)
+        public MyListener(string ipAdress, int port)
         {
-            this.port = port;
-            listener = new TcpListener(IPAddress.Any, port);
+            listener = new TcpListener(IPAddress.Parse(ipAdress), port);
         }
 
         public async Task<MyContext> GetContextAsync()

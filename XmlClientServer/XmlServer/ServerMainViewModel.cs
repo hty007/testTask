@@ -15,10 +15,10 @@ namespace XmlServer
         private bool serverIsWorking;
         private int port = 5011;
         private Dispatcher dispatcher;
+        private string ipAdress = "127.0.0.1";
 
         public ServerMainViewModel()
         {
-            ConfigureServerCommand = new RelayCommand(ConfigureServer);
             StartServerCommand = new RelayCommand(StartServer);
             StopServerCommand = new RelayCommand(StopServer);
             CreateCommand = new RelayCommand(Create);
@@ -26,22 +26,29 @@ namespace XmlServer
             ClearHistoryCommand = new RelayCommand(ClearHistory);
 
             Server = new ServerController();
+            Server.SetAdress(IPAdress, Port);
             Server.ClientRequest += OnRequest;
             Server.ExeptionRequest += OnExeption;
 
             var names = Server.GetFileNames();
             Files = new ObservableCollection<string>(names);
             dispatcher = Dispatcher.CurrentDispatcher;
+            Settings = new SettingViewModel()
+            {
+                Ip = IPAdress,
+                Port = Port,
+            };
+            Settings.ClickAppleSetting += Settings_ClickAppleSetting;
         }
 
         public ObservableCollection<PoolRequest> Requests { get; set; } = new ObservableCollection<PoolRequest>();
         public ObservableCollection<string> Files { get; set; }
-
+        public SettingViewModel Settings { get; set; }
 
         public int Port { get => port; set => SetProperty(ref port, value); }
+        public string IPAdress { get => ipAdress; set => SetProperty(ref ipAdress, value); }
         public bool ServerIsWorking { get => serverIsWorking; set => SetProperty(ref serverIsWorking, value); }
 
-        public RelayCommand ConfigureServerCommand { get; }
         public RelayCommand StartServerCommand { get; }
         public RelayCommand StopServerCommand { get; }
         public RelayCommand CreateCommand { get; }
@@ -82,6 +89,26 @@ namespace XmlServer
                     Files.Add(editor.FileName);
                 }
             }
+        }
+
+        private void Settings_ClickAppleSetting()
+        {
+            if (!Settings.ValidIp)
+            {
+                WinBox.ShowMessage("Поле IP заполнено c ошибкой!");
+                return;
+            }
+            bool canStart = false;
+            if (Server.IsWork)
+            {
+                Server.Stop();
+                canStart = true;
+            }
+            IPAdress = Settings.Ip;
+            Port = Settings.Port;
+            Server.SetAdress(IPAdress, Port);
+            if (canStart)
+                Server.Start();
         }
 
 
@@ -143,21 +170,8 @@ namespace XmlServer
 
         private void StartServer()
         {
-            Server.SetPort(Port);
             Server.Start();
             ServerIsWorking = true;
-        }
-
-        private void ConfigureServer()
-        {
-            var settings = new Settings();
-            settings.Title = "Настройка сервера";
-
-            settings.AddUpDownIterator("port", "Post")
-                .SetInkermenter(1)
-                .SetIsInteger(true)
-                .SetMinValue(1)
-                .SetMaxValue(10000);
         }
     }
 }

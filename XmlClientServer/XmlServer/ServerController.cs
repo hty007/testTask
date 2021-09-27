@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace XmlServer
@@ -13,6 +14,8 @@ namespace XmlServer
         private MyListener listener;
         private bool canListen;
         private List<string> files;
+        private CancellationTokenSource tokenSource;
+        private Task listingTask;
 
         public ServerController()
         {
@@ -20,7 +23,9 @@ namespace XmlServer
             files = new List<string>(GetFileNames());
         }
 
+        public bool IsWork => listener?.IsWork == true;
         public int Port { get; private set; }
+        public string IpAdress { get; private set; }
 
         public event Action<MyContext> ClientRequest;
         public event Action<Exception> ExeptionRequest;
@@ -56,9 +61,11 @@ namespace XmlServer
         public void Start()
         {
             canListen = true;
-            listener = new MyListener(Port);
+            
+            listener = new MyListener(IpAdress , Port);
             listener.Start();
-            _ = Task.Run(Listing);
+            tokenSource = new CancellationTokenSource();
+            listingTask = Task.Run(Listing, tokenSource.Token);
         }
 
         public IEnumerable<string> GetFileNames()
@@ -77,7 +84,7 @@ namespace XmlServer
             else if (!listener.IsWork)
             {
                 listener.Dispose();
-                listener = new MyListener(Port);
+                listener = new MyListener(IpAdress, Port);
                 return true;
             }
 
@@ -87,6 +94,7 @@ namespace XmlServer
         public void Stop()
         {
             canListen = false;
+            tokenSource.Cancel();
             listener.Dispose();
         }
 
@@ -99,7 +107,7 @@ namespace XmlServer
                     MyContext context = await listener.GetContextAsync();
                     _ = Task.Run(() => Routing(context));
                 }
-                catch
+                catch(Exception ex)
                 {
                     if (canListen)
                         throw;
@@ -140,6 +148,12 @@ namespace XmlServer
             {
                 context.Dispose();
             }
+        }
+
+        internal void SetAdress(string ip, int port)
+        {
+            IpAdress = ip;
+            Port = port;
         }
 
         private void CheckConnect(MyContext context)

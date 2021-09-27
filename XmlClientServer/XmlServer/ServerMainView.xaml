@@ -109,7 +109,7 @@
 
             </TabItem>
             <TabItem Header="Настройки">
-                
+                <local:SettingsControl DataContext="{Binding Settings}"/>
             </TabItem>
         </TabControl>
     </Grid>
