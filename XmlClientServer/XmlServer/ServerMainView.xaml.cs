@@ -16,5 +16,7 @@ namespace XmlServer
             DataContext = model;
             Closed += model.Closed;
         }
+
+        private void Exit_Click(object sender, RoutedEventArgs e) => Close();
     }
 }

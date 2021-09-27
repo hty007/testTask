@@ -16,6 +16,9 @@ namespace XmlServer
         private int port = 5011;
         private Dispatcher dispatcher;
         private string ipAdress = "127.0.0.1";
+        private bool needFilter;
+        private string title = "Сервер";
+
 
         public ServerMainViewModel()
         {
@@ -24,11 +27,12 @@ namespace XmlServer
             CreateCommand = new RelayCommand(Create);
             EditFileCommand = new RelayCommand<string>(EditFile);
             ClearHistoryCommand = new RelayCommand(ClearHistory);
+            AboutCommand = new RelayCommand(About);
 
             Server = new ServerController();
             Server.SetAdress(IPAdress, Port);
             Server.ClientRequest += OnRequest;
-            Server.ExeptionRequest += OnExeption;
+            Server.ExeptionCallback += OnExeption;
 
             var names = Server.GetFileNames();
             Files = new ObservableCollection<string>(names);
@@ -47,13 +51,17 @@ namespace XmlServer
 
         public int Port { get => port; set => SetProperty(ref port, value); }
         public string IPAdress { get => ipAdress; set => SetProperty(ref ipAdress, value); }
+        public string Title { get => title; set => SetProperty(ref title, value); }
         public bool ServerIsWorking { get => serverIsWorking; set => SetProperty(ref serverIsWorking, value); }
+
+        public bool NeedFilter { get => needFilter; set => SetProperty(ref needFilter, value); }
 
         public RelayCommand StartServerCommand { get; }
         public RelayCommand StopServerCommand { get; }
         public RelayCommand CreateCommand { get; }
         public RelayCommand<string> EditFileCommand { get; }
         public RelayCommand ClearHistoryCommand { get; }
+        public RelayCommand AboutCommand { get; }
         public ServerController Server { get; }
 
         public void Closed(object sender, EventArgs e)
@@ -62,6 +70,12 @@ namespace XmlServer
             {
                 Server.Stop();
             }
+        }
+
+        private void About()
+        {
+            WinBox.ShowMessage(@"Тестовое задание. 
+Сервер на TCP. Парсинг XML файлов.");
         }
 
         private void ClearHistory()
@@ -150,27 +164,27 @@ namespace XmlServer
 
         private void OnRequest(MyContext context)
         {
+            if (NeedFilter && context.Command == ServerCommand.hello)
+            {
+                return;
+            }
             var request = new PoolRequest();
             request.Id = context.LocalEndPoint.ToString();
             request.Command = context.Command;
-            //StringBuilder message = new StringBuilder();
-            //message.AppendLine($"LocalEndPoint: {context.LocalEndPoint}");
-            //message.AppendLine($"RemoteEndPoint: {context.RemoteEndPoint}");
-            //message.AppendLine($"AddressFamily: {context.AddressFamily}");
-            //Dispatcher.CurrentDispatcher.Invoke(() => WinBox.ShowMessage(message.ToString()));
-            ;
             dispatcher.Invoke(() => Requests.Add(request));
         }
 
         private void StopServer()
         {
             Server.Stop();
+            Title = $"Сервер остановлен";
             ServerIsWorking = false;
         }
 
         private void StartServer()
         {
             Server.Start();
+            Title = $"Сервер {IPAdress}:{Port} Запущен";
             ServerIsWorking = true;
         }
     }

@@ -22,5 +22,10 @@ namespace XmlClient
                 model.Dispose();
             }
         }
+
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

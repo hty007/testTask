@@ -28,7 +28,7 @@ namespace XmlServer
         public string IpAdress { get; private set; }
 
         public event Action<MyContext> ClientRequest;
-        public event Action<Exception> ExeptionRequest;
+        public event Action<Exception> ExeptionCallback;
 
         private static void SendFail(MyContext context)
         {
@@ -110,7 +110,7 @@ namespace XmlServer
                 catch(Exception ex)
                 {
                     if (canListen)
-                        throw;
+                        ExeptionCallback?.Invoke(ex);
                 }
             }
         }
@@ -121,9 +121,9 @@ namespace XmlServer
             {
                 switch (context.Command)
                 {
-                    //case ServerCommand.generate:
-                    //    GenerateHandle(br, context);
-                    //    break;
+                    case ServerCommand.generate:
+                        GenerateHandle(context);
+                        break;
                     case ServerCommand.hello:
                         CheckConnect(context);
                         break;
@@ -142,7 +142,7 @@ namespace XmlServer
             }
             catch (Exception ex)
             {
-                ExeptionRequest?.Invoke(ex);
+                ExeptionCallback?.Invoke(ex);
             }
             finally
             {
@@ -204,7 +204,7 @@ namespace XmlServer
             }
         }
 
-        private void GenerateHandle(BinaryReader br, MyContext context)
+        private void GenerateHandle(MyContext context)
         {
             // Генерируем файл
             MailModel model = StreamHelper.StreamToModel(context.Data);

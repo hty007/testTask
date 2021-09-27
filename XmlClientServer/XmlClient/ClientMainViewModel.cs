@@ -28,6 +28,7 @@ namespace XmlClient
             ParseFileCommand = new RelayCommand(ParseFileAsync);
             RepeatedCommand = new RelayCommand<string>(RepeatedAsync);
             ClearHistoryCommand = new RelayCommand(ClearHistory);
+            AboutCommand = new RelayCommand(About);
             Viewer = new ViewerViewModel();
             Setting = new SettingViewModel();
             Setting.Ip = TargetServer;
@@ -45,6 +46,7 @@ namespace XmlClient
         public RelayCommand ParseFileCommand { get; }
         public RelayCommand<string> RepeatedCommand { get; }
         public RelayCommand ClearHistoryCommand { get; }
+        public object AboutCommand { get; }
         public ViewerViewModel Viewer { get; }
         public SettingViewModel Setting { get; }
         public int TargetPort { get => targetPort; set => SetProperty(ref targetPort, value); }
@@ -53,6 +55,14 @@ namespace XmlClient
         public string TargetServer { get => targetServer; set => SetProperty(ref targetServer, value); }
         public string Title { get => title; set => SetProperty(ref title, value); }
         public bool IsConnect { get => isConnect; set => SetProperty(ref isConnect, value); }
+
+        private void About()
+        {
+            WinBox.ShowMessage(@"Тестовое задание. 
+Клиент на TCP. Отправка XML файлов на сервер для парсинга 
+и отображение результатов.");
+        }
+        
 
         private void Client_IsConnectedChanged(bool isConnect)
         {

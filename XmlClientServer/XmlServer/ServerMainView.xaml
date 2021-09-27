@@ -7,7 +7,7 @@
         xmlns:converters="clr-namespace:WPFStorage.Converters;assembly=WpfStorage"
         xmlns:local="clr-namespace:XmlServer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="500">
+        Title="{Binding Title}" Height="350" Width="500">
     <Window.Resources>
         <systemConverters:BooleanToVisibilityConverter x:Key="BoolToVisible"/>
         <converters:BooleanToVisibilityConverter x:Key="InvertBoolToVisible" True="Collapsed" False="Visible"/>
@@ -22,8 +22,15 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
-            <MenuItem Header="Сервер"/>
-            <MenuItem Header="О программе"/>
+            <MenuItem Header="Сервер">
+                <MenuItem Header="Запустить" Visibility="{Binding ServerIsWorking, Converter={StaticResource InvertBoolToVisible}}" Command="{Binding StartServerCommand}"/>
+                <MenuItem Header="Остановить" Visibility="{Binding ServerIsWorking, Converter={StaticResource BoolToVisible}}" Command="{Binding StopServerCommand}"/>
+                <MenuItem Header="Создать файл" Command="{Binding CreateCommand}"/>
+                <Separator Height="1" />
+                <MenuItem Header="Выход" Click="Exit_Click"/>
+
+            </MenuItem>
+            <MenuItem Header="О программе" Command="{Binding AboutCommand}"/>
         </Menu>
         <WrapPanel Margin="5" Grid.Row="1">
             <Border Width="150" BorderBrush="Gray" BorderThickness="0.5">
@@ -58,14 +65,16 @@
                     </Grid.RowDefinitions>
                     <WrapPanel Orientation="Horizontal" Grid.Row="0">
                         <Button Command="{Binding ClearHistoryCommand}">Очистить историю</Button>
+                        <CheckBox IsChecked="{Binding NeedFilter}" ToolTip="Не добавлять в этот список автоматические запросы">Фильтровать</CheckBox>
                     </WrapPanel>
                 <ListBox ItemsSource="{Binding Requests}" Grid.Row="1">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="10,0" Text="{Binding Id}"/>
-                                <TextBlock Margin="10,0" Text="{Binding Command}"/>
-                                <TextBlock Margin="10,0" Text="{Binding Message}"/>
+                                    <TextBlock Margin="10,0" Text="{Binding Id}"/>
+                                    <TextBlock Margin="10,0" Text="{Binding Port}"/>
+                                    <TextBlock Margin="10,0" Text="{Binding Command}"/>
+                                    <TextBlock Margin="10,0" Text="{Binding Message}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
