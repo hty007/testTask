@@ -6,6 +6,10 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\build\Client\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="Resources\conected.png" />
     <None Remove="Resources\disconected.png" />

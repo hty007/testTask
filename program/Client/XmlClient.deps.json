@@ -1,0 +1,50 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "XmlClient/1.0.0": {
+        "dependencies": {
+          "Protocol": "1.0.0",
+          "WpfStorage": "0.2.0.0"
+        },
+        "runtime": {
+          "XmlClient.dll": {}
+        }
+      },
+      "Protocol/1.0.0": {
+        "runtime": {
+          "Protocol.dll": {}
+        }
+      },
+      "WpfStorage/0.2.0.0": {
+        "runtime": {
+          "WpfStorage.dll": {
+            "assemblyVersion": "0.2.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "XmlClient/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Protocol/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "WpfStorage/0.2.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
