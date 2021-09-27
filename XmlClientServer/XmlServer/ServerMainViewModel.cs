@@ -23,6 +23,7 @@ namespace XmlServer
             StopServerCommand = new RelayCommand(StopServer);
             CreateCommand = new RelayCommand(Create);
             EditFileCommand = new RelayCommand<string>(EditFile);
+            ClearHistoryCommand = new RelayCommand(ClearHistory);
 
             Server = new ServerController();
             Server.ClientRequest += OnRequest;
@@ -32,7 +33,6 @@ namespace XmlServer
             Files = new ObservableCollection<string>(names);
             dispatcher = Dispatcher.CurrentDispatcher;
         }
-
 
         public ObservableCollection<PoolRequest> Requests { get; set; } = new ObservableCollection<PoolRequest>();
         public ObservableCollection<string> Files { get; set; }
@@ -46,6 +46,7 @@ namespace XmlServer
         public RelayCommand StopServerCommand { get; }
         public RelayCommand CreateCommand { get; }
         public RelayCommand<string> EditFileCommand { get; }
+        public RelayCommand ClearHistoryCommand { get; }
         public ServerController Server { get; }
 
         public void Closed(object sender, EventArgs e)
@@ -54,6 +55,11 @@ namespace XmlServer
             {
                 Server.Stop();
             }
+        }
+
+        private void ClearHistory()
+        {
+            Requests.Clear();
         }
 
         private void EditFile(string fileName)

@@ -56,7 +56,7 @@ namespace XmlClient
             timer.Interval = new TimeSpan(0, 0, 0, 0, UpdateTime);
             timer.Tick += CheckConnect;
             timer.Start();
-            //CheckConnect(this, null);
+            CheckConnect(this, null);
         }
 
         public void Disconnect()
@@ -126,14 +126,58 @@ namespace XmlClient
             }
         }
 
+        public async Task<MailModel> RepeatedModel(string fileName)
+        {
+            timer?.Stop();
+            using (TcpClient client = new TcpClient())
+            {
+                client.Connect(Ip, Port);
+                client.ReceiveTimeout = UpdateTime;
+                try
+                {
+                    using (MyRequest request = new MyRequest())
+                    {
+                        request.WriteCommand(ServerCommand.repeat);
+                        request.WriteString(fileName);
+
+                        var stream = client.GetStream();
+                        await Task.Run(() => request.Stream.WriteTo(stream));
+                        stream.Flush();
+                    }
+
+                    using (MyResponse response = new MyResponse())
+                    {
+                        var stream = client.GetStream();
+                        await Task.Run(() => response.GetData(stream));
+
+                        ClientCommand command = response.ReadCommand();
+                        if (command == ClientCommand.model)
+                        {
+                            var model = StreamHelper.StreamToModel(response.Stream, (int)response.Position);
+
+                            return model;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    IsConnect = false;
+                }
+                finally
+                {
+                    timer?.Start();
+                }
+                return null;
+            }
+        }
+
         public async Task<MailModel> ParseModel(string fileName)
         {
             timer?.Stop();
             using (TcpClient client = new TcpClient())
             {
                 client.Connect(Ip, Port);
-                //client.SendTimeout = UpdateTime;
-                //client.ReceiveTimeout = UpdateTime;
+                client.ReceiveTimeout = UpdateTime;
                 try
                 {
                     using (MyRequest request = new MyRequest())

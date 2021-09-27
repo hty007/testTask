@@ -2,20 +2,23 @@
 using Protocol;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using WPFStorage.Base;
 using WPFStorage.Dialogs;
 
 namespace XmlClient
 {
-    internal class ClientMainViewModel: ObservableObject, IDisposable
+    internal class ClientMainViewModel : ObservableObject, IDisposable
     {
         private int targetPort = 5011;
         private string targetServer = "127.0.0.1";
         private MyClient client;
         private bool isConnect;
         private int indexTab;
+        private string title = "Клиент";
 
         public ClientMainViewModel()
         {
@@ -23,6 +26,8 @@ namespace XmlClient
             ConnectCommand = new RelayCommand(Connect);
             DisconnectCommand = new RelayCommand(Disconnect);
             ParseFileCommand = new RelayCommand(ParseFileAsync);
+            RepeatedCommand = new RelayCommand<string>(RepeatedAsync);
+            ClearHistoryCommand = new RelayCommand(ClearHistory);
             Viewer = new ViewerViewModel();
             Setting = new SettingViewModel();
             Setting.Ip = TargetServer;
@@ -33,17 +38,27 @@ namespace XmlClient
             client.IsConnectedChanged += Client_IsConnectedChanged;
         }
 
+        public ObservableCollection<string> History { get; private set; } = new ObservableCollection<string>();
         public RelayCommand ListServerCommand { get; }
         public RelayCommand ConnectCommand { get; }
         public RelayCommand DisconnectCommand { get; }
         public RelayCommand ParseFileCommand { get; }
+        public RelayCommand<string> RepeatedCommand { get; }
+        public RelayCommand ClearHistoryCommand { get; }
         public ViewerViewModel Viewer { get; }
         public SettingViewModel Setting { get; }
-        public int TargetPort { get => targetPort; set =>SetProperty(ref targetPort, value); }
+        public int TargetPort { get => targetPort; set => SetProperty(ref targetPort, value); }
         public int IndexTab { get => indexTab; set => SetProperty(ref indexTab, value); }
-        
-        public string TargetServer { get => targetServer; set =>SetProperty(ref targetServer, value); }
+
+        public string TargetServer { get => targetServer; set => SetProperty(ref targetServer, value); }
+        public string Title { get => title; set => SetProperty(ref title, value); }
         public bool IsConnect { get => isConnect; set => SetProperty(ref isConnect, value); }
+
+        private void Client_IsConnectedChanged(bool isConnect)
+        {
+            IsConnect = isConnect;
+            Title = IsConnect ? $"Клиент {TargetServer}:{TargetPort}" : "Клиент";
+        }
 
         private void Disconnect()
         {
@@ -66,9 +81,28 @@ namespace XmlClient
             }
         }
 
-        private void Client_IsConnectedChanged(bool obj)
+        private void ClearHistory() => History.Clear();
+
+        private async void RepeatedAsync(string fileName)
         {
-            IsConnect = obj;
+            try
+            {
+                if (!IsConnect)
+                {
+                    WinBox.ShowMessage("Перед запросом необходимо подключится к серверу!");
+                    return;
+                }
+                MailModel model = await client.RepeatedModel(fileName);
+
+
+                Viewer.SetModel(model);
+                Viewer.Time = DateTime.Now;
+                IndexTab = 1;
+            }
+            catch (Exception ex)
+            {
+                IsConnect = false;
+            }
         }
 
         private void OnClickAppleSetting()
@@ -96,11 +130,11 @@ namespace XmlClient
         {
             try
             {
-                //if (!IsConnect)
-                //{
-                //    WinBox.ShowMessage("Перед запросом необходимо подключится к серверу!");
-                //    return;
-                //}
+                if (!IsConnect)
+                {
+                    WinBox.ShowMessage("Перед запросом необходимо подключится к серверу!");
+                    return;
+                }
                 OpenFileDialog openFile = new OpenFileDialog();
                 openFile.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
 
@@ -115,6 +149,8 @@ namespace XmlClient
                     Viewer.SetModel(model);
                     Viewer.Time = DateTime.Now;
                     IndexTab = 1;
+
+                    History.Add(Path.GetFileName(openFile.FileName));
                 }
             }
             catch (Exception ex)
@@ -135,7 +171,7 @@ namespace XmlClient
                 List<string> files = await client.GetList();
                 WinBox.ShowMessage(string.Join('\n', files));
             }
-            catch 
+            catch
             {
                 IsConnect = false;
             }

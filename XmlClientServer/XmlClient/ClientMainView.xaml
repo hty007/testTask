@@ -8,7 +8,7 @@
         xmlns:converters="clr-namespace:WPFStorage.Converters;assembly=WpfStorage"
         xmlns:controls="clr-namespace:XmlClient.Controls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="400" Width="500">
+        Title="{Binding Title, UpdateSourceTrigger=PropertyChanged}" Height="400" Width="500">
     <Window.Resources>
         <systemConverters:BooleanToVisibilityConverter x:Key="BoolToVisible"/>
         <converters:BooleanToVisibilityConverter x:Key="InvertBoolToVisible" True="Collapsed" False="Visible"/>
@@ -27,10 +27,10 @@
                 <MenuItem Header="Выход" />
             </MenuItem>
             <MenuItem Header="О программе">
-                
+
             </MenuItem>
         </Menu>
-        
+
         <WrapPanel Grid.Row="1">
             <Border Margin="5" Width="150" Height="30" BorderBrush="Gray" BorderThickness="0.5">
                 <Border.Style>
@@ -61,7 +61,34 @@
         </WrapPanel>
 
         <TabControl Grid.Row="2" SelectedIndex="{Binding IndexTab, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <TabItem Header="История"></TabItem>
+            <TabItem x:Name="tabItem" Header="История">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <WrapPanel Grid.Row="0">
+                        <Button Command="{Binding ClearHistoryCommand}">Очистить историю</Button>
+                    </WrapPanel>
+                <ItemsControl ItemsSource="{Binding History}" Grid.Row="1">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel  Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="Gray" BorderThickness="0.5">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding }"/>
+                                    <Button Command="{Binding DataContext.RepeatedCommand, ElementName=tabItem}" CommandParameter="{Binding }" ToolTip="Повторно получить запрос">Повторно</Button>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                </Grid>
+            </TabItem>
             <TabItem Header="Текуший запрос">
                 <controls:ViewerView  DataContext="{Binding Viewer}"/>
             </TabItem>
@@ -69,7 +96,7 @@
                 <controls:SettingsControl                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        DataContext="{Binding Setting}"/>
             </TabItem>
         </TabControl>
-        
-           
+
+
     </Grid>
 </Window>

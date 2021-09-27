@@ -18,17 +18,47 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="50"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Menu Grid.Row="0"></Menu>
+        <Menu Grid.Row="0">
+            <MenuItem Header="Сервер"/>
+            <MenuItem Header="О программе"/>
+        </Menu>
         <WrapPanel Margin="5" Grid.Row="1">
-            <Button Content="Настроить сервер" Command="{Binding ConfigureServerCommand}"/>
+            <Border Width="150" BorderBrush="Gray" BorderThickness="0.5">
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ServerIsWorking}" Value="false">
+                                <Setter Property="Background" Value="Red"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ServerIsWorking}" Value="true">
+                                <Setter Property="Background" Value="Green"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Visibility="{Binding ServerIsWorking, Converter={StaticResource BoolToVisible}}">Online</TextBlock>
+                    <TextBlock Visibility="{Binding ServerIsWorking, Converter={StaticResource InvertBoolToVisible}}">Offline</TextBlock>
+                </StackPanel>
+            </Border>
+            
             <Button Content="Запустить сервер" Visibility="{Binding ServerIsWorking, Converter={StaticResource InvertBoolToVisible}}" Command="{Binding StartServerCommand}"/>
             <Button Content="Остановить сервер" Visibility="{Binding ServerIsWorking, Converter={StaticResource BoolToVisible}}" Command="{Binding StopServerCommand}"/>
+            <!--<Button Content="Настроить сервер" Command="{Binding ConfigureServerCommand}"/>-->
         </WrapPanel>
         <TabControl Grid.Row="2">
             <TabItem Header="Запросы">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <WrapPanel Orientation="Horizontal" Grid.Row="0">
+                        <Button Command="{Binding ClearHistoryCommand}">Очистить историю</Button>
+                    </WrapPanel>
                 <ListBox ItemsSource="{Binding Requests}" Grid.Row="1">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -40,6 +70,7 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+                </Grid>
 
             </TabItem>
             <TabItem Header="Файлы">
@@ -76,6 +107,9 @@
 
                 </Grid>
 
+            </TabItem>
+            <TabItem Header="Настройки">
+                
             </TabItem>
         </TabControl>
     </Grid>
