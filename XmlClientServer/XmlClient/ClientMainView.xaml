@@ -8,7 +8,7 @@
         xmlns:converters="clr-namespace:WPFStorage.Converters;assembly=WpfStorage"
         xmlns:controls="clr-namespace:XmlClient.Controls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="400">
+        Title="MainWindow" Height="400" Width="500">
     <Window.Resources>
         <systemConverters:BooleanToVisibilityConverter x:Key="BoolToVisible"/>
         <converters:BooleanToVisibilityConverter x:Key="InvertBoolToVisible" True="Collapsed" False="Visible"/>

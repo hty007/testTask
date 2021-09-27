@@ -94,41 +94,51 @@ namespace XmlServer
         {
             while (canListen)
             {
-                MyContext context = await listener.GetContextAsync();
-                _ = Task.Run(() =>
+                try
                 {
-                    try
-                    {
-                        switch (context.Command)
-                        {
-                                //case ServerCommand.generate:
-                                //    GenerateHandle(br, context);
-                                //    break;
-                            case ServerCommand.hello:
-                                CheckConnect(context);
-                                break;
-                            case ServerCommand.parse:
-                                ParseHandle(context);
-                                break;
-                            case ServerCommand.repeat:
-                                RepeatHandle(context);
-                                break;
-                            case ServerCommand.getList:
-                            default:
-                                ListHandle(context);
-                                break;
-                        }
-                        ClientRequest?.Invoke(context);
-                    }
-                    catch (Exception ex)
-                    {
-                        ExeptionRequest?.Invoke(ex);
-                    }
-                    finally
-                    {
-                        context.Dispose();
-                    }
-                });
+                    MyContext context = await listener.GetContextAsync();
+                    _ = Task.Run(() => Routing(context));
+                }
+                catch
+                {
+                    if (canListen)
+                        throw;
+                }
+            }
+        }
+
+        private void Routing(MyContext context)
+        {
+            try
+            {
+                switch (context.Command)
+                {
+                    //case ServerCommand.generate:
+                    //    GenerateHandle(br, context);
+                    //    break;
+                    case ServerCommand.hello:
+                        CheckConnect(context);
+                        break;
+                    case ServerCommand.parse:
+                        ParseHandle(context);
+                        break;
+                    case ServerCommand.repeat:
+                        RepeatHandle(context);
+                        break;
+                    case ServerCommand.getList:
+                    default:
+                        ListHandle(context);
+                        break;
+                }
+                ClientRequest?.Invoke(context);
+            }
+            catch (Exception ex)
+            {
+                ExeptionRequest?.Invoke(ex);
+            }
+            finally
+            {
+                context.Dispose();
             }
         }
 

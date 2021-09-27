@@ -17,6 +17,7 @@ namespace Protocol
 {
     public enum  ServerCommand
     {
+        empty,
         hello,
         parse,
         repeat,

@@ -96,11 +96,11 @@ namespace XmlClient
         {
             try
             {
-                if (!IsConnect)
-                {
-                    WinBox.ShowMessage("Перед запросом необходимо подключится к серверу!");
-                    return;
-                }
+                //if (!IsConnect)
+                //{
+                //    WinBox.ShowMessage("Перед запросом необходимо подключится к серверу!");
+                //    return;
+                //}
                 OpenFileDialog openFile = new OpenFileDialog();
                 openFile.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
 

@@ -20,10 +20,6 @@ namespace XmlClient
         {
             this.Ip = targetServer;
             this.Port = targetPort;
-
-            //timer = new DispatcherTimer();
-            //timer.Interval = new TimeSpan(0, 0, 0, 0, UpdateTime);
-            //timer.Tick += CheckConnect;
         }
 
         public event Action<bool> IsConnectedChanged;
@@ -54,18 +50,19 @@ namespace XmlClient
         public string Ip { get => ip; internal set => ip = value; }
         public int Port { get => port; internal set => port = value; }
 
-        /// <summary>
-        /// Подключится
-        /// </summary>
         public void Connect()
         {
-            //timer.Start();
-            CheckConnect(this, null);
+            timer = new DispatcherTimer();
+            timer.Interval = new TimeSpan(0, 0, 0, 0, UpdateTime);
+            timer.Tick += CheckConnect;
+            timer.Start();
+            //CheckConnect(this, null);
         }
 
         public void Disconnect()
         {
             timer?.Stop();
+            timer = null;
             IsConnect = false;
         }
 
@@ -74,12 +71,13 @@ namespace XmlClient
 
         private void UpdateInterval(int milliseconds)
         {
-            timer.Interval = new TimeSpan(0, 0, 0, 0, milliseconds);
+            if (timer != null)
+             timer.Interval = new TimeSpan(0, 0, 0, 0, milliseconds);
         }
 
         public async Task<List<string>> GetList()
         {
-            timer.Stop();
+            timer?.Stop();
             using (TcpClient client = new TcpClient())
             {
                 client.SendTimeout = UpdateTime;
@@ -90,7 +88,7 @@ namespace XmlClient
                     {
                         request.WriteCommand(ServerCommand.getList);
 
-                        var stream = client.GetStream();
+                        NetworkStream stream = client.GetStream();
                         await Task.Run(() => request.Stream.WriteTo(stream));
                     }
 
@@ -122,7 +120,7 @@ namespace XmlClient
                 }
                 finally 
                 { 
-                    timer.Start();
+                    timer?.Start();
                 }
                 return null;
             }
@@ -130,11 +128,12 @@ namespace XmlClient
 
         public async Task<MailModel> ParseModel(string fileName)
         {
-            timer.Stop();
+            timer?.Stop();
             using (TcpClient client = new TcpClient())
             {
-                client.SendTimeout = UpdateTime;
-                client.ReceiveTimeout = UpdateTime;
+                client.Connect(Ip, Port);
+                //client.SendTimeout = UpdateTime;
+                //client.ReceiveTimeout = UpdateTime;
                 try
                 {
                     using (MyRequest request = new MyRequest())
@@ -169,7 +168,7 @@ namespace XmlClient
                 }
                 finally
                 {
-                    timer.Start();
+                    timer?.Start();
                 }
                 return null;
             }
@@ -177,26 +176,30 @@ namespace XmlClient
 
         private async void CheckConnect(object sender, EventArgs e)
         {
-            //timer.Stop();
+            timer?.Stop();
             using (TcpClient client = new TcpClient())
             {
-                //client.SendTimeout = UpdateTime;
                 //client.ReceiveTimeout = UpdateTime;
                 try
                 {
-                    await client.ConnectAsync(Ip, Port);
+                    client.Connect(Ip, Port);
+                    client.SendTimeout = UpdateTime;
                     using (MyRequest request = new MyRequest())
                     {
                         request.WriteCommand(ServerCommand.hello);
+                        // Видимо есть ограничение на размер пакета
+                        request.Stream.Write(new byte[10], 0, 10);
 
                         var stream = client.GetStream();
-                        request.Stream.Position = 0;
+                        // request.Stream.Position = 0;
                         request.Stream.WriteTo(stream);
+                        stream.Flush();
                     }
 
                     using (MyResponse response = new MyResponse())
                     {
-                        await Task.Run(() => response.GetData(client.GetStream()));
+                        var stream = client.GetStream();
+                        await Task.Run(() => response.GetData(stream));
 
                         ClientCommand command = response.ReadCommand();
                         if (command == ClientCommand.hello)
@@ -211,7 +214,7 @@ namespace XmlClient
                 }
                 finally
                 {
-                    //timer.Start();
+                    timer?.Start();
                 }
             }
         }
