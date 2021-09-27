@@ -1,0 +1,125 @@
+﻿<Window x:Class="XmlServer.ServerMainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:systemConverters="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
+        xmlns:converters="clr-namespace:WPFStorage.Converters;assembly=WpfStorage"
+        xmlns:local="clr-namespace:XmlServer"
+        mc:Ignorable="d"
+        Title="{Binding Title}" Height="350" Width="500">
+    <Window.Resources>
+        <systemConverters:BooleanToVisibilityConverter x:Key="BoolToVisible"/>
+        <converters:BooleanToVisibilityConverter x:Key="InvertBoolToVisible" True="Collapsed" False="Visible"/>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="5, 0"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="Сервер">
+                <MenuItem Header="Запустить" Visibility="{Binding ServerIsWorking, Converter={StaticResource InvertBoolToVisible}}" Command="{Binding StartServerCommand}"/>
+                <MenuItem Header="Остановить" Visibility="{Binding ServerIsWorking, Converter={StaticResource BoolToVisible}}" Command="{Binding StopServerCommand}"/>
+                <MenuItem Header="Создать файл" Command="{Binding CreateCommand}"/>
+                <Separator Height="1" />
+                <MenuItem Header="Выход" Click="Exit_Click"/>
+
+            </MenuItem>
+            <MenuItem Header="О программе" Command="{Binding AboutCommand}"/>
+        </Menu>
+        <WrapPanel Margin="5" Grid.Row="1">
+            <Border Width="150" BorderBrush="Gray" BorderThickness="0.5">
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ServerIsWorking}" Value="false">
+                                <Setter Property="Background" Value="Red"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ServerIsWorking}" Value="true">
+                                <Setter Property="Background" Value="Green"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Visibility="{Binding ServerIsWorking, Converter={StaticResource BoolToVisible}}">Online</TextBlock>
+                    <TextBlock Visibility="{Binding ServerIsWorking, Converter={StaticResource InvertBoolToVisible}}">Offline</TextBlock>
+                </StackPanel>
+            </Border>
+            
+            <Button Content="Запустить сервер" Visibility="{Binding ServerIsWorking, Converter={StaticResource InvertBoolToVisible}}" Command="{Binding StartServerCommand}"/>
+            <Button Content="Остановить сервер" Visibility="{Binding ServerIsWorking, Converter={StaticResource BoolToVisible}}" Command="{Binding StopServerCommand}"/>
+            <!--<Button Content="Настроить сервер" Command="{Binding ConfigureServerCommand}"/>-->
+        </WrapPanel>
+        <TabControl Grid.Row="2">
+            <TabItem Header="Запросы">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <WrapPanel Orientation="Horizontal" Grid.Row="0">
+                        <Button Command="{Binding ClearHistoryCommand}">Очистить историю</Button>
+                        <CheckBox IsChecked="{Binding NeedFilter}" ToolTip="Не добавлять в этот список автоматические запросы">Фильтровать</CheckBox>
+                    </WrapPanel>
+                <ListBox ItemsSource="{Binding Requests}" Grid.Row="1">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                    <TextBlock Margin="10,0" Text="{Binding Id}"/>
+                                    <TextBlock Margin="10,0" Text="{Binding Port}"/>
+                                    <TextBlock Margin="10,0" Text="{Binding Command}"/>
+                                    <TextBlock Margin="10,0" Text="{Binding Message}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                </Grid>
+
+            </TabItem>
+            <TabItem Header="Файлы">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0">
+                        <Button Content="Создать файл" Command="{Binding CreateCommand}"/>
+
+                    </StackPanel>
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding Files}" x:Name="listFile">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="2" BorderBrush="Gray" BorderThickness="0.5">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding }">
+                                            <TextBlock.InputBindings>
+                                                <MouseBinding Gesture="LeftClick" Command="{Binding Path=DataContext.EditFileCommand, ElementName=listFile}" CommandParameter="{Binding }"/>
+                                            </TextBlock.InputBindings>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+
+                    </ItemsControl>
+
+                </Grid>
+
+            </TabItem>
+            <TabItem Header="Настройки">
+                <local:SettingsControl DataContext="{Binding Settings}"/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
