@@ -10,6 +10,10 @@
     <OutputPath>..\build\Client\</OutputPath>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath></OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="Resources\conected.png" />
     <None Remove="Resources\disconected.png" />
